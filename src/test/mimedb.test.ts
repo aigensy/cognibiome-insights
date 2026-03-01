@@ -1,9 +1,11 @@
 /**
  * MiMeDB build-script schema test
  * Tests the CSV parsing and filtering logic using tiny mocked CSV fixtures.
- * Does NOT read the actual large local/ files.
+ * Also runs a live-file integrity test against public/reference/mimedb.json.
  */
 import { describe, it, expect } from 'vitest';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 // Minimal RFC-4180 CSV parser — same logic as in build-mimedb.ts
 function parseCSVRows(text: string): Record<string, string>[] {
@@ -252,5 +254,54 @@ describe('MiMeDB build-script CSV parsing', () => {
         expect(link).not.toHaveProperty('note');
       }
     });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TASK 5 — Real-file integrity test: public/reference/mimedb.json
+// ---------------------------------------------------------------------------
+describe('mimedb.json real-file integrity (TASK 5)', () => {
+  const MIMEDB_PATH = path.resolve(__dirname, '../../public/reference/mimedb.json');
+
+  let snapshot: {
+    metadata: Record<string, unknown>;
+    metabolites: unknown[];
+    microbes: unknown[];
+    microbe_metabolite_links: Array<Record<string, unknown>>;
+  };
+
+  it('public/reference/mimedb.json exists and is valid JSON', () => {
+    const raw = fs.readFileSync(MIMEDB_PATH, 'utf8');
+    snapshot = JSON.parse(raw);
+    expect(snapshot).toBeTruthy();
+  });
+
+  it('snapshot has required top-level keys', () => {
+    expect(snapshot).toHaveProperty('metadata');
+    expect(snapshot).toHaveProperty('metabolites');
+    expect(snapshot).toHaveProperty('microbes');
+    expect(snapshot).toHaveProperty('microbe_metabolite_links');
+  });
+
+  it('no link has source_in_mimedb_csv set to true', () => {
+    for (const link of snapshot.microbe_metabolite_links) {
+      expect(link['source_in_mimedb_csv']).not.toBe(true);
+    }
+  });
+
+  it('every link that has source_in_mimedb_csv has it set to false', () => {
+    const linksWithField = snapshot.microbe_metabolite_links.filter(
+      l => 'source_in_mimedb_csv' in l
+    );
+    for (const link of linksWithField) {
+      expect(link['source_in_mimedb_csv']).toBe(false);
+    }
+  });
+
+  it('every link has a disclaimer in evidence_note or evidence field', () => {
+    for (const link of snapshot.microbe_metabolite_links) {
+      const disclaimer = (link['evidence_note'] ?? link['evidence'] ?? '') as string;
+      expect(disclaimer.toLowerCase()).toMatch(/cannot confirm/);
+    }
   });
 });

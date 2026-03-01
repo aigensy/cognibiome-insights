@@ -111,6 +111,14 @@ function extractVirtualFiles(bundleText: string): ExtractedFile[] {
 }
 
 function main(): void {
+  // --force: overwrite existing public/ files (default: skip to avoid reverting hand-edited docs)
+  const FORCE = process.argv.includes('--force');
+  if (FORCE) {
+    console.log('[extract-bundle] --force mode: existing /public files WILL be overwritten.');
+  } else {
+    console.log('[extract-bundle] Safe mode (default): existing /public files will NOT be overwritten. Pass --force to override.');
+  }
+
   if (!fs.existsSync(BUNDLE_PATH)) {
     console.error(`[error] Bundle not found at ${BUNDLE_PATH}`);
     process.exit(1);
@@ -147,13 +155,17 @@ function main(): void {
     writeFileContent(auditPath, content);
     writtenCount++;
 
-    // Write runtime copy to public/ for applicable prefixes
+    // Write runtime copy to public/ for applicable prefixes (skip if exists unless --force)
     const isRuntime = RUNTIME_PREFIXES.some(prefix => virtualPath.startsWith(prefix));
     if (isRuntime) {
       const publicPath = path.join(REPO_ROOT, 'public', virtualPath);
-      writeFileContent(publicPath, content);
-      writtenCount++;
-      console.log(`  [runtime+audit] ${virtualPath}`);
+      if (!FORCE && fs.existsSync(publicPath)) {
+        console.log(`  [skip-exists]   ${virtualPath}  (use --force to overwrite)`);
+      } else {
+        writeFileContent(publicPath, content);
+        writtenCount++;
+        console.log(`  [runtime+audit] ${virtualPath}`);
+      }
     } else {
       console.log(`  [audit]         ${virtualPath}`);
     }

@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "extract:bundle": "tsx scripts/extract-bundle.ts",
     "build:mimedb": "tsx scripts/build-mimedb.ts",
-    "check:no-cyrillic": "tsx scripts/check-no-cyrillic.ts"
+    "check:no-cyrillic": "tsx scripts/check-no-cyrillic.ts",
+    "pretest": "tsx scripts/check-no-cyrillic.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

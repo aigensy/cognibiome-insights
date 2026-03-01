@@ -382,10 +382,19 @@ export default function HelpDocs() {
     try {
       const r = await fetch(item.path);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      // Detect Vite SPA fallback via Content-Type header
+      const ct = r.headers?.get?.('content-type') ?? '';
+      if (ct.toLowerCase().startsWith('text/html')) {
+        throw new Error(
+          `Document missing from /public. Run build steps to populate /public/foundation_pack/**.`
+        );
+      }
       const text = await r.text();
-      // Detect Vite SPA fallback — server returned HTML instead of the requested file
+      // Secondary guard: body-level doctype detection
       if (text.trimStart().startsWith('<!doctype') || text.trimStart().startsWith('<!DOCTYPE')) {
-        throw new Error(`File not found on server. The docs bundle may not be fully extracted.`);
+        throw new Error(
+          `Document missing from /public. Run build steps to populate /public/foundation_pack/**.`
+        );
       }
       setContent(text);
     } catch (e) {

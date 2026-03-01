@@ -1,4 +1,4 @@
-# Guser guide (CogniBiome, 2026 judge-ready demo build)
+# CogniBiome — User Guide (2026 judge-ready demo build)
 
 **Generated (UTC):** 2026-03-01T06:15:04Z  
 **App type:** offline-first PWA, deterministic simulator / hypothesis generator (not diagnostic, not causal proof)
@@ -140,19 +140,6 @@ Stored under `/public/reference/…` and used for:
 
 ---
 
-
-## 5.3 Cleaned docs file structure (current)
-
-Canonical docs locations after cleanup:
-- `/public/docs/` — app-facing authored docs (`cognibiome_user_guide.md`, `implementation_plan.md`, PDF→JSON docs)
-- `/public/docs/screenshots/` — screenshots embedded by the guide
-- `/public/foundation_pack/` — foundation JSON docs + docs index used by the viewer
-- `/public/reference/` — reference snapshots used by Methods/Public Datasets/Docs
-
-Removed duplicates:
-- removed duplicate root guide file: `/public/CogniBiome App User Guide.md`
-- removed duplicate structured guide JSON: `/public/docs/cognibiome_user_guide.json`
-
 ## 6. Global UI controls (appear on every screen)
 
 ### 6.1 Sidebar navigation
@@ -173,9 +160,8 @@ Routes:
   - clears saved runs from localStorage
   - resets simulator sliders to defaults
   - clears loaded pilot dataset (it will reload automatically)
-- **Docs section in sidebar**
-  - open **Docs** in the left menu and pick a document by category (Foundation / Data / Reference)
-  - viewer route remains `/help` with doc selection via URL query (`?doc=...`)
+- **Docs button**
+  - opens Help / Docs (`/help`)
 - **Offline indicator**
   - shows OFFLINE when the browser reports no network
 
@@ -355,10 +341,11 @@ This screen is meant to clearly separate:
   - Plain text
 
 **Controls**
-- pick documents from the **left sidebar Docs tree** (Foundation / Data / Reference)
-- in-viewer actions:
-  - **Human View** (for JSON docs)
-  - **Raw JSON**
+- tabs by category (Foundation / Reference / Data)
+- search box (filters doc list)
+- per-document actions:
+  - **View** (human-friendly JSON when possible)
+  - **Raw** (raw source)
   - **Copy** to clipboard
   - **Download**
 
@@ -392,13 +379,14 @@ This repo ships:
 | DOC-016 | Reference Data Build Notes | `/reference/README_data_build.md` | MD | Reference | Help / Docs viewer | How reference snapshots were prepared. |
 | DOC-017 | References & Licenses | `/reference/REFERENCES_AND_LICENSES.md` | MD | Reference | Help / Docs viewer | Licenses and attribution notes for reference snapshots. |
 | DOC-018 | Upload Manifest (SHA256) | `/UPLOAD_FILES_MANIFEST.md` | MD | Reference | Help / Docs viewer | Integrity list of uploaded artifacts with hashes. |
-| DOC-019 | Guser guide | `/docs/cognibiome_user_guide.md` | MD | Foundation | Help / Docs viewer | Judge walkthrough + full UI reference. |
+| DOC-019 | CogniBiome App User Guide | `/docs/cognibiome_user_guide.md` | MD | Foundation | Help / Docs viewer | Judge walkthrough + full UI reference. |
 | DOC-020 | Public Datasets Manifest | `/reference/public_datasets_manifest.json` | JSON | Data | Public Datasets, Help / Docs viewer | Manifest of bundled reference snapshots with provenance and sha256. |
 | DOC-021 | NHANES Nutrient Reference (2021–2022) | `/reference/nhanes_nutrient_reference.csv` | CSV | Data | Simulator (NHANES ranges), Public Datasets | Nutrient variable codebook ranges from NHANES DR1TOT_L (2021–2022). No participant-level data. |
 | DOC-022 | Public Datasets README | `/reference/public_datasets_README.md` | MD | Data | Public Datasets, Help / Docs viewer | Provenance notes for all reference snapshots included or attempted. |
 | DOC-023 | Implementation Plan (Lovable) | `/docs/implementation_plan.md` | MD | Foundation | Help / Docs viewer | Lovable implementation plan used as build roadmap (Phase 1–3). |
 | DOC-024 | Project Plan (PDF → JSON) | `/docs/project_plan_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Plan.pdf, stored as JSON for offline Docs viewer. |
 | DOC-025 | Project Abstract (PDF → JSON) | `/docs/project_abstract_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Abstract.pdf, stored as JSON for offline Docs viewer. |
+| DOC-026 | CogniBiome User Guide (Structured JSON) | `/docs/cognibiome_user_guide.json` | JSON | Foundation | Help / Docs viewer | Structured user guide: stack, file tree, screens, buttons, docs inventory, and roadmap. |
 
 ---
 
@@ -459,26 +447,3 @@ These items are implied by the project plan’s “train three supervised models
 - MiMeDB snapshot is a **curated subset** and includes limitations recorded in its metadata.
 - Pilot quartile overlays are not implemented.
 - No PDF rendering directly; PDFs must be converted to JSON/MD for the Docs viewer.
-
----
-
-## 12. Main screen screenshots
-
-### Dashboard
-![Dashboard](/docs/screenshots/dashboard.png)
-
-### Pilot Results
-![Pilot Results](/docs/screenshots/pilot-results.png)
-
-### Simulator
-![Simulator](/docs/screenshots/simulator.png)
-
-### Compare Scenarios
-![Compare Scenarios](/docs/screenshots/compare.png)
-
-### Public Datasets
-![Public Datasets](/docs/screenshots/datasets.png)
-
-### Help / Docs
-![Help / Docs](/docs/screenshots/help-docs.png)
-

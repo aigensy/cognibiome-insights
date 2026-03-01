@@ -340,6 +340,74 @@ describe('HelpDocs (TST-007)', () => {
     expect(screen.getByText('NHANES')).toBeInTheDocument();
     expect(screen.getByText('HMP')).toBeInTheDocument();
   });
+
+  // ---- Task 2: Vite HTML fallback detection ----
+
+  it('TASK2 — loadDoc() shows error when server returns HTML (Vite SPA fallback)', async () => {
+    // Simulate Vite dev-server returning its index.html for a missing JSON path
+    const VITE_HTML = `<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8" /><title>CogniBiome</title></head>
+  <body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body>
+</html>`;
+
+    const fetchWithHtmlFallback = vi.fn(async (url: string) => {
+      if (url === '/foundation_pack/docs_index.json') {
+        return {
+          ok: true, status: 200,
+          text: async () => JSON.stringify(FAKE_INDEX),
+          json: async () => FAKE_INDEX,
+        };
+      }
+      // All doc fetches return HTML (Vite fallback)
+      return {
+        ok: true, status: 200,
+        headers: { get: (h: string) => h === 'content-type' ? 'text/html' : null },
+        text: async () => VITE_HTML,
+        json: async () => { throw new Error('not json'); },
+      };
+    });
+
+    global.fetch = fetchWithHtmlFallback as unknown as typeof fetch;
+    renderWithDoc('D001');
+
+    await waitFor(() => {
+      // Should show an error message, NOT the raw HTML content
+      const errorEl = screen.queryByText(/Error loading document:/i);
+      const htmlEl = screen.queryByText(/<!doctype/i);
+      expect(htmlEl).not.toBeInTheDocument();
+      expect(errorEl).toBeInTheDocument();
+    });
+  });
+
+  it('TASK2 — loadDoc() shows error when content-type is text/html', async () => {
+    const HTML_BODY = '<!DOCTYPE html><html><body>fallback</body></html>';
+
+    const fetchWithHtmlContentType = vi.fn(async (url: string) => {
+      if (url === '/foundation_pack/docs_index.json') {
+        return {
+          ok: true, status: 200,
+          text: async () => JSON.stringify(FAKE_INDEX),
+          json: async () => FAKE_INDEX,
+          headers: { get: () => 'application/json' },
+        };
+      }
+      return {
+        ok: true, status: 200,
+        headers: { get: (h: string) => h === 'content-type' ? 'text/html; charset=utf-8' : null },
+        text: async () => HTML_BODY,
+        json: async () => { throw new Error('not json'); },
+      };
+    });
+
+    global.fetch = fetchWithHtmlContentType as unknown as typeof fetch;
+    renderWithDoc('D001');
+
+    await waitFor(() => {
+      expect(screen.queryByText(/<!DOCTYPE/i)).not.toBeInTheDocument();
+      expect(screen.getByText(/Error loading document:/i)).toBeInTheDocument();
+    });
+  });
 });
 
 // ---- Task E: PublicDatasets manifest + NHANES tests ----

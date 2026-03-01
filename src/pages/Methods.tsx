@@ -45,12 +45,21 @@ interface MiMeDBMicrobe {
   health_type: string | null;
 }
 
+/**
+ * MiMeDBLink accepts both old schema (evidence, note) and new schema
+ * (evidence_note, literature_context, source_in_mimedb_csv) without crashing.
+ */
 interface MiMeDBLink {
   metabolite_name: string;
   metabolite_mime_id: string;
   microbe_genera: string[];
-  evidence: string;
-  note: string;
+  // Old schema fields
+  evidence?: string;
+  note?: string;
+  // New schema fields
+  evidence_note?: string;
+  literature_context?: string;
+  source_in_mimedb_csv?: boolean;
 }
 
 interface MiMeDBSnapshot {
@@ -189,30 +198,45 @@ function MiMeDBSection() {
       </div>
 
       {tab === 'links' && (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-xs">Metabolite</TableHead>
-              <TableHead className="text-xs">MIME ID</TableHead>
-              <TableHead className="text-xs">Microbe Genera</TableHead>
-              <TableHead className="text-xs">Evidence</TableHead>
-              <TableHead className="text-xs">Note</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredLinks.map((link, i) => (
-              <TableRow key={i}>
-                <TableCell className="text-xs font-medium">{link.metabolite_name}</TableCell>
-                <TableCell className="text-[10px] font-mono text-muted-foreground">{link.metabolite_mime_id}</TableCell>
-                <TableCell className="text-xs">{link.microbe_genera.join(', ')}</TableCell>
-                <TableCell className="text-xs">
-                  <Badge variant="outline" className="text-[9px]">{link.evidence}</Badge>
-                </TableCell>
-                <TableCell className="text-[10px] text-muted-foreground max-w-[200px]">{link.note}</TableCell>
+        <>
+          <p className="text-[10px] text-amber-400/80 border border-amber-700/30 rounded px-2 py-1">
+            All links below are <strong>unconfirmed</strong> — not derivable from the official MiMeDB CSV exports
+            (no join table is present). Retained for educational context only.
+          </p>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-xs">Metabolite</TableHead>
+                <TableHead className="text-xs">MIME ID</TableHead>
+                <TableHead className="text-xs">Microbe Genera</TableHead>
+                <TableHead className="text-xs">Status</TableHead>
+                <TableHead className="text-xs">Context</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredLinks.map((link, i) => {
+                // Support both old schema (evidence/note) and new schema (evidence_note/literature_context)
+                const statusText = link.evidence_note ?? link.evidence ?? 'cannot confirm';
+                const contextText = link.literature_context ?? link.note ?? '';
+                return (
+                  <TableRow key={i}>
+                    <TableCell className="text-xs font-medium">{link.metabolite_name}</TableCell>
+                    <TableCell className="text-[10px] font-mono text-muted-foreground">{link.metabolite_mime_id}</TableCell>
+                    <TableCell className="text-xs">{link.microbe_genera.join(', ')}</TableCell>
+                    <TableCell className="text-xs">
+                      <Badge variant="outline" className="text-[9px] text-amber-400 border-amber-700/40">
+                        unconfirmed
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-[10px] text-muted-foreground max-w-[200px]" title={statusText + ' — ' + contextText}>
+                      {contextText}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </>
       )}
 
       {tab === 'metabolites' && (
