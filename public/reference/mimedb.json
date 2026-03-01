@@ -15,7 +15,7 @@
       "This snapshot covers only metabolites relevant to the D→X→M→Y CogniBiome model.",
       "For the full MiMeDB dataset, see: https://mimedb.org (not accessed at runtime; offline-only)."
     ],
-    "license": "MiMeDB data is for non-commercial, reference-only use. See /reference/REFERENCES_AND_LICENSES.md."
+    "license": "License/terms: I cannot confirm from this repo. See official MiMeDB terms: https://mimedb.org/ (not accessed at runtime)."
   },
   "metabolites": [
     {
@@ -365,7 +365,7 @@
       "id": "123",
       "microbe_id": "MMDBm0000123",
       "name": "Clostridium cadvareris",
-      "species": "Clostridium cadaveris ",
+      "species": "Clostridium cadaveris",
       "genus": "Clostridium",
       "phylum": "Firmicutes",
       "gram": "NULL",
@@ -1219,10 +1219,8 @@
         "Clostridium"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "literature_context": "SCFAs produced by Firmicutes via fiber fermentation. (see REFERENCES_AND_LICENSES.md).",
-      "evidence": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "note": "SCFAs produced by Firmicutes via fiber fermentation. (see REFERENCES_AND_LICENSES.md)."
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
+      "literature_context": "SCFAs produced by Firmicutes via fiber fermentation. (see REFERENCES_AND_LICENSES.md)."
     },
     {
       "metabolite_name": "Acetic acid",
@@ -1233,10 +1231,8 @@
         "Akkermansia"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "literature_context": "Primary SCFA produced by bifidogenic fermentation. (see REFERENCES_AND_LICENSES.md).",
-      "evidence": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "note": "Primary SCFA produced by bifidogenic fermentation. (see REFERENCES_AND_LICENSES.md)."
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
+      "literature_context": "Primary SCFA produced by bifidogenic fermentation. (see REFERENCES_AND_LICENSES.md)."
     },
     {
       "metabolite_name": "Propionic acid",
@@ -1246,10 +1242,8 @@
         "Roseburia"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "literature_context": "SCFA via propionate pathway in gut bacteria. (see REFERENCES_AND_LICENSES.md).",
-      "evidence": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "note": "SCFA via propionate pathway in gut bacteria. (see REFERENCES_AND_LICENSES.md)."
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
+      "literature_context": "SCFA via propionate pathway in gut bacteria. (see REFERENCES_AND_LICENSES.md)."
     },
     {
       "metabolite_name": "gamma-Aminobutyric acid",
@@ -1259,10 +1253,8 @@
         "Bifidobacterium"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "literature_context": "GABA produced by certain lactic acid bacteria. (see REFERENCES_AND_LICENSES.md).",
-      "evidence": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "note": "GABA produced by certain lactic acid bacteria. (see REFERENCES_AND_LICENSES.md)."
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
+      "literature_context": "GABA produced by certain lactic acid bacteria. (see REFERENCES_AND_LICENSES.md)."
     },
     {
       "metabolite_name": "Serotonin",
@@ -1273,10 +1265,8 @@
         "Clostridium"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "literature_context": "~90% serotonin in gut; microbial influence on EC cells. (see REFERENCES_AND_LICENSES.md).",
-      "evidence": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "note": "~90% serotonin in gut; microbial influence on EC cells. (see REFERENCES_AND_LICENSES.md)."
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
+      "literature_context": "~90% serotonin in gut; microbial influence on EC cells. (see REFERENCES_AND_LICENSES.md)."
     },
     {
       "metabolite_name": "L-Tryptophan",
@@ -1287,10 +1277,8 @@
         "Ruminococcus"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "literature_context": "Tryptophan metabolized by gut bacteria to indole/serotonin. (see REFERENCES_AND_LICENSES.md).",
-      "evidence": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "note": "Tryptophan metabolized by gut bacteria to indole/serotonin. (see REFERENCES_AND_LICENSES.md)."
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
+      "literature_context": "Tryptophan metabolized by gut bacteria to indole/serotonin. (see REFERENCES_AND_LICENSES.md)."
     },
     {
       "metabolite_name": "Indole-3-propionic acid",
@@ -1300,10 +1288,8 @@
         "Lactobacillus"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "literature_context": "IPA: neuroprotective tryptophan metabolite from gut bacteria. (see REFERENCES_AND_LICENSES.md).",
-      "evidence": "cannot confirm from parsed MiMeDB CSV — see citation",
-      "note": "IPA: neuroprotective tryptophan metabolite from gut bacteria. (see REFERENCES_AND_LICENSES.md)."
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
+      "literature_context": "IPA: neuroprotective tryptophan metabolite from gut bacteria. (see REFERENCES_AND_LICENSES.md)."
     }
   ]
 }

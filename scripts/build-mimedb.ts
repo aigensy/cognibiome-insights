@@ -275,7 +275,7 @@ function main(): void {
         'This snapshot covers only metabolites relevant to the D→X→M→Y CogniBiome model.',
         'For the full MiMeDB dataset, see: https://mimedb.org (not accessed at runtime; offline-only).',
       ],
-      license: 'MiMeDB data is for non-commercial, reference-only use. See /reference/REFERENCES_AND_LICENSES.md.',
+      license: 'License/terms: I cannot confirm from this repo. See official MiMeDB terms: https://mimedb.org/ (not accessed at runtime).',
     },
     metabolites: targetMetabolites,
     microbes: targetMicrobes,

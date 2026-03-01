@@ -9,13 +9,13 @@
     "matched_metabolites": 8,
     "matched_microbes": 100,
     "limitations": [
-      "The MiMeDB v2 CSV exports do not include a microbe\u2194metabolite join table. The microbe_relations column is a COUNT only \u2014 it does not list microbe IDs or genera.",
+      "The MiMeDB v2 CSV exports do not include a microbe↔metabolite join table. The microbe_relations column is a COUNT only — it does not list microbe IDs or genera.",
       "All entries in microbe_metabolite_links have source_in_mimedb_csv: false. They cannot be confirmed from the parsed MiMeDB files. They are retained as educational context only with explicit \"cannot confirm\" labels.",
       "activity field is often NULL in this dataset; health_type may be more informative.",
-      "This snapshot covers only metabolites relevant to the D\u2192X\u2192M\u2192Y CogniBiome model.",
+      "This snapshot covers only metabolites relevant to the D→X→M→Y CogniBiome model.",
       "For the full MiMeDB dataset, see: https://mimedb.org (not accessed at runtime; offline-only)."
     ],
-    "license": "MiMeDB data is for non-commercial, reference-only use. See /reference/REFERENCES_AND_LICENSES.md."
+    "license": "License/terms: I cannot confirm from this repo. See official MiMeDB terms: https://mimedb.org/ (not accessed at runtime)."
   },
   "metabolites": [
     {
@@ -365,7 +365,7 @@
       "id": "123",
       "microbe_id": "MMDBm0000123",
       "name": "Clostridium cadvareris",
-      "species": "Clostridium cadaveris\u00a0",
+      "species": "Clostridium cadaveris",
       "genus": "Clostridium",
       "phylum": "Firmicutes",
       "gram": "NULL",
@@ -1219,7 +1219,7 @@
         "Clostridium"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV \u2014 see citation",
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
       "literature_context": "SCFAs produced by Firmicutes via fiber fermentation. (see REFERENCES_AND_LICENSES.md)."
     },
     {
@@ -1231,7 +1231,7 @@
         "Akkermansia"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV \u2014 see citation",
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
       "literature_context": "Primary SCFA produced by bifidogenic fermentation. (see REFERENCES_AND_LICENSES.md)."
     },
     {
@@ -1242,7 +1242,7 @@
         "Roseburia"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV \u2014 see citation",
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
       "literature_context": "SCFA via propionate pathway in gut bacteria. (see REFERENCES_AND_LICENSES.md)."
     },
     {
@@ -1253,7 +1253,7 @@
         "Bifidobacterium"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV \u2014 see citation",
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
       "literature_context": "GABA produced by certain lactic acid bacteria. (see REFERENCES_AND_LICENSES.md)."
     },
     {
@@ -1265,7 +1265,7 @@
         "Clostridium"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV \u2014 see citation",
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
       "literature_context": "~90% serotonin in gut; microbial influence on EC cells. (see REFERENCES_AND_LICENSES.md)."
     },
     {
@@ -1277,7 +1277,7 @@
         "Ruminococcus"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV \u2014 see citation",
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
       "literature_context": "Tryptophan metabolized by gut bacteria to indole/serotonin. (see REFERENCES_AND_LICENSES.md)."
     },
     {
@@ -1288,7 +1288,7 @@
         "Lactobacillus"
       ],
       "source_in_mimedb_csv": false,
-      "evidence_note": "cannot confirm from parsed MiMeDB CSV \u2014 see citation",
+      "evidence_note": "cannot confirm from parsed MiMeDB CSV -- see citation",
       "literature_context": "IPA: neuroprotective tryptophan metabolite from gut bacteria. (see REFERENCES_AND_LICENSES.md)."
     }
   ]

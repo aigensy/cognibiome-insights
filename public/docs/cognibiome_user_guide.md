@@ -322,6 +322,15 @@ If the uploaded CSV contains multiple Diet Score columns with different values, 
 - tab switch: Metabolites / Microbes / Links
 - table view of the selected tab
 
+**MiMeDB snapshot — provenance and rebuild**
+- **Runtime file:** `/reference/mimedb.json` (served from `public/reference/mimedb.json`)
+- **How it is created:** run `npm run build:mimedb` offline. The script `scripts/build-mimedb.ts` reads two local input files and writes identical output to both `public/reference/mimedb.json` and `app_context/reference/mimedb.json`.
+- **Required local inputs (not committed; obtain from MiMeDB):**
+  - `local/mimedb_metabolites_v2.csv`
+  - `local/mimedb_microbes_v2.csv`
+- **Provenance guardrail:** the `microbe_metabolite_links` array entries are literature-derived, not extractable from the MiMeDB CSV exports (those exports do not include a join table). Every link carries `source_in_mimedb_csv: false` and the note "cannot confirm from parsed MiMeDB CSV". The UI labels this section accordingly. No link will ever show `source_in_mimedb_csv: true` unless the official CSV exports gain a join table and the script is updated.
+- **License/terms:** I cannot confirm the exact MiMeDB license from this repo. See the official MiMeDB website: https://mimedb.org/ (not accessed at runtime).
+
 ---
 
 ## 7.7 Public Datasets (`/datasets`)
