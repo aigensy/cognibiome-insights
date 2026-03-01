@@ -1,0 +1,11 @@
+variable_code,nutrient_name,unit,min_value,max_value,source_year_range
+DR1TKCAL,Energy,kcal,0,10446,2021-2022
+DR1TPROT,Protein,gm,0,459.15,2021-2022
+DR1TCARB,Carbohydrate,gm,0,1300.94,2021-2022
+DR1TSUGR,Total sugars,gm,0,953.9,2021-2022
+DR1TFIBE,Dietary fiber,gm,0,127.3,2021-2022
+DR1TTFAT,Total fat,gm,0,505.62,2021-2022
+DR1TSFAT,Total saturated fatty acids,gm,0,208.842,2021-2022
+DR1TMFAT,Total monounsaturated fatty acids,gm,0,205.377,2021-2022
+DR1TPFAT,Total polyunsaturated fatty acids,gm,0,193.753,2021-2022
+DR1TCHOL,Cholesterol,mg,0,3598,2021-2022

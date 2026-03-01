@@ -1,0 +1,53 @@
+[
+  {
+    "dataset": "NHANES",
+    "file": "reference/nhanes_nutrient_reference.csv",
+    "included": true,
+    "row_count": 11,
+    "sha256": "5312cc7d5d858fcbd0f0cd24a191196f06a3e6b2d4d1c40836389d68e5a90d51",
+    "provenance": {
+      "source_url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DR1TOT_L.htm",
+      "notes": "Variable names and value ranges extracted from the DR1TOT_L codebook"
+    }
+  },
+  {
+    "dataset": "HMP",
+    "file": "public/reference/hmp_genus_reference.csv",
+    "included": false,
+    "reason": "Network restrictions prevented downloading the HMP value\u2011added QIIME OTU table from downloads.hmpdacc.org; redistribution conditions unclear",
+    "provenance": {
+      "source_url": "http://downloads.hmpdacc.org/data/HMQCP/otu_table_psn_v35.txt.gz",
+      "notes": "Official HMP 16S OTU table; not accessed"
+    }
+  },
+  {
+    "dataset": "American Gut",
+    "file": "public/reference/american_gut_genus_reference.csv",
+    "included": false,
+    "reason": "Public BIOM and metadata files require Qiita login and cannot be downloaded anonymously; dataset too large for offline snapshot",
+    "provenance": {
+      "source_url": "https://qiita.ucsd.edu/",
+      "notes": "Qiita study 10317 (American Gut) processed tables"
+    }
+  },
+  {
+    "dataset": "MetaboLights",
+    "file": "N/A",
+    "included": false,
+    "reason": "Individual studies may have specific licences under EMBL\u2011EBI Terms of Use; uncertain redistribution permissions and large file sizes",
+    "provenance": {
+      "source_url": "https://www.ebi.ac.uk/metabolights/",
+      "notes": "MetaboLights studies (general)"
+    }
+  },
+  {
+    "dataset": "Metabolomics Workbench",
+    "file": "N/A",
+    "included": false,
+    "reason": "Site not accessible in this environment and terms restrict redistribution to personal, non\u2011commercial use",
+    "provenance": {
+      "source_url": "https://www.metabolomicsworkbench.org/",
+      "notes": "Metabolomics Workbench repository (general)"
+    }
+  }
+]

@@ -145,6 +145,38 @@
       "category": "Reference",
       "media_type": "text/markdown",
       "description": "Integrity list of uploaded artifacts with hashes."
+    },
+    {
+      "id": "DOC-019",
+      "title": "CogniBiome App User Guide",
+      "path": "/docs/cognibiome_user_guide.md",
+      "category": "Foundation",
+      "media_type": "text/markdown",
+      "description": "Judge walkthrough + full UI reference."
+    },
+    {
+      "id": "DOC-020",
+      "title": "Public Datasets Manifest",
+      "path": "/reference/public_datasets_manifest.json",
+      "category": "Data",
+      "media_type": "application/json",
+      "description": "Manifest of bundled reference snapshots with provenance and sha256."
+    },
+    {
+      "id": "DOC-021",
+      "title": "NHANES Nutrient Reference (2021–2022)",
+      "path": "/reference/nhanes_nutrient_reference.csv",
+      "category": "Data",
+      "media_type": "text/csv",
+      "description": "Nutrient variable codebook ranges from NHANES DR1TOT_L (2021–2022). No participant-level data."
+    },
+    {
+      "id": "DOC-022",
+      "title": "Public Datasets README",
+      "path": "/reference/public_datasets_README.md",
+      "category": "Data",
+      "media_type": "text/markdown",
+      "description": "Provenance notes for all reference snapshots included or attempted."
     }
   ]
 }

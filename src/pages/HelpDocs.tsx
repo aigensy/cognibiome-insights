@@ -77,142 +77,277 @@ function parseCSV(text: string): string[][] {
 // Human-readable view for JSON foundation-pack documents
 // ---------------------------------------------------------------------------
 
-/** Extract a displayable string or "cannot confirm (missing field)". */
-function fieldOrMissing(value: unknown): string {
-  if (value === undefined || value === null || value === '') return 'cannot confirm (missing field)';
-  if (typeof value === 'string') return value;
-  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
-  return JSON.stringify(value);
-}
+/** Stable key order for known object fields in evidence/sources arrays. */
+const KNOWN_OBJ_KEY_ORDER = ['source_id', 'loc', 'snippet', 'sha256', 'url', 'notes', 'dataset', 'file', 'included', 'reason'];
 
-/** Pull a list of string items from various array-of-{id, text, ...} shapes. */
-function toStringList(value: unknown): string[] {
-  if (!Array.isArray(value)) return [];
-  return value.map(item => {
-    if (typeof item === 'string') return item;
-    // Common patterns: {assumption, question, requirement, text, description, title, statement}
-    for (const key of ['assumption', 'question', 'requirement', 'text', 'description', 'title', 'statement', 'name', 'primary']) {
-      if (typeof item[key] === 'string') {
-        const prefix = item['id'] ? `[${item['id']}] ` : '';
-        return `${prefix}${item[key]}`;
+/** Determine stable column order for an array of objects. */
+function deriveColumns(items: Record<string, unknown>[]): string[] {
+  const seen = new Set<string>();
+  const ordered: string[] = [];
+  // First, prefer known key order
+  for (const k of KNOWN_OBJ_KEY_ORDER) {
+    if (items.some(item => k in item)) {
+      ordered.push(k);
+      seen.add(k);
+    }
+  }
+  // Then any remaining keys
+  for (const item of items) {
+    for (const k of Object.keys(item)) {
+      if (!seen.has(k)) {
+        ordered.push(k);
+        seen.add(k);
       }
     }
-    return JSON.stringify(item);
-  });
+  }
+  return ordered;
 }
 
-/**
- * Mapping layer: attempts to render a JSON doc in human-readable sections.
- * Falls back to "cannot confirm (missing field)" when fields are absent.
- */
-function HumanView({ parsed }: { parsed: Record<string, unknown> }) {
-  // Title — try multiple locations
-  const title =
-    fieldOrMissing(
-      parsed['title'] ??
-      parsed['name'] ??
-      (parsed['meta'] as Record<string, unknown> | undefined)?.['canonical_path'] ??
-      parsed['template_id']
-    );
+/** Render a value for display in a table cell. */
+function cellValue(v: unknown): string {
+  if (v === undefined || v === null) return '';
+  if (typeof v === 'boolean') return v ? 'yes' : 'no';
+  if (typeof v === 'string' || typeof v === 'number') return String(v);
+  if (Array.isArray(v)) return v.join(', ');
+  return JSON.stringify(v);
+}
 
-  // Purpose / objective
-  const purposeRaw = parsed['purpose'] ?? parsed['objective'] ?? parsed['summary'] ?? parsed['description'];
-  const purpose =
-    typeof purposeRaw === 'object' && purposeRaw !== null
-      ? fieldOrMissing((purposeRaw as Record<string, unknown>)['primary'] ?? (purposeRaw as Record<string, unknown>)['text'])
-      : fieldOrMissing(purposeRaw);
+/** Table rendered from an array of objects, with "Show more" expand. */
+function ObjArrayTable({ items }: { items: Record<string, unknown>[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const PAGE = 25;
+  const cols = deriveColumns(items);
+  const visible = showAll ? items : items.slice(0, PAGE);
 
-  // Key decisions / features / sections
-  const decisionsRaw =
-    parsed['key_decisions'] ?? parsed['features'] ?? parsed['decisions'] ?? parsed['key_points'] ?? parsed['modules'];
-  const decisions = toStringList(decisionsRaw);
-
-  // Assumptions
-  const assumptionsRaw = parsed['assumptions'];
-  const assumptions = toStringList(assumptionsRaw);
-
-  // Open questions
-  const questionsRaw = parsed['questions'] ?? parsed['open_questions'];
-  const questions = toStringList(questionsRaw);
-
-  // Risks
-  const risksRaw = parsed['risks'] ?? parsed['non_goals'];
-  const risks = toStringList(risksRaw);
-
-  // Data sources / references
-  const sourcesRaw = parsed['data_sources'] ?? parsed['sources'] ?? parsed['references'] ?? parsed['evidence'];
-  const sources = toStringList(sourcesRaw);
-
-  // Limitations / constraints
-  const limitsRaw = parsed['limitations'] ?? parsed['constraints'] ?? parsed['caveats'];
-  const limits = toStringList(limitsRaw);
-
-  // Phase / state metadata
-  const meta = parsed['meta'] as Record<string, unknown> | undefined;
-  const phase = fieldOrMissing(parsed['phase'] ?? meta?.['adlc_phase']);
-  const state = fieldOrMissing(meta?.['adlc_state'] ?? parsed['state'] ?? parsed['status']);
-  const updated = fieldOrMissing(meta?.['last_updated_utc'] ?? parsed['last_updated_utc'] ?? parsed['generated_utc'] ?? parsed['build_timestamp']);
-
-  const Section = ({
-    heading,
-    items,
-    text,
-  }: {
-    heading: string;
-    items?: string[];
-    text?: string;
-  }) => (
-    <div className="mb-4">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">{heading}</h3>
-      {text !== undefined && (
-        <p className={`text-xs leading-relaxed ${text.startsWith('cannot confirm') ? 'italic text-muted-foreground' : ''}`}>
-          {text}
-        </p>
-      )}
-      {items !== undefined && items.length === 0 && (
-        <p className="text-xs italic text-muted-foreground">cannot confirm (missing field)</p>
-      )}
-      {items !== undefined && items.length > 0 && (
-        <ul className="list-disc list-inside space-y-0.5">
-          {items.map((s, i) => (
-            <li key={i} className="text-xs leading-relaxed">{s}</li>
-          ))}
-        </ul>
+  return (
+    <div className="space-y-1">
+      <div className="overflow-auto max-h-48 rounded border border-border" data-testid="obj-array-table">
+        <table className="text-xs border-collapse w-full">
+          <thead className="sticky top-0">
+            <tr>
+              {cols.map(c => (
+                <th key={c} className="border border-border px-2 py-1 text-left bg-muted/80 font-medium whitespace-nowrap">
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {visible.map((row, ri) => (
+              <tr key={ri} className="hover:bg-muted/20">
+                {cols.map(c => (
+                  <td key={c} className="border border-border px-2 py-1 font-mono max-w-[200px] truncate" title={cellValue(row[c])}>
+                    {cellValue(row[c])}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {items.length > PAGE && (
+        <button
+          className="text-[10px] text-primary underline"
+          onClick={() => setShowAll(a => !a)}
+        >
+          {showAll ? `Show first ${PAGE}` : `Show all ${items.length} rows`}
+        </button>
       )}
     </div>
   );
+}
+
+/** Pretty key/value grid for a plain object. */
+function ObjGrid({ obj }: { obj: Record<string, unknown> }) {
+  return (
+    <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs" data-testid="obj-grid">
+      {Object.entries(obj).map(([k, v]) => (
+        <div key={k} className="contents">
+          <dt className="font-mono text-muted-foreground whitespace-nowrap">{k}</dt>
+          <dd className="break-words">{cellValue(v)}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/** Whether an array is entirely objects (not primitives). */
+function isObjArray(arr: unknown[]): arr is Record<string, unknown>[] {
+  return arr.length > 0 && arr.every(v => typeof v === 'object' && v !== null && !Array.isArray(v));
+}
+
+/**
+ * Render a field value: array-of-objects → table, plain object → grid, else → string.
+ */
+function FieldValue({ value }: { value: unknown }) {
+  if (Array.isArray(value)) {
+    if (isObjArray(value)) return <ObjArrayTable items={value} />;
+    // Primitive array
+    return (
+      <ul className="list-disc list-inside space-y-0.5">
+        {value.map((s, i) => (
+          <li key={i} className="text-xs leading-relaxed">{cellValue(s)}</li>
+        ))}
+      </ul>
+    );
+  }
+  if (typeof value === 'object' && value !== null) {
+    return <ObjGrid obj={value as Record<string, unknown>} />;
+  }
+  return <span className="text-xs leading-relaxed">{cellValue(value)}</span>;
+}
+
+/** Extract a single string from a value, or null if absent/empty. */
+function fieldStr(value: unknown): string | null {
+  if (value === undefined || value === null || value === '') return null;
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    const obj = value as Record<string, unknown>;
+    for (const k of ['primary', 'text', 'value']) {
+      const v = fieldStr(obj[k]);
+      if (v) return v;
+    }
+  }
+  return null;
+}
+
+/** Extract a list of strings from array values, or null if absent/empty. */
+function fieldStrList(value: unknown): string[] | null {
+  if (!Array.isArray(value) || value.length === 0) return null;
+  const results: string[] = [];
+  for (const item of value) {
+    if (typeof item === 'string') { results.push(item); continue; }
+    for (const key of ['assumption', 'question', 'requirement', 'text', 'description', 'title', 'statement', 'name', 'primary']) {
+      if (typeof (item as Record<string, unknown>)[key] === 'string') {
+        const prefix = (item as Record<string, unknown>)['id'] ? `[${(item as Record<string, unknown>)['id']}] ` : '';
+        results.push(`${prefix}${(item as Record<string, unknown>)[key]}`);
+        break;
+      }
+    }
+  }
+  return results.length > 0 ? results : null;
+}
+
+/**
+ * HumanView — renders a JSON doc as human-readable sections.
+ * RULE: if a field is absent, do not render that section at all.
+ * No "cannot confirm (missing field)" text is shown to the user.
+ */
+function HumanView({ parsed }: { parsed: unknown }) {
+  // Handle top-level arrays (e.g. manifest JSON)
+  if (Array.isArray(parsed)) {
+    if (isObjArray(parsed)) {
+      return (
+        <div className="overflow-auto max-h-[60vh] p-1" data-testid="human-view">
+          <ObjArrayTable items={parsed} />
+        </div>
+      );
+    }
+    return (
+      <div className="overflow-auto max-h-[60vh] p-1" data-testid="human-view">
+        <ul className="list-disc list-inside text-xs space-y-0.5">
+          {(parsed as unknown[]).map((v, i) => (
+            <li key={i}>{cellValue(v)}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  if (typeof parsed !== 'object' || parsed === null) {
+    return (
+      <div className="overflow-auto max-h-[60vh] p-1 text-xs" data-testid="human-view">
+        {String(parsed)}
+      </div>
+    );
+  }
+
+  const doc = parsed as Record<string, unknown>;
+  const meta = doc['meta'] as Record<string, unknown> | undefined;
+
+  // Extract optional fields — null means absent/empty, do not render section
+  const title = fieldStr(doc['title'] ?? doc['name'] ?? meta?.['canonical_path'] ?? doc['template_id']);
+  const purposeRaw = doc['purpose'] ?? doc['objective'] ?? doc['summary'] ?? doc['description'];
+  const purpose = typeof purposeRaw === 'object' && purposeRaw !== null
+    ? fieldStr((purposeRaw as Record<string, unknown>)['primary'] ?? (purposeRaw as Record<string, unknown>)['text'])
+    : fieldStr(purposeRaw);
+
+  const phase = fieldStr(doc['phase'] ?? meta?.['adlc_phase']);
+  const state = fieldStr(meta?.['adlc_state'] ?? doc['state'] ?? doc['status']);
+  const updated = fieldStr(meta?.['last_updated_utc'] ?? doc['last_updated_utc'] ?? doc['generated_utc'] ?? doc['build_timestamp']);
+
+  // Sections that render as string lists (if extractable)
+  const decisionsRaw = doc['key_decisions'] ?? doc['features'] ?? doc['decisions'] ?? doc['key_points'] ?? doc['modules'];
+  const decisionsStr = fieldStrList(decisionsRaw);
+  // For decisions, if it's an obj-array, fall through to generic rendering below
+  const decisionsFull = Array.isArray(decisionsRaw) && isObjArray(decisionsRaw as unknown[]) ? decisionsRaw as Record<string, unknown>[] : null;
+
+  const assumptionsStr = fieldStrList(doc['assumptions']);
+  const assumptionsFull = Array.isArray(doc['assumptions']) && isObjArray(doc['assumptions'] as unknown[]) ? doc['assumptions'] as Record<string, unknown>[] : null;
+
+  const questionsStr = fieldStrList(doc['questions'] ?? doc['open_questions']);
+  const questionsFull = Array.isArray(doc['questions'] ?? doc['open_questions']) && isObjArray((doc['questions'] ?? doc['open_questions']) as unknown[]) ? (doc['questions'] ?? doc['open_questions']) as Record<string, unknown>[] : null;
+
+  const risksStr = fieldStrList(doc['risks'] ?? doc['non_goals']);
+  const risksFull = Array.isArray(doc['risks'] ?? doc['non_goals']) && isObjArray((doc['risks'] ?? doc['non_goals']) as unknown[]) ? (doc['risks'] ?? doc['non_goals']) as Record<string, unknown>[] : null;
+
+  const sourcesRaw = doc['data_sources'] ?? doc['sources'] ?? doc['references'] ?? doc['evidence'];
+  const sourcesStr = fieldStrList(sourcesRaw);
+  const sourcesFull = Array.isArray(sourcesRaw) && isObjArray(sourcesRaw as unknown[]) ? sourcesRaw as Record<string, unknown>[] : null;
+
+  const limitsRaw = doc['limitations'] ?? doc['constraints'] ?? doc['caveats'];
+  const limitsStr = fieldStrList(limitsRaw);
+  const limitsFull = Array.isArray(limitsRaw) && isObjArray(limitsRaw as unknown[]) ? limitsRaw as Record<string, unknown>[] : null;
+
+  const hasAny = title || purpose || decisionsStr || decisionsFull || assumptionsStr || assumptionsFull ||
+    questionsStr || questionsFull || risksStr || risksFull || sourcesStr || sourcesFull || limitsStr || limitsFull;
+
+  const Section = ({ heading, children }: { heading: string; children: React.ReactNode }) => (
+    <div className="mb-4">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">{heading}</h3>
+      {children}
+    </div>
+  );
+
+  const StrListSection = ({ heading, items, full }: { heading: string; items: string[] | null; full: Record<string, unknown>[] | null }) => {
+    if (!items && !full) return null;
+    return (
+      <Section heading={heading}>
+        {full ? (
+          <ObjArrayTable items={full} />
+        ) : (
+          <ul className="list-disc list-inside space-y-0.5">
+            {items!.map((s, i) => <li key={i} className="text-xs leading-relaxed">{s}</li>)}
+          </ul>
+        )}
+      </Section>
+    );
+  };
 
   return (
     <div className="overflow-auto max-h-[60vh] space-y-1 p-1" data-testid="human-view">
-      {/* Header strip */}
+      {/* Metadata badges */}
       <div className="flex flex-wrap gap-1 mb-3">
-        {phase !== 'cannot confirm (missing field)' && (
-          <Badge variant="outline" className="text-[10px]">Phase: {phase}</Badge>
-        )}
-        {state !== 'cannot confirm (missing field)' && (
-          <Badge variant="outline" className="text-[10px]">State: {state}</Badge>
-        )}
-        {updated !== 'cannot confirm (missing field)' && (
-          <Badge variant="outline" className="text-[10px]">Updated: {updated.replace('T', ' ').replace('Z', ' UTC')}</Badge>
-        )}
+        {phase && <Badge variant="outline" className="text-[10px]">Phase: {phase}</Badge>}
+        {state && <Badge variant="outline" className="text-[10px]">State: {state}</Badge>}
+        {updated && <Badge variant="outline" className="text-[10px]">Updated: {updated.replace('T', ' ').replace('Z', ' UTC')}</Badge>}
       </div>
 
-      <Section heading="Title / Document" text={title} />
-      <Section heading="Purpose / Objective" text={purpose} />
-      {decisions.length > 0 && <Section heading="Key Decisions / Modules" items={decisions} />}
-      {assumptions.length > 0 && <Section heading="Assumptions" items={assumptions} />}
-      {questions.length > 0 && <Section heading="Open Questions" items={questions} />}
-      {risks.length > 0 && <Section heading="Risks / Non-Goals" items={risks} />}
-      {sources.length > 0 && <Section heading="Data Sources / Evidence" items={sources} />}
-      {limits.length > 0 && <Section heading="Limitations / Constraints" items={limits} />}
+      {title && <Section heading="Title / Document"><p className="text-xs leading-relaxed">{title}</p></Section>}
+      {purpose && <Section heading="Purpose / Objective"><p className="text-xs leading-relaxed">{purpose}</p></Section>}
+      <StrListSection heading="Key Decisions / Modules" items={decisionsStr} full={decisionsFull} />
+      <StrListSection heading="Assumptions" items={assumptionsStr} full={assumptionsFull} />
+      <StrListSection heading="Open Questions" items={questionsStr} full={questionsFull} />
+      <StrListSection heading="Risks / Non-Goals" items={risksStr} full={risksFull} />
+      <StrListSection heading="Data Sources / Evidence" items={sourcesStr} full={sourcesFull} />
+      <StrListSection heading="Limitations / Constraints" items={limitsStr} full={limitsFull} />
 
-      {/* Show note if very few fields could be mapped */}
-      {[decisions, assumptions, questions, risks, sources, limits].every(l => l.length === 0) &&
-        purpose.startsWith('cannot confirm') && (
-          <p className="text-xs italic text-muted-foreground">
-            This document uses a custom schema. Switch to Raw JSON to view full content.
-          </p>
-        )}
+      {!hasAny && (
+        <p className="text-xs italic text-muted-foreground">
+          This document uses a custom schema. Switch to Raw JSON to view full content.
+        </p>
+      )}
     </div>
   );
 }
@@ -280,7 +415,7 @@ export default function HelpDocs() {
 
     if (mt.includes('json')) {
       try {
-        const parsed = JSON.parse(content) as Record<string, unknown>;
+        const parsed: unknown = JSON.parse(content);
         if (jsonView === 'human') {
           return <HumanView parsed={parsed} />;
         }
@@ -307,7 +442,7 @@ export default function HelpDocs() {
           <p className="text-[10px] text-muted-foreground mb-2">
             {rows.length - 1} rows total (showing first {Math.min(dataRows.length, 100)})
           </p>
-          <table className="text-xs border-collapse w-full">
+          <table className="text-xs border-collapse w-full" data-testid="csv-table">
             <thead>
               <tr>
                 {headers.map((h, i) => (
