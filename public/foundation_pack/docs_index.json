@@ -1,6 +1,6 @@
 {
   "schema_version": "cognibiome.docs_index.v1",
-  "generated_utc": "2026-03-01T00:12:29Z",
+  "generated_utc": "2026-03-01T06:11:03Z",
   "items": [
     {
       "id": "DOC-001",
@@ -148,7 +148,7 @@
     },
     {
       "id": "DOC-019",
-      "title": "CogniBiome App User Guide",
+      "title": "Guser guide",
       "path": "/docs/cognibiome_user_guide.md",
       "category": "Foundation",
       "media_type": "text/markdown",
@@ -177,6 +177,30 @@
       "category": "Data",
       "media_type": "text/markdown",
       "description": "Provenance notes for all reference snapshots included or attempted."
+    },
+    {
+      "id": "DOC-023",
+      "title": "Implementation Plan (Lovable)",
+      "path": "/docs/implementation_plan.md",
+      "category": "Foundation",
+      "media_type": "text/markdown",
+      "description": "Lovable implementation plan used as build roadmap (Phase 1–3)."
+    },
+    {
+      "id": "DOC-024",
+      "title": "Project Plan (PDF → JSON)",
+      "path": "/docs/project_plan_pdf.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Extracted text from Project Plan.pdf, stored as JSON for offline Docs viewer."
+    },
+    {
+      "id": "DOC-025",
+      "title": "Project Abstract (PDF → JSON)",
+      "path": "/docs/project_abstract_pdf.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Extracted text from Project Abstract.pdf, stored as JSON for offline Docs viewer."
     }
   ]
 }

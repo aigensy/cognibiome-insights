@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "id": "MV-DEMO-STAGE2",
+    "version": "0.1.0",
+    "is_demo": true
+  },
+  "coefficients": {
+    "acetate": {
+      "intercept": 4.0,
+      "bifidobacterium": 2.0,
+      "lactobacillus": 1.2,
+      "fb_ratio": -0.4
+    },
+    "propionate": {
+      "intercept": 3.5,
+      "bifidobacterium": 1.0,
+      "lactobacillus": 0.6,
+      "fb_ratio": 0.2
+    },
+    "butyrate": {
+      "intercept": 3.0,
+      "bifidobacterium": 1.5,
+      "lactobacillus": 0.8,
+      "fb_ratio": -0.3
+    },
+    "five_htp_index": {
+      "intercept": 3.0,
+      "bifidobacterium": 1.0,
+      "lactobacillus": 0.8,
+      "fb_ratio": -0.6
+    }
+  },
+  "output_ranges": {
+    "acetate": {
+      "min": 0.0,
+      "max": 10.0
+    },
+    "propionate": {
+      "min": 0.0,
+      "max": 10.0
+    },
+    "butyrate": {
+      "min": 0.0,
+      "max": 10.0
+    },
+    "five_htp_index": {
+      "min": 0.0,
+      "max": 10.0
+    }
+  },
+  "notes": [
+    "Demo parameters (directional), replaceable with trained model artifacts.",
+    "Outputs are standardized proxy scores (not concentrations)."
+  ]
+}

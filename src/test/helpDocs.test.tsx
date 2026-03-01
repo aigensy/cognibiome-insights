@@ -3,6 +3,9 @@
  * Mocks fetch() to provide a fake docs_index and various document types,
  * then asserts that JSON, CSV, Markdown, and TXT render paths all work.
  *
+ * Since the document list now lives in AppSidebar (not HelpDocs), tests
+ * pre-select documents via the ?doc= URL query param using MemoryRouter.
+ *
  * Also covers Task D fixes:
  * - Missing sections are NOT rendered (no "cannot confirm" text)
  * - Array-of-objects renders as a table (obj-array-table)
@@ -10,9 +13,13 @@
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import HelpDocs from '@/pages/HelpDocs';
 
-// Use items all in one category so they all appear in the same tab panel
+// ---------------------------------------------------------------------------
+// Fake data fixtures
+// ---------------------------------------------------------------------------
+
 const FAKE_INDEX = {
   items: [
     {
@@ -156,27 +163,41 @@ function makeFetch(extraResponses: Record<string, unknown> = {}) {
   });
 }
 
+/** Helper: render HelpDocs with a specific ?doc=ID pre-selected */
+function renderWithDoc(docId: string) {
+  return render(
+    <MemoryRouter initialEntries={[`/help?doc=${docId}`]}>
+      <HelpDocs />
+    </MemoryRouter>
+  );
+}
+
+/** Helper: render HelpDocs with no doc selected */
+function renderEmpty() {
+  return render(
+    <MemoryRouter initialEntries={['/help']}>
+      <HelpDocs />
+    </MemoryRouter>
+  );
+}
+
 beforeEach(() => {
   vi.restoreAllMocks();
 });
 
 describe('HelpDocs (TST-007)', () => {
-  it('loads and displays the document list from docs_index', async () => {
+  it('shows placeholder text when no document is selected', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
+    renderEmpty();
     await waitFor(() => {
-      expect(screen.getByText('JSON Doc')).toBeInTheDocument();
+      expect(screen.getByText(/Select a document from the sidebar/)).toBeInTheDocument();
     });
-    expect(screen.getByText('CSV Doc')).toBeInTheDocument();
-    expect(screen.getByText('Markdown Doc')).toBeInTheDocument();
-    expect(screen.getByText('Text Doc')).toBeInTheDocument();
   });
 
   it('renders JSON document as pretty-printed raw JSON when Raw JSON toggle is clicked', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('JSON Doc'));
-    fireEvent.click(screen.getByText('JSON Doc'));
+    renderWithDoc('D001');
+    // Wait for the doc to load and the Raw JSON toggle to appear
     await waitFor(() => screen.getByTestId('toggle-raw-json'));
     fireEvent.click(screen.getByTestId('toggle-raw-json'));
     await waitFor(() => {
@@ -187,9 +208,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('renders CSV document as a table with RFC-4180 parsing (quoted commas)', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('CSV Doc'));
-    fireEvent.click(screen.getByText('CSV Doc'));
+    renderWithDoc('D002');
     await waitFor(() => {
       expect(screen.getByText('name')).toBeInTheDocument();
       expect(screen.getByText('Alice')).toBeInTheDocument();
@@ -199,9 +218,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('renders Markdown document via react-markdown', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('Markdown Doc'));
-    fireEvent.click(screen.getByText('Markdown Doc'));
+    renderWithDoc('D003');
     await waitFor(() => {
       const headings = screen.getAllByRole('heading', { level: 1 });
       expect(headings.some(h => h.textContent === 'Hello')).toBe(true);
@@ -210,24 +227,10 @@ describe('HelpDocs (TST-007)', () => {
 
   it('renders plain text document in a pre block', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('Text Doc'));
-    fireEvent.click(screen.getByText('Text Doc'));
+    renderWithDoc('D004');
     await waitFor(() => {
       expect(screen.getByText(/Line one/)).toBeInTheDocument();
     });
-  });
-
-  it('filters documents by search query', async () => {
-    global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('JSON Doc'));
-    const searchInput = screen.getByPlaceholderText('Search documents…');
-    fireEvent.change(searchInput, { target: { value: 'csv' } });
-    await waitFor(() => {
-      expect(screen.queryByText('JSON Doc')).not.toBeInTheDocument();
-    });
-    expect(screen.getByText('CSV Doc')).toBeInTheDocument();
   });
 
   it('shows empty state when docs_index fails to load', async () => {
@@ -237,17 +240,15 @@ describe('HelpDocs (TST-007)', () => {
       text: async () => '',
       json: async () => { throw new Error('fail'); },
     })) as unknown as typeof fetch;
-    render(<HelpDocs />);
+    renderEmpty();
     await waitFor(() => {
-      expect(screen.getByText(/extract:bundle/)).toBeInTheDocument();
+      expect(screen.getByText(/Select a document from the sidebar/)).toBeInTheDocument();
     });
   });
 
   it('renders JSON doc in Human View by default (shows key headings)', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('Rich JSON Doc'));
-    fireEvent.click(screen.getByText('Rich JSON Doc'));
+    renderWithDoc('D001b');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
@@ -258,9 +259,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('Human View renders assumptions as an obj-array-table (not raw JSON)', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('Rich JSON Doc'));
-    fireEvent.click(screen.getByText('Rich JSON Doc'));
+    renderWithDoc('D001b');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
@@ -273,9 +272,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('Raw JSON toggle switches to raw pre block and back', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('Rich JSON Doc'));
-    fireEvent.click(screen.getByText('Rich JSON Doc'));
+    renderWithDoc('D001b');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
@@ -297,9 +294,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('D.1 — JSON doc without purpose/objective does NOT show "cannot confirm" text', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('No-Purpose JSON Doc'));
-    fireEvent.click(screen.getByText('No-Purpose JSON Doc'));
+    renderWithDoc('D001c');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
@@ -309,9 +304,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('D.1 — JSON doc without purpose/objective does NOT render the "Purpose / Objective" section header', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('No-Purpose JSON Doc'));
-    fireEvent.click(screen.getByText('No-Purpose JSON Doc'));
+    renderWithDoc('D001c');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
@@ -320,9 +313,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('D.2 — JSON doc with evidence as array-of-objects renders as a table', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('Evidence JSON Doc'));
-    fireEvent.click(screen.getByText('Evidence JSON Doc'));
+    renderWithDoc('D001d');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
@@ -339,9 +330,7 @@ describe('HelpDocs (TST-007)', () => {
 
   it('D.3 — Top-level JSON array renders as a table in Human View', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
-    render(<HelpDocs />);
-    await waitFor(() => screen.getByText('Array JSON Doc'));
-    fireEvent.click(screen.getByText('Array JSON Doc'));
+    renderWithDoc('D001e');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
@@ -396,7 +385,6 @@ DR1TSFAT,Total saturated fatty acids,gm,0,208.842,2021-2022`;
 
   it('E.1 — manifest loads and NHANES row is marked as included', async () => {
     const { default: PublicDatasets } = await import('@/pages/PublicDatasets');
-    const { MemoryRouter } = await import('react-router-dom');
     global.fetch = makeManifestFetch() as unknown as typeof fetch;
     render(
       <MemoryRouter>
@@ -415,7 +403,6 @@ DR1TSFAT,Total saturated fatty acids,gm,0,208.842,2021-2022`;
 
   it('E.2 — NHANES card shows Preview and Download buttons', async () => {
     const { default: PublicDatasets } = await import('@/pages/PublicDatasets');
-    const { MemoryRouter } = await import('react-router-dom');
     global.fetch = makeManifestFetch() as unknown as typeof fetch;
     render(
       <MemoryRouter>
@@ -430,7 +417,6 @@ DR1TSFAT,Total saturated fatty acids,gm,0,208.842,2021-2022`;
 
   it('E.3 — NHANES preview shows the nutrient table after clicking Preview', async () => {
     const { default: PublicDatasets } = await import('@/pages/PublicDatasets');
-    const { MemoryRouter } = await import('react-router-dom');
     global.fetch = makeManifestFetch() as unknown as typeof fetch;
     render(
       <MemoryRouter>

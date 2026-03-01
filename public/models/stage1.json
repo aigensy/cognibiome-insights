@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "id": "MV-DEMO-STAGE1",
+    "version": "0.1.0",
+    "is_demo": true
+  },
+  "coefficients": {
+    "bifidobacterium": {
+      "intercept": 0.3,
+      "fiber_proxy": 0.01,
+      "added_sugar_proxy": -0.002,
+      "sat_fat_proxy": -0.003,
+      "omega3_proxy": 0.02
+    },
+    "lactobacillus": {
+      "intercept": 0.25,
+      "fiber_proxy": 0.008,
+      "added_sugar_proxy": -0.0015,
+      "sat_fat_proxy": -0.002,
+      "omega3_proxy": 0.018
+    },
+    "fb_ratio": {
+      "intercept": 1.5,
+      "fiber_proxy": -0.01,
+      "added_sugar_proxy": 0.005,
+      "sat_fat_proxy": 0.01,
+      "omega3_proxy": -0.03
+    }
+  },
+  "output_ranges": {
+    "bifidobacterium": {
+      "min": 0.0,
+      "max": 1.0
+    },
+    "lactobacillus": {
+      "min": 0.0,
+      "max": 1.0
+    },
+    "fb_ratio": {
+      "min": 0.5,
+      "max": 3.0
+    }
+  },
+  "notes": [
+    "Demo parameters (directional), replaceable with trained model artifacts.",
+    "Linear coefficients chosen only to produce monotonic, plausible trends for a science-fair demo.",
+    "Not trained on paired individual-level data inside this repo."
+  ]
+}

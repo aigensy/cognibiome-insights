@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "id": "MV-DEMO-STAGE3",
+    "version": "0.1.0",
+    "is_demo": true
+  },
+  "coefficients": {
+    "stroop_test": {
+      "intercept": 10.0,
+      "butyrate": 0.7,
+      "acetate": 0.15,
+      "propionate": 0.1,
+      "five_htp_index": 0.55
+    },
+    "language_test": {
+      "intercept": 10.0,
+      "butyrate": 0.6,
+      "acetate": 0.1,
+      "propionate": 0.1,
+      "five_htp_index": 0.6
+    },
+    "memory_test": {
+      "intercept": 10.0,
+      "butyrate": 0.75,
+      "acetate": 0.1,
+      "propionate": 0.05,
+      "five_htp_index": 0.65
+    },
+    "logical_test": {
+      "intercept": 10.0,
+      "butyrate": 0.55,
+      "acetate": 0.1,
+      "propionate": 0.1,
+      "five_htp_index": 0.45
+    }
+  },
+  "output_ranges": {
+    "stroop_test": {
+      "min": 0.0,
+      "max": 20.0
+    },
+    "language_test": {
+      "min": 0.0,
+      "max": 20.0
+    },
+    "memory_test": {
+      "min": 0.0,
+      "max": 20.0
+    },
+    "logical_test": {
+      "min": 0.0,
+      "max": 20.0
+    }
+  },
+  "notes": [
+    "Demo parameters (directional), replaceable with trained model artifacts.",
+    "Overall score is computed as the sum of the four subtests (see src/lib/simulator.ts)."
+  ]
+}

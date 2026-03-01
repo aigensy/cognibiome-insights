@@ -1,0 +1,426 @@
+{
+  "metadata": {
+    "source": "USDA FoodData Central, foundation and SR legacy datasets",
+    "download_date": "2026-02-28",
+    "release_info": {
+      "foundation_release": "2025-12-18",
+      "sr_legacy_release": "2018-04"
+    }
+  },
+  "foods": [
+    {
+      "food_name": "Oats, rolled (old-fashioned)",
+      "fdc_id": 2346396,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 10.42,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Oats, steel-cut",
+      "fdc_id": 2346397,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 11.95,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Oat milk, unsweetened",
+      "fdc_id": 2257046,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 2.32,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Beans, black, raw",
+      "fdc_id": 747444,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 4.2,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Lentils, raw",
+      "fdc_id": 2644283,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Chickpeas, raw",
+      "fdc_id": 2644282,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Broccoli, raw",
+      "fdc_id": 747447,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 2.4,
+        "total_sugars_g": 1.4,
+        "sat_fat_g": 0.04
+      }
+    },
+    {
+      "food_name": "Almonds",
+      "fdc_id": 325198,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 2.63,
+        "sat_fat_g": 18.1
+      }
+    },
+    {
+      "food_name": "Sunflower seeds",
+      "fdc_id": 325524,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 10.3,
+        "total_sugars_g": 3.14,
+        "sat_fat_g": 5.36
+      }
+    },
+    {
+      "food_name": "Bread, whole wheat",
+      "fdc_id": 335240,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 6.0,
+        "total_sugars_g": 4.41,
+        "sat_fat_g": 0.73
+      }
+    },
+    {
+      "food_name": "Blueberries",
+      "fdc_id": 2346411,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 9.36,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Raspberries",
+      "fdc_id": 2346410,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 2.68,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Blackberries",
+      "fdc_id": 2727581,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 5.3,
+        "total_sugars_g": 6.52,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Pears",
+      "fdc_id": 2710836,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 2.64,
+        "total_sugars_g": 7.8,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Apples",
+      "fdc_id": 1750343,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 1.72,
+        "total_sugars_g": 12.37,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Greek yogurt, plain nonfat",
+      "fdc_id": 330137,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 3.27,
+        "sat_fat_g": 0.11
+      }
+    },
+    {
+      "food_name": "Yogurt, plain whole milk",
+      "fdc_id": 2259793,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 4.09,
+        "sat_fat_g": 2.32
+      }
+    },
+    {
+      "food_name": "Greek yogurt, plain whole milk",
+      "fdc_id": 2259794,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 3.25,
+        "sat_fat_g": 2.39
+      }
+    },
+    {
+      "food_name": "Greek yogurt, strawberry nonfat",
+      "fdc_id": 330415,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.6,
+        "total_sugars_g": 11.5,
+        "sat_fat_g": 0.1
+      }
+    },
+    {
+      "food_name": "Pickles, cucumber dill",
+      "fdc_id": 324653,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 1.0,
+        "total_sugars_g": 1.28,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Candy, Almond Joy bar",
+      "fdc_id": 167562,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 5.0,
+        "total_sugars_g": 48.34,
+        "sat_fat_g": 17.59
+      }
+    },
+    {
+      "food_name": "Candy, Bit-O-Honey",
+      "fdc_id": 167564,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.2,
+        "total_sugars_g": 48.0,
+        "sat_fat_g": 5.5
+      }
+    },
+    {
+      "food_name": "Candy, Twizzlers strawberry twists",
+      "fdc_id": 167583,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 39.64,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Candy, Caramello bar",
+      "fdc_id": 167975,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 1.2,
+        "total_sugars_g": 56.92,
+        "sat_fat_g": 12.72
+      }
+    },
+    {
+      "food_name": "Candy, 5th Avenue bar",
+      "fdc_id": 167985,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 3.1,
+        "total_sugars_g": 47.19,
+        "sat_fat_g": 6.65
+      }
+    },
+    {
+      "food_name": "Soda, cream",
+      "fdc_id": 173199,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 13.3,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Soda, grape",
+      "fdc_id": 173203,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Soda, lemon-lime",
+      "fdc_id": 173205,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 10.38,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Cheddar cheese",
+      "fdc_id": 328637,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.33,
+        "sat_fat_g": 19.2
+      }
+    },
+    {
+      "food_name": "Butter, unsalted",
+      "fdc_id": 789828,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 0.0
+      }
+    },
+    {
+      "food_name": "Bacon, cured",
+      "fdc_id": 749420,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 3.14,
+        "sat_fat_g": 12.6
+      }
+    },
+    {
+      "food_name": "Beef steak, ribeye, raw",
+      "fdc_id": 2646172,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 7.97
+      }
+    },
+    {
+      "food_name": "Chorizo sausage",
+      "fdc_id": 746781,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 9.45
+      }
+    },
+    {
+      "food_name": "Italian pork sausage",
+      "fdc_id": 746780,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 1.46,
+        "sat_fat_g": 9.15
+      }
+    },
+    {
+      "food_name": "Beef steak, porterhouse",
+      "fdc_id": 746762,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 0.0,
+        "total_sugars_g": 0.0,
+        "sat_fat_g": 2.07
+      }
+    },
+    {
+      "food_name": "Cheeseburger, fast food",
+      "fdc_id": 170293,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 1.0,
+        "total_sugars_g": 4.16,
+        "sat_fat_g": 6.96
+      }
+    },
+    {
+      "food_name": "Cheeseburger, fast food, double",
+      "fdc_id": 170294,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 1.7,
+        "total_sugars_g": 4.67,
+        "sat_fat_g": 6.87
+      }
+    },
+    {
+      "food_name": "Pizza, cheese, fast food",
+      "fdc_id": 170317,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 2.2,
+        "total_sugars_g": 3.57,
+        "sat_fat_g": 4.27
+      }
+    },
+    {
+      "food_name": "French fries, steak style",
+      "fdc_id": 168445,
+      "serving_g": 100,
+      "nutrients_per_100g": {
+        "fiber_g": 2.6,
+        "total_sugars_g": 0.25,
+        "sat_fat_g": 0.74
+      }
+    }
+  ],
+  "nutrient_mapping": {
+    "fiber_g": {
+      "nutrient_ids": [
+        2033,
+        1079,
+        1006
+      ],
+      "description": "Total dietary fiber (AOAC 2011.25) and related IDs"
+    },
+    "total_sugars_g": {
+      "nutrient_ids": [
+        2000,
+        1063,
+        1235
+      ],
+      "description": "Total sugars including 1063 and 1235 if available"
+    },
+    "sat_fat_g": {
+      "nutrient_ids": [
+        1258
+      ],
+      "description": "Total saturated fat (fatty acids, total saturated)"
+    }
+  }
+}

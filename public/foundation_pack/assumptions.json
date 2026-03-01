@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "assumptions.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "INCEPTION",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 2,
+    "last_updated_utc": "2026-02-28T21:25:04Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 proposed assumptions to confirm or override. | Phase 2: confirmed ASM-001/002; edited ASM-006 with demo/public-deploy caveat."
+  },
+  "template_id": "DF.OUTPUT.ASSUMPTIONS.JSON.V1",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "INCEPTION",
+  "assumptions": [
+    {
+      "id": "ASM-001",
+      "assumption": "The app will be implemented as a Lovable-hosted web app (Web + Desktop) with optional Mobile PWA support.",
+      "why_needed": "Templates require a concrete platform target; many UI and NFR budgets depend on platform.",
+      "impact": "Medium. If platform changes (e.g., Telegram mini-app), UI and hosting constraints change.",
+      "blocks_progress": false,
+      "evidence": [
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        }
+      ],
+      "status": "confirmed",
+      "user_override": null
+    },
+    {
+      "id": "ASM-002",
+      "assumption": "Default deployment is 'kiosk/presenter mode' (no user login), with optional admin-only controls for uploading/replacing datasets.",
+      "why_needed": "Science fair demos usually require immediate access without credentials; protects from accidental edits.",
+      "impact": "Medium.",
+      "blocks_progress": false,
+      "evidence": [
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        }
+      ],
+      "status": "confirmed",
+      "user_override": null
+    },
+    {
+      "id": "ASM-003",
+      "assumption": "All simulation outputs are deterministic for the same (inputs + model_version), and each run records a run_hash for reproducibility.",
+      "why_needed": "Judge trust and scientific rigor; supports export reproducibility.",
+      "impact": "High on credibility, low on scope.",
+      "blocks_progress": false,
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L62-L68",
+          "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+        }
+      ],
+      "status": "proposed",
+      "user_override": null
+    },
+    {
+      "id": "ASM-004",
+      "assumption": "No personally identifiable information is stored. Pilot dataset remains de-identified numeric metrics only.",
+      "why_needed": "Privacy posture for a teen dataset, and to avoid human-subjects compliance issues.",
+      "impact": "High (compliance).",
+      "blocks_progress": false,
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L135-L141",
+          "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+        },
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L137-L143",
+          "snippet": "not for model training  Procedure  1. Download dietary intake data from NHANES and extract nutrient intake variables"
+        },
+        {
+          "source_id": "Data Sheet 1.csv",
+          "loc": "rows=66, cols=14",
+          "snippet": "File contains 66 rows of pilot data with diet score and cognitive tests (Stroop, Language, Memory, Logical, Overall)."
+        }
+      ],
+      "status": "proposed",
+      "user_override": null
+    },
+    {
+      "id": "ASM-005",
+      "assumption": "The app includes a visible disclaimer: educational research prototype; not medical advice; not a diagnostic tool.",
+      "why_needed": "Avoids medical/diagnostic overreach during judging and demos.",
+      "impact": "Low on cost, high on risk reduction.",
+      "blocks_progress": false,
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L62-L66",
+          "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+        }
+      ],
+      "status": "proposed",
+      "user_override": null
+    },
+    {
+      "id": "ASM-006",
+      "assumption": "The pilot dataset file provided (Data Sheet 1.csv) is allowed to be embedded in the app for demo purposes.",
+      "why_needed": "If embedding is not allowed, app must upload at runtime, affecting hosting and demo flow.",
+      "impact": "Medium.",
+      "blocks_progress": false,
+      "evidence": [
+        {
+          "source_id": "Data Sheet 1.csv",
+          "loc": "rows=66, cols=14",
+          "snippet": "File contains 66 rows of pilot data with diet score and cognitive tests (Stroop, Language, Memory, Logical, Overall)."
+        }
+      ],
+      "status": "edited",
+      "user_override": "Bundle the de-identified pilot CSV for the offline judging build, but also support upload-at-runtime and include a note to remove bundled data for any public deployment."
+    }
+  ]
+}

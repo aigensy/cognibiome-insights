@@ -1,0 +1,410 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "BRD/brd.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "INCEPTION",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 3,
+    "last_updated_utc": "2026-03-01T00:12:29Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 draft BRD. Not READY until HPO approves user_requirements.json and blocking open questions are resolved. | Phase 2: updated module scope per confirmed decisions; removed blocking open questions."
+  },
+  "template_id": "DF.OUTPUT.BRD.BRD.JSON.V1",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "INCEPTION",
+  "objective": {
+    "primary": "Support Yana’s science fair judging by providing a reproducible, judge-friendly simulator + validation dashboard for the diet→microbiome→metabolites→cognition pipeline.",
+    "evidence": [
+      {
+        "source_id": "prompt_to_create_gut_brd_srs.txt",
+        "loc": "L1-L2",
+        "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L5-L11",
+        "snippet": "Modeling Diet-Driven Microbiome and Neurotransmitter Pathways"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L62-L68",
+        "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+      }
+    ]
+  },
+  "non_goals": [
+    "Medical diagnosis, treatment, or personalized clinical recommendations.",
+    "Collection of new human subject data.",
+    "Proving causality; the app is a simulator/hypothesis generator."
+  ],
+  "personas": [
+    {
+      "id": "PERS-01",
+      "name": "Yana (student presenter)",
+      "goals": [
+        "Explain project quickly",
+        "Demonstrate rigor",
+        "Export report"
+      ],
+      "constraints": [
+        "Time-limited live judging"
+      ],
+      "evidence": [
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        }
+      ]
+    },
+    {
+      "id": "PERS-02",
+      "name": "Science fair judge",
+      "goals": [
+        "Assess methodology and validity",
+        "See real results",
+        "Identify limitations"
+      ],
+      "constraints": [
+        "Skepticism about correlation vs mechanism"
+      ],
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L186-L190",
+          "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+        }
+      ]
+    }
+  ],
+  "problems": [
+    {
+      "id": "PRB-01",
+      "statement": "Static documents are insufficient to communicate multi-stage biological mechanism and ML rigor quickly.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L62-L68",
+          "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+        }
+      ]
+    },
+    {
+      "id": "PRB-02",
+      "statement": "Pilot dataset supports correlation but lacks microbiome/metabolite measurements; miscommunication risk is high.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L135-L141",
+          "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+        },
+        {
+          "source_id": "Data Sheet 1.csv",
+          "loc": "rows=66, cols=14",
+          "snippet": "File contains 66 rows of pilot data with diet score and cognitive tests (Stroop, Language, Memory, Logical, Overall)."
+        }
+      ]
+    }
+  ],
+  "solution_high_level": {
+    "modules": [
+      {
+        "name": "Pilot Results",
+        "description": "Load bundled pilot dataset (n=66) for offline demo and also allow upload-at-runtime; render charts/tables and basic stats.",
+        "evidence": [
+          {
+            "source_id": "Data Sheet 1.csv",
+            "loc": "rows=66, cols=14",
+            "snippet": "File contains 66 rows of pilot data with diet score and cognitive tests (Stroop, Language, Memory, Logical, Overall)."
+          },
+          {
+            "source_id": "MultimodalText Deep Research.md",
+            "loc": "L186-L190",
+            "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+          }
+        ]
+      },
+      {
+        "name": "Simulator",
+        "description": "Deterministic 3-stage simulator using frozen model artifacts (JSON): diet inputs → modeled microbiome (Bifidobacterium, Lactobacillus, F:B ratio) → modeled metabolites (acetate/propionate/butyrate + 5-HTP precursor index) → modeled cognition outputs (Stroop, memory, language, logical, overall).",
+        "evidence": [
+          {
+            "source_id": "Project Plan.pdf",
+            "loc": "L58-L64",
+            "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+          },
+          {
+            "source_id": "Project Plan.pdf",
+            "loc": "L62-L68",
+            "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+          }
+        ]
+      },
+      {
+        "name": "Methods & Rigor",
+        "description": "Leakage guardrails, limitations, disclaimers, and data-source transparency.",
+        "evidence": [
+          {
+            "source_id": "Project Plan.pdf",
+            "loc": "L137-L143",
+            "snippet": "not for model training  Procedure  1. Download dietary intake data from NHANES and extract nutrient intake variables"
+          },
+          {
+            "source_id": "MultimodalText Deep Research.md",
+            "loc": "L62-L66",
+            "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+          }
+        ]
+      },
+      {
+        "name": "Export",
+        "description": "Generate a 1-page report summarizing a run.",
+        "evidence": [
+          {
+            "source_id": "MultimodalText Deep Research.md",
+            "loc": "L136-L140",
+            "snippet": "Your “Export 1-page report (PDF/HTML)” should include: - Inputs (diet features),"
+          }
+        ]
+      }
+    ]
+  },
+  "workflows_high_level": [
+    {
+      "name": "Judge walkthrough",
+      "summary": "Pilot Results → Methods & Rigor → Simulator run → Export",
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L186-L190",
+          "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+        },
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L136-L140",
+          "snippet": "Your “Export 1-page report (PDF/HTML)” should include: - Inputs (diet features),"
+        }
+      ]
+    },
+    {
+      "name": "Scenario exploration",
+      "summary": "Adjust diet variables → compare outputs → export comparison",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L62-L68",
+          "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+        }
+      ]
+    }
+  ],
+  "success_metrics": {
+    "metrics": [
+      {
+        "metric": "Demo reliability",
+        "target": null,
+        "unit": null,
+        "notes": "cannot confirm; define measurable success metrics for the showcase (see OQ-010)."
+      },
+      {
+        "metric": "Time-to-insight for judge walkthrough",
+        "target": 120,
+        "unit": "seconds",
+        "notes": "assumption; adjust if you have a different target."
+      },
+      {
+        "metric": "Export success rate during demo",
+        "target": 0.99,
+        "unit": "fraction",
+        "notes": "assumption; adjust if you prefer a different metric."
+      }
+    ],
+    "evidence": [
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L136-L140",
+        "snippet": "Your “Export 1-page report (PDF/HTML)” should include: - Inputs (diet features),"
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L186-L190",
+        "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+      }
+    ]
+  },
+  "constraints": [
+    {
+      "constraint": "Pilot dataset must be validation-only and not used for training.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L135-L141",
+          "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+        },
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L137-L143",
+          "snippet": "not for model training  Procedure  1. Download dietary intake data from NHANES and extract nutrient intake variables"
+        }
+      ]
+    },
+    {
+      "constraint": "All data used are public and/or de-identified; no new human participants recruited.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L185-L191",
+          "snippet": "chemicals, or biological agents. No new human participants are recruited. All training datasets  are publicly available and fully de-identified. The only human-related data used consist of  de-identif"
+        }
+      ]
+    },
+    {
+      "constraint": "Avoid diagnostic/medical framing.",
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L62-L66",
+          "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+        }
+      ]
+    }
+  ],
+  "risks": [
+    {
+      "risk": "Overclaiming causality or diagnostic value during judging",
+      "mitigation": "Use simulator/hypothesis-generator language and add disclaimer.",
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L62-L66",
+          "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+        }
+      ]
+    },
+    {
+      "risk": "Cross-dataset integration misunderstood as paired training",
+      "mitigation": "Explicitly label paired vs unpaired datasets and state what is used for training vs reference.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L125-L131",
+          "snippet": "○ NHANES dietary intake datasets for nutrient intake variables  ○ USDA Food and Nutrient Database for nutrient definition standardization and  nutrient mapping"
+        }
+      ]
+    },
+    {
+      "risk": "No available model artifacts for numeric simulation outputs",
+      "mitigation": "Confirm artifacts; otherwise use explicit qualitative outputs and mark limits.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L58-L64",
+          "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+        }
+      ]
+    }
+  ],
+  "open_questions": [
+    "OQ-004",
+    "OQ-007",
+    "OQ-008",
+    "OQ-009",
+    "OQ-010"
+  ],
+  "brd_requirements": [
+    {
+      "id": "BRD-REQ-001",
+      "statement": "Provide a judge-ready dashboard that visualizes the real de-identified teen pilot dataset (n=66) with charts and summary tables.",
+      "priority": "P0",
+      "rationale": "Real validation evidence is required for judging confidence.",
+      "acceptance_signal": "Pilot tab shows n=66 and renders charts/tables without errors.",
+      "trace_target": "SRS-REQ-001..SRS-REQ-006"
+    },
+    {
+      "id": "BRD-REQ-002",
+      "statement": "Provide a deterministic simulator that composes diet→microbiome→metabolites→cognition layers and records run provenance.",
+      "priority": "P0",
+      "rationale": "Core project value is mechanistic simulation.",
+      "acceptance_signal": "Same inputs+model_version produce identical outputs; run_id/model_version shown.",
+      "trace_target": "SRS-REQ-007..SRS-REQ-013"
+    },
+    {
+      "id": "BRD-REQ-003",
+      "statement": "Include a Methods & Rigor section with explicit non-causality language, leakage guardrails, and non-diagnostic disclaimer.",
+      "priority": "P0",
+      "rationale": "Prevents overclaiming and addresses judge questions.",
+      "acceptance_signal": "Rigor page includes: validation-only pilot, leakage definition, disclaimer.",
+      "trace_target": "SRS-REQ-014..SRS-REQ-016"
+    },
+    {
+      "id": "BRD-REQ-004",
+      "statement": "Enable one-click export of a 1-page report that includes inputs, outputs, pilot visuals, and disclaimers.",
+      "priority": "P0",
+      "rationale": "Judges value take-home artifacts; reinforces reproducibility.",
+      "acceptance_signal": "Export generated successfully in PDF/HTML with required sections.",
+      "trace_target": "SRS-REQ-017..SRS-REQ-020"
+    },
+    {
+      "id": "BRD-REQ-005",
+      "statement": "Support a presenter workflow that can be completed in ~2 minutes and reset to a known demo state.",
+      "priority": "P1",
+      "rationale": "Demo clarity under time pressure.",
+      "acceptance_signal": "Presenter Mode exists and reset button restores default state.",
+      "trace_target": "SRS-REQ-021..SRS-REQ-022"
+    },
+    {
+      "id": "BRD-REQ-006",
+      "statement": "Do not collect or store PII; keep pilot data de-identified numeric values only.",
+      "priority": "P0",
+      "rationale": "Teen data privacy and compliance.",
+      "acceptance_signal": "No personal fields; stored data are numeric only.",
+      "trace_target": "SRS-REQ-023"
+    },
+    {
+      "id": "BRD-REQ-007",
+      "statement": "Label microbiome/metabolite outputs as modeled proxies and not measured teen biomarkers.",
+      "priority": "P0",
+      "rationale": "Avoids misrepresentation of pilot data.",
+      "acceptance_signal": "Every relevant UI element uses 'simulated/proxy' labels.",
+      "trace_target": "SRS-REQ-024"
+    },
+    {
+      "id": "BRD-REQ-008",
+      "statement": "Provide a clear explanation of data sources per stage (public datasets for training/reference; pilot dataset for validation only).",
+      "priority": "P1",
+      "rationale": "Avoids judge confusion about paired/unpaired training.",
+      "acceptance_signal": "Data Sources panel lists datasets per stage and labels training vs reference vs validation.",
+      "trace_target": "SRS-REQ-025..SRS-REQ-026"
+    },
+    {
+      "id": "BRD-REQ-009",
+      "statement": "Meet basic performance for live demos (fast load, fast simulation).",
+      "priority": "P2",
+      "rationale": "Reduces demo risk.",
+      "acceptance_signal": "Load and simulation meet budgets in NFR.",
+      "trace_target": "SRS-REQ-027"
+    },
+    {
+      "id": "BRD-REQ-010",
+      "statement": "Optionally provide evidence references (citations) supporting key modules (SCFAs, tryptophan metabolites).",
+      "priority": "P2",
+      "rationale": "Improves credibility.",
+      "acceptance_signal": "Evidence panel shows curated citations or tooltips.",
+      "trace_target": "SRS-REQ-028"
+    },
+    {
+      "id": "BRD-REQ-011",
+      "statement": "Provide an in-app Help/Docs viewer that exposes the submitted foundation pack and reference snapshots for transparency during judging.",
+      "priority": "P2",
+      "rationale": "Judges can verify scope, rigor, and limitations quickly inside the demo app.",
+      "acceptance_signal": "Help/Docs screen lists and renders all packaged docs offline.",
+      "trace_target": "SRS-REQ-029..SRS-REQ-030"
+    }
+  ]
+}

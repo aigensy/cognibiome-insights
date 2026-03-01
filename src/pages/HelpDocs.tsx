@@ -1,12 +1,12 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Download, Search, Eye, Code2 } from 'lucide-react';
+import { Copy, Download, Eye, Code2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface DocItem {
   id: string;
@@ -354,13 +354,13 @@ function HumanView({ parsed }: { parsed: unknown }) {
 
 export default function HelpDocs() {
   const [items, setItems] = useState<DocItem[]>([]);
-  const [selected, setSelected] = useState<DocItem | null>(null);
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState('');
   const [jsonView, setJsonView] = useState<'human' | 'raw'>('human');
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
 
+  // Load docs index
   useEffect(() => {
     fetch('/foundation_pack/docs_index.json')
       .then(r => r.json())
@@ -368,47 +368,61 @@ export default function HelpDocs() {
       .catch(() => setItems([]));
   }, []);
 
-  const loadDoc = async (item: DocItem) => {
-    setSelected(item);
+  // Resolve selected item from URL param
+  const selectedId = searchParams.get('doc');
+  const selected = useMemo(
+    () => items.find(i => i.id === selectedId) ?? null,
+    [items, selectedId]
+  );
+
+  const loadDoc = useCallback(async (item: DocItem) => {
     setLoading(true);
     setContent('');
     setJsonView('human');
     try {
       const r = await fetch(item.path);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      setContent(await r.text());
+      const text = await r.text();
+      // Detect Vite SPA fallback — server returned HTML instead of the requested file
+      if (text.trimStart().startsWith('<!doctype') || text.trimStart().startsWith('<!DOCTYPE')) {
+        throw new Error(`File not found on server. The docs bundle may not be fully extracted.`);
+      }
+      setContent(text);
     } catch (e) {
       setContent(`Error loading document: ${e}`);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const filteredItems = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    if (!q) return items;
-    return items.filter(
-      i =>
-        i.title.toLowerCase().includes(q) ||
-        i.description.toLowerCase().includes(q) ||
-        i.path.toLowerCase().includes(q)
-    );
-  }, [items, search]);
-
-  const categories = useMemo(
-    () => [...new Set(filteredItems.map(i => i.category))],
-    [filteredItems]
-  );
+  // Auto-load when selected doc changes
+  useEffect(() => {
+    if (selected) {
+      loadDoc(selected);
+    } else {
+      setContent('');
+    }
+  }, [selected, loadDoc]);
 
   const renderContent = () => {
     if (loading) {
       return <p className="text-muted-foreground text-sm animate-pulse">Loading…</p>;
     }
     if (!selected) {
-      return <p className="text-muted-foreground text-sm">Select a document to view.</p>;
+      return (
+        <div className="text-muted-foreground text-sm space-y-2 py-4">
+          <p>Select a document from the sidebar to view it.</p>
+          <p className="text-xs">Expand the <strong>Docs</strong> section in the left navigation to browse Foundation, Data, and Reference documents.</p>
+        </div>
+      );
     }
     if (!content) {
       return <p className="text-muted-foreground text-sm">Empty document.</p>;
+    }
+
+    // Error state
+    if (content.startsWith('Error loading document:')) {
+      return <p className="text-destructive text-xs font-mono">{content}</p>;
     }
 
     const mt = selected.media_type;
@@ -470,8 +484,39 @@ export default function HelpDocs() {
 
     if (mt.includes('markdown')) {
       return (
-        <div className="prose prose-invert prose-sm max-w-none max-h-[60vh] overflow-auto">
-          <ReactMarkdown>{content}</ReactMarkdown>
+        <div className="max-h-[60vh] overflow-auto text-[12px] leading-5">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              table: ({ children }) => (
+                <div className="overflow-auto my-2 rounded border border-border">
+                  <table className="w-full border-collapse text-[11px]">{children}</table>
+                </div>
+              ),
+              thead: ({ children }) => <thead className="bg-muted/50">{children}</thead>,
+              th: ({ children }) => (
+                <th className="border border-border px-2 py-1 text-left font-semibold whitespace-nowrap">
+                  {children}
+                </th>
+              ),
+              td: ({ children }) => (
+                <td className="border border-border px-2 py-1 align-top break-words">{children}</td>
+              ),
+              h1: ({ children }) => <h1 className="text-base font-semibold mt-2 mb-1">{children}</h1>,
+              h2: ({ children }) => <h2 className="text-sm font-semibold mt-2 mb-1">{children}</h2>,
+              h3: ({ children }) => <h3 className="text-xs font-semibold mt-2 mb-1">{children}</h3>,
+              p: ({ children }) => <p className="mb-1.5 text-[12px] leading-5">{children}</p>,
+              li: ({ children }) => <li className="text-[12px] leading-5">{children}</li>,
+              code: ({ children }) => (
+                <code className="text-[11px] px-1 py-0.5 rounded bg-muted/50 border border-border">{children}</code>
+              ),
+              pre: ({ children }) => (
+                <pre className="text-[11px] p-2 rounded bg-muted/30 border border-border overflow-auto">{children}</pre>
+              ),
+            }}
+          >
+            {content}
+          </ReactMarkdown>
         </div>
       );
     }
@@ -501,121 +546,71 @@ export default function HelpDocs() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-4">
-      <h1 className="text-2xl font-bold">Help / Docs</h1>
-      <p className="text-xs text-muted-foreground">
-        Foundation pack and reference snapshots — fully offline, read-only.
-      </p>
-
-      {/* Search */}
-      <div className="relative max-w-sm">
-        <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
-        <Input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search documents…"
-          className="pl-8 h-8 text-xs"
-          aria-label="Search documents"
-        />
-      </div>
-
-      {items.length === 0 && (
-        <p className="text-sm text-muted-foreground">
-          No documents loaded. Run <code>npm run extract:bundle</code> to populate the docs index.
-        </p>
-      )}
-
-      {filteredItems.length === 0 && items.length > 0 && (
-        <p className="text-sm text-muted-foreground">No documents match your search.</p>
-      )}
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="lg:col-span-1 space-y-2">
-          {categories.length > 0 && (
-            <Tabs defaultValue={categories[0]} className="w-full">
-              <TabsList className="w-full flex-wrap h-auto">
-                {categories.map(c => (
-                  <TabsTrigger key={c} value={c} className="text-xs">
-                    {c}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              {categories.map(c => (
-                <TabsContent key={c} value={c} className="space-y-1 mt-2">
-                  {filteredItems
-                    .filter(i => i.category === c)
-                    .map(item => (
-                      <button
-                        key={item.id}
-                        onClick={() => loadDoc(item)}
-                        className={`w-full text-left px-3 py-2 rounded text-xs hover:bg-muted/50 transition-colors ${
-                          selected?.id === item.id
-                            ? 'bg-primary/10 text-primary border border-primary/30'
-                            : 'border border-transparent'
-                        }`}
-                      >
-                        <p className="font-medium">{item.title}</p>
-                        <p className="text-[10px] text-muted-foreground">{item.description}</p>
-                      </button>
-                    ))}
-                </TabsContent>
-              ))}
-            </Tabs>
+      <div>
+        <h1 className="text-2xl font-bold">Help / Docs</h1>
+        <p className="text-xs text-muted-foreground mt-1">
+          Foundation pack and reference snapshots — fully offline, read-only.
+          {selected && (
+            <span className="ml-2 text-muted-foreground/70">
+              {selected.category} › {selected.title}
+            </span>
           )}
-        </div>
-
-        <div className="lg:col-span-2">
-          <Card className="h-full">
-            <CardHeader className="pb-2 flex-row items-center justify-between flex-wrap gap-1">
-              <CardTitle className="text-sm">{selected?.title ?? 'Document Viewer'}</CardTitle>
-              {selected && (
-                <div className="flex gap-1 flex-wrap">
-                  {selected.media_type.includes('json') && (
-                    <>
-                      <Button
-                        variant={jsonView === 'human' ? 'secondary' : 'ghost'}
-                        size="sm"
-                        className="h-7 text-xs gap-1"
-                        onClick={() => setJsonView('human')}
-                        aria-pressed={jsonView === 'human'}
-                        data-testid="toggle-human-view"
-                      >
-                        <Eye className="h-3 w-3" /> Human View
-                      </Button>
-                      <Button
-                        variant={jsonView === 'raw' ? 'secondary' : 'ghost'}
-                        size="sm"
-                        className="h-7 text-xs gap-1"
-                        onClick={() => setJsonView('raw')}
-                        aria-pressed={jsonView === 'raw'}
-                        data-testid="toggle-raw-json"
-                      >
-                        <Code2 className="h-3 w-3" /> Raw JSON
-                      </Button>
-                    </>
-                  )}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 text-xs gap-1"
-                    onClick={copyContent}
-                  >
-                    <Copy className="h-3 w-3" /> Copy
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-7 text-xs gap-1"
-                    onClick={downloadContent}
-                  >
-                    <Download className="h-3 w-3" /> Download
-                  </Button>
-                </div>
-              )}
-            </CardHeader>
-            <CardContent>{renderContent()}</CardContent>
-          </Card>
-        </div>
+        </p>
       </div>
+
+      <Card className="min-h-[500px]">
+        <CardHeader className="pb-2 flex-row items-center justify-between flex-wrap gap-1">
+          <CardTitle className="text-sm">
+            {selected?.title ?? 'Document Viewer'}
+          </CardTitle>
+          {selected && (
+            <div className="flex gap-1 flex-wrap items-center">
+              <Badge variant="outline" className="text-[10px] mr-1">{selected.category}</Badge>
+              {selected.media_type.includes('json') && (
+                <>
+                  <Button
+                    variant={jsonView === 'human' ? 'secondary' : 'ghost'}
+                    size="sm"
+                    className="h-7 text-xs gap-1"
+                    onClick={() => setJsonView('human')}
+                    aria-pressed={jsonView === 'human'}
+                    data-testid="toggle-human-view"
+                  >
+                    <Eye className="h-3 w-3" /> Human View
+                  </Button>
+                  <Button
+                    variant={jsonView === 'raw' ? 'secondary' : 'ghost'}
+                    size="sm"
+                    className="h-7 text-xs gap-1"
+                    onClick={() => setJsonView('raw')}
+                    aria-pressed={jsonView === 'raw'}
+                    data-testid="toggle-raw-json"
+                  >
+                    <Code2 className="h-3 w-3" /> Raw JSON
+                  </Button>
+                </>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 text-xs gap-1"
+                onClick={copyContent}
+              >
+                <Copy className="h-3 w-3" /> Copy
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 text-xs gap-1"
+                onClick={downloadContent}
+              >
+                <Download className="h-3 w-3" /> Download
+              </Button>
+            </div>
+          )}
+        </CardHeader>
+        <CardContent>{renderContent()}</CardContent>
+      </Card>
     </div>
   );
 }

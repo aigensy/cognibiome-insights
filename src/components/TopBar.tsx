@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Presentation, RotateCcw, HelpCircle, WifiOff } from 'lucide-react';
+import { Presentation, RotateCcw, WifiOff } from 'lucide-react';
 import { useAppState } from '@/contexts/AppContext';
-import { useNavigate } from 'react-router-dom';
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -31,7 +30,6 @@ function useOnlineStatus(): boolean {
 
 export function TopBar() {
   const { presenterMode, setPresenterMode, resetDemoState, adminMode } = useAppState();
-  const navigate = useNavigate();
   const isOnline = useOnlineStatus();
 
   return (
@@ -93,16 +91,6 @@ export function TopBar() {
           </Badge>
         )}
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-7 text-xs gap-1"
-          onClick={() => navigate('/help')}
-          title="Help / Docs"
-        >
-          <HelpCircle className="h-3.5 w-3.5" />
-          {!presenterMode && <span className="hidden sm:inline">Docs</span>}
-        </Button>
       </div>
     </header>
   );

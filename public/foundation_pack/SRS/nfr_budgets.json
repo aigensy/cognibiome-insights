@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "SRS/nfr_budgets.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "DESIGN",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 2,
+    "last_updated_utc": "2026-02-28T21:25:04Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 draft non-functional budgets for a science-fair demo app. | Phase 2: no numeric budget changes; confirmed app is judge-demo focused."
+  },
+  "template_id": "DF.OUTPUT.SRS.NFR_BUDGETS.JSON.V1",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "DESIGN",
+  "purpose": "Set practical performance, reliability, and integrity budgets for a judge-facing demo app.",
+  "performance_budgets": {
+    "cold_start_ui_seconds": 3,
+    "simulation_latency_ms": 500,
+    "pilot_charts_render_seconds": 2,
+    "notes": "Targets are assumptions; confirm via OQ-010."
+  },
+  "reliability_targets": {
+    "export_success_rate": 0.99,
+    "crash_free_session_rate": 0.99,
+    "notes": "Assumptions for demo context."
+  },
+  "data_integrity_targets": {
+    "pilot_csv_validation": "Strict numeric validation with clear mapping for ambiguous columns.",
+    "no_synthetic_pilot_data": "Pilot charts must reflect loaded dataset only."
+  },
+  "cost_budget": {
+    "target_monthly_usd": 0,
+    "notes": "For science fair demo, prefer free/low-cost hosting; cannot confirm budget."
+  },
+  "privacy_security_posture": {
+    "pii_collection": "none",
+    "data_classification": "De-identified teen data (still treat as sensitive).",
+    "auth": "kiosk by default; admin-only for ingestion if enabled (OQ-003)."
+  },
+  "observability": {
+    "client_logging": "Capture errors with a trace_id; show user-friendly errors.",
+    "audit_trail": "Store run_id/run_hash and export events for reproducibility.",
+    "notes": "No heavy telemetry required."
+  }
+}
