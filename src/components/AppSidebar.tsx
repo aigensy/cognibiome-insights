@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard, BarChart3, Cpu, FileOutput, ShieldCheck, GitCompare, Database,
-  BookOpen, ChevronRight, FileJson, FileText, FileSpreadsheet,
+  BookOpen, ChevronRight, FileJson, FileText, FileSpreadsheet, ScrollText,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -140,6 +140,22 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
+
+              {/* Presenter Guide — pinned link, visible ONLY in Presenter Mode */}
+              {presenterMode && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    isActive={location.pathname === '/help' && new URLSearchParams(location.search).get('doc') === 'DOC-026'}
+                    className="hover:bg-muted/50 w-full"
+                    onClick={() => navigate('/help?doc=DOC-026')}
+                  >
+                    <ScrollText className="h-4 w-4 shrink-0 text-primary" />
+                    {!collapsed && (
+                      <span className="font-semibold text-primary">Presenter Guide</span>
+                    )}
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
 
               {/* Docs — collapsible with category sub-groups */}
               {!presenterMode && (
