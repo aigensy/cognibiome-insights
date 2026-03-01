@@ -9,7 +9,7 @@ The **Methods & Rigor** screen is the "trust layer" for judges. In **Presenter M
 
 ## 1) Limitations & Scientific Wording (Presenter cue)
 
-![Methods & Rigor — Limitations and Leakage Guardrails](/docs/screenshots/methods_limitations_and_guardrails.png)
+![Data Sources — Paired vs Unpaired table](/docs/screenshots/methods_data_sources_table.png)
 
 This top card is the **primary Presenter Mode talking point**. It contains three short statements intended to be read almost verbatim:
 
@@ -49,7 +49,7 @@ Footer note:
 
 ## 3) Data Sources (Paired vs Unpaired)
 
-![Data Sources — Paired vs Unpaired table](/docs/screenshots/methods_data_sources_table.png)
+![Methods & Rigor — Limitations and Leakage Guardrails](/docs/screenshots/methods_limitations_and_guardrails.png)
 
 This table is the most important "anti-overclaim" element on the screen.
 
