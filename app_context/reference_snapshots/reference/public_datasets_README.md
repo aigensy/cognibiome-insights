@@ -1,92 +1,84 @@
-# Public Datasets Reference Snapshots
+# Public Datasets Reference Snapshots (Offline-First)
 
-This repository contains small, aggregated reference tables to
-support the project plan.  Each table summarises key features
-from a much larger dataset but omits any individual or
-controlled‑access data.  Entries marked as not included in
-the manifest are accompanied by download instructions.  All
-data sources are official repositories managed by government
-agencies or international consortia.  Access dates below
-reflect the date this snapshot was prepared (2026-03-01).
+These files are **small, offline-friendly reference snapshots** that support the Project Plan’s
+“Public Datasets Status” screen. They are **not training datasets** and **do not contain
+participant-level records**.
 
-## NHANES nutrient reference
+**Key rule:** the app makes **no runtime API calls**. “Bundled = Yes” means a snapshot file exists
+under `/public/reference/` and is listed with `included: true` in:
+`/public/reference/public_datasets_manifest.json`.
 
-The `nhanes_nutrient_reference.csv` file is derived from the
-*Dietary Interview – Total Nutrient Intakes, Day 1 (DR1TOT_L)*
-documentation for the 2021–2022 cycle of the National Health
-and Nutrition Examination Survey (NHANES).  The codebook lists
-each nutrient variable along with its label and the range of
-observed values.  We extracted a small set of macro- and
-micro-nutrients (energy, protein, carbohydrate, sugars, fiber,
-fats and cholesterol) and recorded their variable codes, names,
-units, and value ranges.  No participant identifiers or
-individual-level data are included.  Use of NHANES public
-datasets is governed by the National Center for Health Statistics
-(NCHS) Data User Agreement, which permits only statistical
-analysis and reporting and prohibits any attempt to identify
-individuals.
+Access date for this snapshot set: 2026-03-01 (UTC).
 
-- **Source:** CDC / NCHS — NHANES DR1TOT_L Codebook (2021–2022 cycle)
-- **URL:** https://wwwn.cdc.gov/Nchs/Nhanes/2021-2022/DR1TOT_L.htm
-- **Accessed:** 2026-03-01
+---
 
-Provenance: the variable names and ranges were transcribed
-manually from the DR1TOT_L codebook available on the CDC
-website at the URL above.
+## NHANES — `nhanes_nutrient_reference.csv`
 
-## HMP genus reference
+A small table of **variable names and observed ranges** transcribed from the NHANES
+2021–2022 DR1TOT_L (Day 1 total nutrient intakes) documentation.
 
-The Human Microbiome Project (HMP) Data Analysis and
-Coordination Center publishes value‑added QIIME community
-profiling outputs summarising 16S rRNA sequencing data.  These
-outputs are hosted at `downloads.hmpdacc.org`.  In this
-environment we were unable to access the OTU abundance tables
-(e.g., `otu_table_psn_v35.txt.gz`) due to network restrictions
-and therefore could not construct a genus reference table.
-Researchers may download the OTU tables and associated mapping
-files directly from the HMP DACC website (for example,
-`http://downloads.hmpdacc.org/data/HMQCP/otu_table_psn_v35.txt.gz`)
-and process them locally using QIIME or phyloseq.  The manifest
-marks this dataset as not included.
+- Contains: variable code, nutrient name, units, min/max observed values.
+- Does **not** contain participant-level NHANES records.
 
-## American Gut genus reference
+Primary source page:
+- https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DR1TOT_L.htm
 
-The American Gut Project (AGP) data are hosted through Qiita
-(study ID 10317) and the European Nucleotide Archive (ENA).  
-Public BIOM and metadata files are available via Qiita but
-require user authentication, and we were unable to download them
-within this environment.  The ENA accession `PRJEB11419`
-provides access to raw sequence reads but not processed genus
-abundance tables.  Consequently, no AGP genus reference table
-is included.  Interested users should log into Qiita and
-download the processed BIOM table and mapping file for study
-10317, then summarize the data to genus level.
+---
 
-- **Source:** European Nucleotide Archive (ENA)
-- **Accession:** PRJEB11419
-- **URL:** https://www.ebi.ac.uk/ena/browser/view/PRJEB11419
-- **Accessed:** 2026-03-01
+## HMP — `hmp_reference.json`
 
-## MetaboLights and Metabolomics Workbench
+A small **resource index** pointing to official HMP/iHMP “QIIME community profiling” (HMQCP)
+download endpoints (OTU table + mapping/notes).
 
-MetaboLights is an EMBL‑EBI repository for metabolomics studies.
-Data are governed by EMBL‑EBI's Terms of Use and may carry
-dataset‑specific licences.  Because each study may have its own
-licence and many datasets contain sensitive metabolomics
-measurements, we did not attempt to redistribute any data.
+- Contains: file names + official URLs.
+- Does **not** bundle the large OTU tables themselves.
 
-- **Source:** MetaboLights — EMBL‑EBI
-- **URL:** https://www.ebi.ac.uk/metabolights/
-- **Accessed:** 2026-03-01
+Example official resource URL:
+- http://downloads.ihmpdcc.org/data/HMQCP/otu_table_psn_v35.txt.gz
 
-The NIH Metabolomics Workbench hosts metabolomics datasets for
-research use.  The terms of use stipulate that data are for
-personal, non‑commercial research only and forbid redistribution
-without permission (the full terms are available on the
-Metabolomics Workbench website).  Due to these restrictions and
-the fact that we could not access the site in this environment,
-no Metabolomics Workbench snapshots are included.
+---
 
-- **Source:** NIH Metabolomics Workbench
-- **URL:** https://www.metabolomicsworkbench.org/
-- **Accessed:** 2026-03-01
+## American Gut — `american_gut_reference.json`
+
+A small **index of primary accessions and entry points** for the American Gut Project.
+
+- ENA project: PRJEB11419 (sequences + metadata)
+- Qiita study: 10317 (processed BIOM artifacts + metadata, depending on availability)
+
+Primary ENA page:
+- https://www.ebi.ac.uk/ena/browser/view/PRJEB11419
+
+---
+
+## MetaboLights — `metabolights_reference.json`
+
+A small list of **MetaboLights study accessions and titles** that are explicitly relevant to
+gut/microbiome or gut–brain axis contexts.
+
+- Contains: MetaboLights accession + title + a reference page link.
+- Does **not** contain metabolite matrices.
+
+---
+
+## Metabolomics Workbench — `metabolomics_workbench_reference.json`
+
+A small list of **Metabolomics Workbench study IDs and titles/contexts** relevant to gut microbiome
+or microbiome–metabolome studies.
+
+- Contains: Study ID + title (when available in snapshot sources) + reference page link.
+- Does **not** contain metabolite matrices.
+
+---
+
+## Manifest
+
+The bundled status in the UI is driven by:
+
+- `/public/reference/public_datasets_manifest.json`
+
+It stores:
+- dataset name
+- bundled file path
+- row_count (number of records in the snapshot file)
+- sha256 of the snapshot file contents
+- provenance source URL

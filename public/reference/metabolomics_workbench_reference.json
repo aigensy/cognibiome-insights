@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "dataset": "Metabolomics Workbench",
+  "snapshot_type": "study_index",
+  "generated_utc": "2026-03-01T07:19:50Z",
+  "notes": "Small, offline index of Metabolomics Workbench studies relevant to gut microbiome/metabolome topics (IDs + titles/contexts only).",
+  "records": [
+    {
+      "study_id": "ST001000",
+      "title": "Gut microbiome structure and metabolic activity in inflammatory bowel disease",
+      "source_url": "https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?DataMode=ChromatographyData&Mode=Study&ResultType=1&StudyID=ST001000&StudyType=MS"
+    },
+    {
+      "study_id": "ST001683",
+      "title": "A gut microbe-focused metabolomics pipeline enables mechanistic interrogation of microbiome metabolism.",
+      "source_url": "https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?DataMode=ChromatographyData&Mode=Study&ResultType=1&StudyID=ST001683&StudyType=MS"
+    },
+    {
+      "study_id": "ST001157",
+      "title": "The gut microbiota plays a central role to modulate the plasma metabolome in response to chronic Angiotensin II infusion (part-I)",
+      "source_url": "https://www.omicsdi.org/dataset/metabolomics_workbench/ST001157"
+    },
+    {
+      "study_id": "ST002017",
+      "title": "Multi-omic analysis of the microbiome and metabolome in healthy subjects (blood)",
+      "source_url": "https://www.omicsdi.org/dataset/metabolomics_workbench/ST002017"
+    },
+    {
+      "study_id": "ST003530",
+      "title": null,
+      "source_url": "https://www.sciencedirect.com/org/science/article/pii/S2379507725002016",
+      "note": "Study ID mentioned in the linked paper's data availability statement; title not extracted from Metabolomics Workbench pages in this snapshot."
+    }
+  ],
+  "provenance": {
+    "accessed_utc": "2026-03-01T07:19:50Z",
+    "source_pages": [
+      "https://www.metabolomicsworkbench.org/tools/mw_rest.php",
+      "https://www.metabolomicsworkbench.org/about/termsofuse.php"
+    ],
+    "limitations": "No raw metabolite matrices are bundled. The snapshot is metadata-only to respect usage constraints."
+  }
+}

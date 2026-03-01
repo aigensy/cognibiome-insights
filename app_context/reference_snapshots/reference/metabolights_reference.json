@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "dataset": "MetaboLights",
+  "snapshot_type": "study_index",
+  "generated_utc": "2026-03-01T07:19:50Z",
+  "notes": "Small, offline index of MetaboLights studies explicitly relevant to the gut-brain / microbiome context (IDs + titles only).",
+  "records": [
+    {
+      "study_accession": "MTBLS351",
+      "title": "Human gut microbes impact host serum metabolome and insulin sensitivity",
+      "source_url": "https://www.omicsdi.org/dataset/metabolights_dataset/MTBLS351"
+    },
+    {
+      "study_accession": "MTBLS11203",
+      "title": "Neuropeptide SP protects against colitis and linked anxiety-like behavior via gut microbiota and metabolite inositol: A multi-omics analysis of the gut-brain axis",
+      "source_url": "https://www.omicsdi.org/dataset/metabolights_dataset/MTBLS11203"
+    },
+    {
+      "study_accession": "MTBLS13123",
+      "title": "Aerobic exercise and gut flora: a key link to improved cognitive impairment in mice with Parkinson's disease",
+      "source_url": "https://www.omicsdi.org/dataset/metabolights_dataset/MTBLS13123"
+    },
+    {
+      "study_accession": "MTBLS13599",
+      "title": "Gut Microbiota Mediates Maternal PM2.5 Exposure-induced Neurodevelopmental Disorder in offspring via Disturbing the Glutamate Metabolism: Evidence from Multiomics Analysis",
+      "source_url": "https://www.omicsdi.org/dataset/metabolights_dataset/MTBLS13599"
+    },
+    {
+      "study_accession": "MTBLS4893",
+      "title": "Intergenerational Association of Gut Microbiota and Metabolism with Perinatal Folate Metabolism and Neural Tube Defects (Feces metabolomics)",
+      "source_url": "https://www.omicsdi.org/dataset/metabolights_dataset/MTBLS4893"
+    }
+  ],
+  "provenance": {
+    "accessed_utc": "2026-03-01T07:19:50Z",
+    "source_pages": [
+      "https://www.ebi.ac.uk/metabolights/download",
+      "https://www.omicsdi.org/"
+    ],
+    "limitations": "Only study IDs and titles are bundled (no raw/metabolite matrices)."
+  }
+}

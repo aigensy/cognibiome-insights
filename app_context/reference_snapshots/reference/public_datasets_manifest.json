@@ -3,7 +3,7 @@
     "dataset": "NHANES",
     "file": "reference/nhanes_nutrient_reference.csv",
     "included": true,
-    "row_count": 11,
+    "row_count": 10,
     "sha256": "5312cc7d5d858fcbd0f0cd24a191196f06a3e6b2d4d1c40836389d68e5a90d51",
     "provenance": {
       "source_url": "https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DR1TOT_L.htm",
@@ -12,42 +12,46 @@
   },
   {
     "dataset": "HMP",
-    "file": "public/reference/hmp_genus_reference.csv",
-    "included": false,
-    "reason": "Network restrictions prevented downloading the HMP value\u2011added QIIME OTU table from downloads.hmpdacc.org; redistribution conditions unclear",
+    "file": "reference/hmp_reference.json",
+    "included": true,
+    "row_count": 3,
+    "sha256": "83da2738af3c30445bc9e8f5afade50f63dc64acee35667c0e874e24f25f3323",
     "provenance": {
-      "source_url": "http://downloads.hmpdacc.org/data/HMQCP/otu_table_psn_v35.txt.gz",
-      "notes": "Official HMP 16S OTU table; not accessed"
+      "source_url": "http://downloads.ihmpdcc.org/data/HMQCP/otu_table_psn_v35.txt.gz",
+      "notes": "Offline-friendly index of official HMP/iHMP community profiling resources. This is not participant-level data."
     }
   },
   {
     "dataset": "American Gut",
-    "file": "public/reference/american_gut_genus_reference.csv",
-    "included": false,
-    "reason": "Public BIOM and metadata files require Qiita login and cannot be downloaded anonymously; dataset too large for offline snapshot",
+    "file": "reference/american_gut_reference.json",
+    "included": true,
+    "row_count": 2,
+    "sha256": "2feb92937ee484e104966c23dfc82376f41cc74d654c3415bdbb7e6713cd5ae9",
     "provenance": {
-      "source_url": "https://qiita.ucsd.edu/",
-      "notes": "Qiita study 10317 (American Gut) processed tables"
+      "source_url": "https://www.ebi.ac.uk/ena/browser/view/PRJEB11419",
+      "notes": "Offline-friendly index of the American Gut Project primary accessions and entry points. This is not sequencing data and contains no participant-level metadata."
     }
   },
   {
     "dataset": "MetaboLights",
-    "file": "N/A",
-    "included": false,
-    "reason": "Individual studies may have specific licences under EMBL\u2011EBI Terms of Use; uncertain redistribution permissions and large file sizes",
+    "file": "reference/metabolights_reference.json",
+    "included": true,
+    "row_count": 5,
+    "sha256": "7a8aa9d8554808b0b3cb9f478538dad47e6fb8ea99acdd8e6265ae76b9cd7932",
     "provenance": {
-      "source_url": "https://www.ebi.ac.uk/metabolights/",
-      "notes": "MetaboLights studies (general)"
+      "source_url": "https://www.omicsdi.org/dataset/metabolights_dataset/MTBLS351",
+      "notes": "Small, offline index of MetaboLights studies explicitly relevant to the gut-brain / microbiome context (IDs + titles only)."
     }
   },
   {
     "dataset": "Metabolomics Workbench",
-    "file": "N/A",
-    "included": false,
-    "reason": "Site not accessible in this environment and terms restrict redistribution to personal, non\u2011commercial use",
+    "file": "reference/metabolomics_workbench_reference.json",
+    "included": true,
+    "row_count": 5,
+    "sha256": "2f39b6e7c23015cc80581c9fbc04740298f6599cf96ff6c18feceed6dd0dd9a6",
     "provenance": {
-      "source_url": "https://www.metabolomicsworkbench.org/",
-      "notes": "Metabolomics Workbench repository (general)"
+      "source_url": "https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?DataMode=ChromatographyData&Mode=Study&ResultType=1&StudyID=ST001000&StudyType=MS",
+      "notes": "Small, offline index of Metabolomics Workbench studies relevant to gut microbiome/metabolome topics (IDs + titles/contexts only)."
     }
   }
 ]

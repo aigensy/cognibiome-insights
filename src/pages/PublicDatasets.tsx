@@ -377,15 +377,17 @@ function ManifestCard({
         {/* Actions for included datasets */}
         {entry.included && entry.file !== 'N/A' && (
           <div className="flex flex-wrap gap-2 pt-1">
-            <Button
-              size="sm"
-              variant="secondary"
-              className="h-7 text-xs gap-1"
-              onClick={() => setShowPreview(p => !p)}
-              data-testid={`preview-btn-${entry.dataset.replace(/\s+/g, '-')}`}
-            >
-              <Eye className="h-3 w-3" /> {showPreview ? 'Hide Preview' : 'Preview'}
-            </Button>
+            {entry.dataset === 'NHANES' && (
+              <Button
+                size="sm"
+                variant="secondary"
+                className="h-7 text-xs gap-1"
+                onClick={() => setShowPreview(p => !p)}
+                data-testid={`preview-btn-${entry.dataset.replace(/\s+/g, '-')}`}
+              >
+                <Eye className="h-3 w-3" /> {showPreview ? 'Hide Preview' : 'Preview'}
+              </Button>
+            )}
             <Button
               size="sm"
               variant="outline"

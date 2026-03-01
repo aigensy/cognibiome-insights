@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "dataset": "American Gut",
+  "snapshot_type": "study_index",
+  "generated_utc": "2026-03-01T07:19:50Z",
+  "notes": "Offline-friendly index of the American Gut Project primary accessions and entry points. This is not sequencing data and contains no participant-level metadata.",
+  "records": [
+    {
+      "record_type": "ENA project",
+      "primary_accession": "PRJEB11419",
+      "url": "https://www.ebi.ac.uk/ena/browser/view/PRJEB11419",
+      "description": "American Gut Project sequences and metadata hosted at ENA/EBI under PRJEB11419."
+    },
+    {
+      "record_type": "Qiita study",
+      "qiita_study_id": "10317",
+      "url": "https://qiita.ucsd.edu/",
+      "description": "American Gut Project study in Qiita (study ID 10317). Access typically requires Qiita tooling (e.g., redbiom) or Qiita public downloads when available."
+    }
+  ],
+  "provenance": {
+    "accessed_utc": "2026-03-01T07:19:50Z",
+    "source_pages": [
+      "https://www.ebi.ac.uk/ena/browser/view/PRJEB11419",
+      "https://github.com/knightlab-analyses/american-gut-analyses"
+    ],
+    "limitations": "Qiita public downloads may require login and files can be very large; this snapshot intentionally bundles only identifiers + access points."
+  }
+}

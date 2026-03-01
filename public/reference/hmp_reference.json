@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "dataset": "HMP",
+  "snapshot_type": "resource_index",
+  "generated_utc": "2026-03-01T07:19:50Z",
+  "notes": "Offline-friendly index of official HMP/iHMP community profiling resources. This is not participant-level data.",
+  "records": [
+    {
+      "resource_name": "HMQCP OTU table (v35)",
+      "file_name": "otu_table_psn_v35.txt.gz",
+      "url": "http://downloads.ihmpdcc.org/data/HMQCP/otu_table_psn_v35.txt.gz",
+      "format": "text/tab-separated-values (gz)",
+      "description": "QIIME community profiling OTU table referenced by HMP DACC documentation."
+    },
+    {
+      "resource_name": "HMQCP mapping file (v35)",
+      "file_name": "ppAll_V35_map.txt",
+      "url": "https://hmpdacc.org/hmp/doc/ppAll_V35_map.txt",
+      "format": "text/plain",
+      "description": "Sample mapping file used with the v35 OTU table."
+    },
+    {
+      "resource_name": "HMQCP notes (v35)",
+      "file_name": "ppAll_V35_Notes.txt",
+      "url": "https://hmpdacc.org/hmp/doc/ppAll_V35_Notes.txt",
+      "format": "text/plain",
+      "description": "Notes for v35 community profiling outputs (mapping + processing)."
+    }
+  ],
+  "provenance": {
+    "accessed_utc": "2026-03-01T07:19:50Z",
+    "source_pages": [
+      "https://hmpdacc.org/hmp/doc/HMQCP/otu_table_psn_v35.txt.gz",
+      "https://hmpdacc.org/hmp/doc/ppAll_V35_map.txt",
+      "https://hmpdacc.org/hmp/doc/ppAll_V35_Notes.txt"
+    ],
+    "limitations": "This snapshot does not bundle the large OTU table itself; it bundles only a small resource index to preserve offline-first UI without redistributing large data."
+  }
+}
