@@ -17,13 +17,16 @@
  */
 
 import { test, expect, Page } from '@playwright/test';
-import path from 'path';
+import path, { dirname } from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const SCREENSHOT_DIR = path.resolve(__dirname, 'screenshots');
 
 function ensureScreenshotDir() {
