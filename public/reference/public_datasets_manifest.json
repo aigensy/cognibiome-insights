@@ -12,7 +12,7 @@
   },
   {
     "dataset": "HMP",
-    "file": "public/reference/hmp_genus_reference.csv",
+    "file": "N/A",
     "included": false,
     "reason": "Network restrictions prevented downloading the HMP value\u2011added QIIME OTU table from downloads.hmpdacc.org; redistribution conditions unclear",
     "provenance": {
@@ -22,7 +22,7 @@
   },
   {
     "dataset": "American Gut",
-    "file": "public/reference/american_gut_genus_reference.csv",
+    "file": "N/A",
     "included": false,
     "reason": "Public BIOM and metadata files require Qiita login and cannot be downloaded anonymously; dataset too large for offline snapshot",
     "provenance": {

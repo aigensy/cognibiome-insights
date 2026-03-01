@@ -1,111 +1,111 @@
-Ниже — **финальное (не “optional”) решение** по внешним источникам данных для Gut-приложения, как именно они используются, и **что вам нужно подготовить и загрузить в Lovable**.
+# External Data Sources Overview — CogniBiome
+
+This document describes the external reference datasets used in the CogniBiome
+application and explains how each is used in the offline-first 3-stage model.
 
 ---
 
-## Принятое решение: какие внешние источники используются в приложении
+## Decision Matrix: Which External Sources Are Used
 
-Ключевой принцип для судей: **приложение работает офлайн и не зависит от сети**. Поэтому внешние источники используются **только как заранее подготовленные “reference snapshots”**, загруженные в Lovable вместе с проектом. Пилотные данные подростков **никуда наружу не отправляются**.
+Key principle: the app works fully offline without any network dependencies.
+All external sources are used exclusively as pre-prepared reference snapshots
+bundled with the project. No pilot data is transmitted externally.
 
-### Матрица решений
-
-| Источник                             | Используем в приложении? | Как используется (внутри приложения)                                                                                                                                                                                   | Что подготовить и загрузить в Lovable                                                                                                                                                                                  |
-| ------------------------------------ | -----------------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **USDA FoodData Central (FDC)**      |                   **ДА** | “Food/Nutrient Evidence” слой: объясняет, *почему* изменение питания означает изменение **клетчатки / сахара / насыщенных жиров** (на уровне нутриентов). FDC данные в public domain (CC0).                            | `reference/fdc_foods_min.json` (малый список продуктов + нутриенты) и `reference/fdc_nutrients_map.json` (какие нутриенты поддерживают ваши “Diet components”). Лицензия/цитирование: FDC CC0. ([FoodData Central][1]) |
-| **Reactome**                         |                   **ДА** | “Pathway cards”: краткие карточки биологических путей (например, триптофан/серотонин и т.п.) с ссылками/цитированием. Данные Reactome разрешены (CC0 для data; CC BY 4.0 для иллюстраций/брендинга).                   | `reference/reactome_pathways_min.json` (выбранные pathways + описания + identifiers) и `reference/reactome_license_cite.md`. ([Reactome][2])                                                                           |
-| **WikiPathways (JSON)**              |                   **ДА** | “Mechanism diagrams” слой: **локальные** JSON/PNG для пары ключевых pathway-диаграмм, чтобы UI выглядел как настоящий исследовательский инструмент. Контент WikiPathways под CC0 waiver.                               | Папка `reference/wikipathways/` с 3–6 файлов: `*.json` и (желательно) `*.png` для выбранных pathways + `reference/wikipathways_license.md`. ([WikiPathways][3])                                                        |
-| **MiMeDB (Microbial Metabolome DB)** |                   **ДА** | “Microbe ↔ metabolite evidence” слой: показывает справочные связи микробов и метаболитов (для правдоподобия X→M в вашей модели). Важно: лицензирование BY-NC (некоммерческое).                                         | `reference/mimedb_links_min.csv` или `.json` (только нужные поля/строки) + `reference/mimedb_citation_license.md` (BY-NC). ([OUP Academic][4])                                                                         |
-| **PubChem**                          |                  **НЕТ** | Не используем в v1: добавляет сетевую зависимость/лимиты и не критично для судейского результата (уже хватает Reactome/WikiPathways/MiMeDB). PubChem отдельно отмечает, что “API keys” не выдаются и есть ограничения. | Ничего не готовить/не загружать. ([PubChem][5])                                                                                                                                                                        |
-| **HMDB**                             |                  **НЕТ** | Не используем: больше рисков по лицензированию/объёму, и для вашего “judge-ready” сценария избыточно (MiMeDB + Reactome покрывают нужное).                                                                             | Ничего не готовить/не загружать. ([Human Metabolome Database][6])                                                                                                                                                      |
-
----
-
-## Как именно эти внешние данные будут “встроены” в приложение (без сети)
-
-### 1) FDC (USDA) — нутриенты как объяснение Diet Score
-
-* **UI:** панель “Nutrition Evidence” (в Methods & Rigor / Simulator).
-* **Функция:** когда пользователь в симуляторе меняет “diet quality”, приложение показывает *какие нутриенты обычно двигаются* и почему это логично.
-* **Технически:** приложение читает **локальный JSON**, никакого живого API.
-* **Почему так:** FDC API требует **data.gov API key** и ключ нельзя публиковать (его могут отключить), плюс есть rate limits. ([FoodData Central][1])
-  Поэтому для демонстрации судье безопаснее “snapshot”.
-
-### 2) Reactome — карточки путей (Pathway Cards)
-
-* **UI:** “Pathway Cards” блок с 5–10 карточками, каждая: название → краткое описание → “why it matters” (без медицинских утверждений) → ссылка/цитирование.
-* **Технически:** локальный `reactome_pathways_min.json`.
-* **Лицензии:** Reactome явно описывает лицензии (CC0 для data, CC BY 4.0 для иллюстраций). ([Reactome][2])
-
-### 3) WikiPathways — локальные pathway-диаграммы
-
-* **UI:** маленькая галерея (2–4) диаграмм/схем в “Methods & Rigor”.
-* **Технически:** локальные `*.json` (и/или `*.png`), никаких запросов.
-* **Лицензии:** CC0 waiver. ([WikiPathways][3])
-
-### 4) MiMeDB — справочник “микроб ↔ метаболит”
-
-* **UI:** “Evidence table” (поиск/фильтр) + “link-outs”.
-* **Технически:** локальный CSV/JSON, предварительно урезанный до небольшого набора строк и полей (чтобы быстро грузилось).
-* **Данные доступны для скачивания (есть большие файлы, поэтому важно брать только минимум).** ([MiMeDB][7])
-* **Лицензирование:** BY-NC (некоммерческое). ([OUP Academic][4])
+| Source                                | Used?   | How used (inside the app)                                                                                                       | What to prepare                                                                          |
+| ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **USDA FoodData Central (FDC)**       | **YES** | "Food/Nutrient Evidence" layer: explains why diet changes affect fiber / sugar / saturated fat (at the nutrient level). CC0.    | `reference/usda_fdc.json` (food list + nutrients) and nutrient → diet-component mapping. |
+| **Reactome**                          | **YES** | "Pathway cards": brief biological pathway cards (e.g. tryptophan/serotonin) with citations. CC0 data / CC BY 4.0 illustrations. | `reference/reactome.json` (selected pathways + descriptions + identifiers).              |
+| **WikiPathways (JSON)**               | **YES** | "Mechanism diagrams" layer: local JSON for key pathway diagrams. WikiPathways content under CC0 waiver.                         | `reference/wikipathways.json` with selected pathways + `wikipathways_license.md`.        |
+| **MiMeDB (Microbial Metabolome DB)**  | **YES** | "Microbe ↔ metabolite evidence" layer: reference associations between microbes and metabolites. License: BY-NC (non-commercial). | `reference/mimedb.json` (relevant fields only) + `REFERENCES_AND_LICENSES.md`.          |
+| **PubChem**                           | **NO**  | Not used in v1: adds network dependency and is not critical for the demo. PubChem does not issue API keys.                      | Nothing to prepare.                                                                      |
+| **HMDB**                              | **NO**  | Not used: higher licensing risk and volume; MiMeDB + Reactome cover the needed associations.                                    | Nothing to prepare.                                                                      |
 
 ---
 
-## Что вам нужно создать и загрузить в Lovable
+## How External Data Is Embedded (No Network Required)
 
-Да: вам нужно подготовить **один “External Reference Pack”** (папка или zip), который Lovable использует как контекст и как статические файлы проекта.
+### 1) FDC (USDA) — Nutrients as Diet Score explanation
 
-Lovable поддерживает загрузку файлов (включая CSV/PDF и др.) и умеет превращать CSV/XLSX в дашборды, но для “reference snapshots” мы делаем **JSON/CSV** + 1 файл с лицензиями/цитированием. ([FoodData Central][8])
+- **UI:** "Nutrition Evidence" panel (in Methods & Rigor / Simulator).
+- **Function:** when the user adjusts "diet quality" in the simulator, the app shows
+  which nutrients typically shift and why that is biologically plausible.
+- **Technically:** the app reads a **local JSON file**, no live API call.
+- **Why:** the FDC API requires a data.gov API key that cannot be published (it can
+  be deactivated), and is subject to rate limits.
+  A local snapshot is therefore safer for offline/judge demonstrations.
 
-### Структура “External Reference Pack” (рекомендую именно так)
+### 2) Reactome — Pathway Cards
+
+- **UI:** "Pathway Cards" block with 5–10 cards, each: name → brief description →
+  "why it matters" (no medical claims) → citation.
+- **Technically:** local `reactome.json`.
+- **Licenses:** Reactome explicitly describes licenses (CC0 for data, CC BY 4.0 for
+  illustrations/branding).
+
+### 3) WikiPathways — Local Pathway Diagrams
+
+- **UI:** small gallery (2–4) of diagrams/schemas in "Methods & Rigor".
+- **Technically:** local `*.json` files, no network requests.
+- **Licenses:** CC0 waiver.
+
+### 4) MiMeDB — Microbe ↔ Metabolite Reference
+
+- **UI:** "Evidence table" (search/filter) + educational context.
+- **Technically:** local JSON, pre-filtered to a small set of rows and fields
+  (fast load). All links are marked `source_in_mimedb_csv: false` because the
+  MiMeDB CSV exports do not include a join table; links are literature-derived
+  and labeled "cannot confirm from parsed MiMeDB CSV" in the UI.
+- **License:** BY-NC (non-commercial).
+
+---
+
+## What to Prepare and Bundle
+
+Prepare one **External Reference Pack** (folder or zip) that Lovable uses as
+context and as static project files.
+
+### Structure
 
 ```
 reference/
-  fdc_foods_min.json
-  fdc_nutrients_map.json
-  reactome_pathways_min.json
-  wikipathways/
-    WP_xxx.json
-    WP_xxx.png
-  mimedb_links_min.csv   (или .json)
+  usda_fdc.json
+  reactome.json
+  wikipathways.json
+  mimedb.json
   REFERENCES_AND_LICENSES.md
+  nhanes_nutrient_reference.csv
+  public_datasets_manifest.json
+  public_datasets_README.md
+  README_data_build.md
 ```
 
-### Что конкретно требуется для FDC (USDA FoodData Central)
+### FDC (USDA FoodData Central) — Minimum Requirements
 
-**Вам НЕ нужно делать API key для приложения**, потому что мы **не используем живой API**.
+You do **not** need a live API key because the app uses a **local snapshot**,
+not a live API call.
 
-Но **вам нужно создать локальный snapshot**:
-
-1. `fdc_foods_min.json`
-   Минимальный набор: 30–80 типичных продуктов (овощи, цельнозерно, сладкие напитки/десерты, фастфуд), где для каждого есть:
-
-   * `name`
-   * `fdcId` (если есть)
-   * нутриенты: `fiber_g`, `added_sugars_g` (если доступно), `saturated_fat_g`, `protein_g`, `total_fat_g`, `carbs_g`, `energy_kcal`
-
-2. `fdc_nutrients_map.json`
-   Карта: какие нутриенты вы используете как объяснение “diet quality”, и как это отображается на ваши “diet components”.
-
-3. В `REFERENCES_AND_LICENSES.md` вставить:
-
-   * короткую строку, что данные FDC public domain / CC0 ([FoodData Central][1])
-   * рекомендуемую цитату USDA (она прямо в API Guide) ([FoodData Central][1])
-
-*(Если хотите — я могу дать вам шаблоны JSON (структуру полей) под ваш UI, чтобы вы просто заполнили значения.)*
+You need to create a local snapshot with:
+- 30–80 typical foods (vegetables, whole grains, sugary drinks/desserts, fast
+  food) with the following fields per food:
+  - `name`, `category`, `fdcId` (if available)
+  - nutrients: `fiber_g`, `added_sugars_g`, `saturated_fat_g`, `protein_g`,
+    `total_fat_g`, `carbs_g`, `energy_kcal`
+- A mapping from which nutrients support which "diet components".
+- In `REFERENCES_AND_LICENSES.md` add: USDA FDC public domain / CC0 note and
+  the recommended USDA citation.
 
 ---
 
-## Короткое резюме по-русски
+## Short Summary
 
-* **Используем внешние источники ДА:** FDC (USDA), Reactome, WikiPathways, MiMeDB.
-* **НЕ используем:** PubChem и HMDB (в v1 не нужно для выигрыша и добавляет риски).
-* Вам надо собрать и загрузить в Lovable **External Reference Pack** (локальные JSON/CSV snapshots) + файл `REFERENCES_AND_LICENSES.md`. Для FDC **API key не нужен**, потому что используем **локальный snapshot**, а не живой API. ([FoodData Central][1])
+- **External sources used:** FDC (USDA), Reactome, WikiPathways, MiMeDB.
+- **Not used:** PubChem and HMDB (not needed for v1 and adds risk).
+- Prepare and bundle the **External Reference Pack** (local JSON/CSV snapshots)
+  plus `REFERENCES_AND_LICENSES.md`.
+- For FDC, **no API key is required** because we use a **local snapshot**, not a
+  live API.
 
-[1]: https://fdc.nal.usda.gov/api-guide "API Guide | USDA FoodData Central"
-[2]: https://reactome.org/license "License Agreement - Reactome Pathway Database"
-[3]: https://classic.wikipathways.org/index.php/WikiPathways%3ALicense_Terms "WikiPathways:License Terms - WikiPathways"
-[4]: https://academic.oup.com/nar/article/51/D1/D611/6754917?utm_source=chatgpt.com "MiMeDB: the Human Microbial Metabolome Database"
-[5]: https://pubchem.ncbi.nlm.nih.gov/docs/programmatic-access?utm_source=chatgpt.com "Programmatic Access - PubChem - NIH"
-[6]: https://hmdb.ca/downloads?utm_source=chatgpt.com "Human Metabolome Database: Downloads"
-[7]: https://mimedb.org/downloads "MiMeDB: Downloads"
-[8]: https://fdc.nal.usda.gov/api-guide?utm_source=chatgpt.com "FoodData Central API Guide - USDA"
+[FoodData Central]: https://fdc.nal.usda.gov/
+[Reactome]: https://reactome.org/
+[WikiPathways]: https://www.wikipathways.org/
+[MiMeDB]: https://mimedb.org/

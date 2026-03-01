@@ -20,7 +20,38 @@ import * as path from 'node:path';
 import * as crypto from 'node:crypto';
 
 const REPO_ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const BUNDLE_PATH = path.join(REPO_ROOT, 'public', 'COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md');
+
+/**
+ * Resolve the bundle path.
+ * Priority:
+ *   1. --bundle <path> CLI argument
+ *   2. app_context/COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md
+ *   3. local/incoming/COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md
+ *   4. public/COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md  (last resort)
+ */
+function resolveBundlePath(): string | null {
+  const args = process.argv.slice(2);
+  const bundleArgIdx = args.indexOf('--bundle');
+  if (bundleArgIdx !== -1 && args[bundleArgIdx + 1]) {
+    const explicit = path.resolve(args[bundleArgIdx + 1]);
+    return explicit;
+  }
+
+  const candidates = [
+    path.join(REPO_ROOT, 'app_context', 'COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md'),
+    path.join(REPO_ROOT, 'local', 'incoming', 'COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md'),
+    path.join(REPO_ROOT, 'public', 'COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return null;
+}
+
+const BUNDLE_PATH_RESOLVED = resolveBundlePath();
 
 // Paths that also get a runtime copy under public/
 const RUNTIME_PREFIXES = [
@@ -119,13 +150,18 @@ function main(): void {
     console.log('[extract-bundle] Safe mode (default): existing /public files will NOT be overwritten. Pass --force to override.');
   }
 
-  if (!fs.existsSync(BUNDLE_PATH)) {
-    console.error(`[error] Bundle not found at ${BUNDLE_PATH}`);
-    process.exit(1);
+  if (!BUNDLE_PATH_RESOLVED) {
+    console.log('[extract-bundle] No bundle file found. Checked:');
+    console.log('  app_context/COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md');
+    console.log('  local/incoming/COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md');
+    console.log('  public/COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md');
+    console.log('[extract-bundle] The repo already contains extracted runtime files — nothing to do.');
+    console.log('[extract-bundle] To supply a bundle, use: npm run extract:bundle -- --bundle <path>');
+    process.exit(0);
   }
 
-  console.log(`[extract-bundle] Reading bundle: ${BUNDLE_PATH}`);
-  const bundleText = fs.readFileSync(BUNDLE_PATH, 'utf8');
+  console.log(`[extract-bundle] Reading bundle: ${BUNDLE_PATH_RESOLVED}`);
+  const bundleText = fs.readFileSync(BUNDLE_PATH_RESOLVED, 'utf8');
 
   const files = extractVirtualFiles(bundleText);
   console.log(`[extract-bundle] Found ${files.length} virtual files.`);
