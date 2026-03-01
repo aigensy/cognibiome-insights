@@ -53,7 +53,7 @@ export default function Dashboard() {
           <CardContent className="pt-4">
             <p className="text-sm font-medium text-primary">🎯 2-Minute Demo Path</p>
             <p className="text-xs text-muted-foreground mt-1">
-              Pilot Results → Methods & Rigor → Simulator → Export
+              Pilot Results → Simulator → Compare
             </p>
           </CardContent>
         </Card>

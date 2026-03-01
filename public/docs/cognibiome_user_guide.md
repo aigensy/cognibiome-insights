@@ -24,6 +24,8 @@ It does **not** claim that model artifacts were trained inside the app. The simu
 > This trims the sidebar to only the four judge-path screens and hides all developer controls,
 > giving judges a clean, distraction-free walkthrough.
 
+For the full presenter script, see **Help → Docs → Presenter Guide (DOC-026)**.
+
 1) **Pilot Results**  
    Show the “REAL DATA” badge and the live scatter plots (diet score vs cognitive metrics).
 
@@ -169,6 +171,8 @@ Toggle the **Presenter** button (top-right) to switch between modes.
 The four screens kept visible in Presenter ON mode are: **Dashboard**, **Pilot Results**, **Simulator**, **Compare Scenarios**.
 
 Toggling Presenter ON does **not** delete data — all saved runs and the loaded pilot dataset are preserved. Toggle it off at any time to restore the full view.
+
+Details and the full demo talk track are in **Presenter Guide (DOC-026)**.
 
 - **Reset Demo State** (hidden in Presenter Mode)
   - clears saved runs from localStorage
@@ -413,7 +417,7 @@ This repo ships:
 | DOC-023 | Implementation Plan (Lovable) | `/docs/implementation_plan.md` | MD | Foundation | Help / Docs viewer | Lovable implementation plan used as build roadmap (Phase 1–3). |
 | DOC-024 | Project Plan (PDF → JSON) | `/docs/project_plan_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Plan.pdf, stored as JSON for offline Docs viewer. |
 | DOC-025 | Project Abstract (PDF → JSON) | `/docs/project_abstract_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Abstract.pdf, stored as JSON for offline Docs viewer. |
-| DOC-026 | CogniBiome User Guide (Structured JSON) | `/docs/cognibiome_user_guide.json` | JSON | Foundation | Help / Docs viewer | Structured user guide: stack, file tree, screens, buttons, docs inventory, and roadmap. |
+| DOC-026 | Presenter Guide (Presenter Mode) | `/docs/presenter_guide.md` | MD | Foundation | Help / Docs viewer | Presenter-mode demo script + control-by-control explanation. |
 
 ---
 

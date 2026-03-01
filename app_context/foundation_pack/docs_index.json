@@ -201,6 +201,14 @@
       "category": "Foundation",
       "media_type": "application/json",
       "description": "Extracted text from Project Abstract.pdf, stored as JSON for offline Docs viewer."
+    },
+    {
+      "id": "DOC-026",
+      "title": "Presenter Guide (Presenter Mode)",
+      "path": "/docs/presenter_guide.md",
+      "category": "Foundation",
+      "media_type": "text/markdown",
+      "description": "Presenter-mode demo script + control-by-control explanation."
     }
   ]
 }
