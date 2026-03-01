@@ -252,6 +252,12 @@ export default function Simulator() {
                     )}
                   </div>
                   <p className="text-[10px] font-mono break-all">{result.runHash}</p>
+                  <div className="pt-1 space-y-0.5">
+                    <p className="text-[10px] text-muted-foreground font-medium">Model Versions</p>
+                    <p className="text-[10px] font-mono text-muted-foreground">Stage 1: {result.modelVersions.stage1}</p>
+                    <p className="text-[10px] font-mono text-muted-foreground">Stage 2: {result.modelVersions.stage2}</p>
+                    <p className="text-[10px] font-mono text-muted-foreground">Stage 3: {result.modelVersions.stage3}</p>
+                  </div>
                   {!presenterMode && (
                     <>
                       <p className="text-[10px] text-muted-foreground mt-1">{DISCLAIMERS.demoParams}</p>

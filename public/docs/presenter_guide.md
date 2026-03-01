@@ -130,13 +130,14 @@ Presenter Mode is a "demo simplifier":
 
 **What to show**
 - The **REAL DATA** badge: *"de-identified teen pilot, n=66; computed live from CSV; no synthetic points."*
-- The **correlations table** — point to the highlighted rows for **Overall Score** and **Language Test**.
+- The **correlations table** — point to the highlighted rows for **Overall Score**, **Language Test**, and **Logical Reasoning**.
 
 **Script**
 1. "This page is the **validation anchor**. These points are real pilot measurements; nothing here is simulated."
 2. Point to the **Overall Score** row (highlighted): "Diet score showed r ≈ 0.37 with overall cognitive score — approximate p ≈ 0.003. Directionally consistent with the hypothesis, but not causal proof."
 3. Point to the **Language Test** row (also highlighted): "Language showed the clearest signal in this sample. Stroop and memory were weaker — which is honest, not cherry-picked."
-4. "p-values here are approximate — do not interpret them as statistically confirmed findings."
+4. Point to the **Logical Reasoning** row (also highlighted): "Logical reasoning also showed a meaningful signal — consistent with the speech."
+5. "p-values here are approximate — do not interpret them as statistically confirmed findings."
 
 **Do:** Click **Simulator** in the sidebar.
 

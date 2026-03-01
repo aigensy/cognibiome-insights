@@ -28,7 +28,7 @@ const CHART_FIELDS: { field: keyof PilotRecord; label: string; color: string }[]
   { field: 'overall_score', label: 'Overall Score', color: 'hsl(0, 72%, 55%)' },
 ];
 
-const PRESENTER_HIGHLIGHT_FIELDS = new Set(['overall_score', 'language_test']);
+const PRESENTER_HIGHLIGHT_FIELDS = new Set(['overall_score', 'language_test', 'logical_test']);
 
 export default function PilotResults() {
   const { pilotDataset, setPilotDataset, adminMode, presenterMode } = useAppState();

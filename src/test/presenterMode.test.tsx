@@ -162,7 +162,7 @@ describe('PilotResults — presenter mode row highlights', () => {
     });
   });
 
-  it('shows "Mention in speech" on both Overall Score and Language Test rows', async () => {
+  it('shows "Mention in speech" on Overall Score, Language Test, and Logical Reasoning rows', async () => {
     const useAppState = await getUseAppState();
     useAppState.mockReturnValue(makeContextValue({ presenterMode: true, pilotDataset: PILOT_DATASET }));
 
@@ -175,8 +175,8 @@ describe('PilotResults — presenter mode row highlights', () => {
 
     await waitFor(() => {
       const badges = screen.getAllByTestId('mention-in-speech-badge');
-      // Both overall_score and language_test rows should be highlighted (>= 2 badges)
-      expect(badges.length).toBeGreaterThanOrEqual(2);
+      // overall_score, language_test, and logical_test rows should all be highlighted (>= 3 badges)
+      expect(badges.length).toBeGreaterThanOrEqual(3);
     });
 
     // The badge text should match

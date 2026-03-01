@@ -308,7 +308,10 @@ export default function ExportReport() {
               <CardContent className="text-xs space-y-1 font-mono">
                 <p>Hash: {selectedRun.runHash.slice(0, 24)}…</p>
                 <p>Diet Score Proxy: {selectedRun.dietScoreProxy}</p>
-                <p>Overall Cognition: {selectedRun.cognition.overall_score.toFixed(2)}</p>
+                <p>Overall Cognition (modeled proxy): {selectedRun.cognition.overall_score.toFixed(2)}</p>
+                <p className="text-muted-foreground text-[10px] pt-0.5">Stage 1: {selectedRun.modelVersions.stage1}</p>
+                <p className="text-muted-foreground text-[10px]">Stage 2: {selectedRun.modelVersions.stage2}</p>
+                <p className="text-muted-foreground text-[10px]">Stage 3: {selectedRun.modelVersions.stage3}</p>
                 <div className="flex gap-2 mt-2 flex-wrap">
                   {includePilotSummary && (
                     <Badge variant="secondary" className="text-[9px]">+ Pilot Summary</Badge>

@@ -416,8 +416,8 @@ export default function Methods() {
         <CardHeader>
           <CardTitle className="text-sm">Data Sources (Paired vs Unpaired)</CardTitle>
           <p className="text-xs text-muted-foreground mt-1">
-            <strong>Paired</strong> = inputs and outputs measured in the same participants (needed to train ML).{' '}
-            <strong>Unpaired</strong> = separate studies/knowledge bases combined as reference context.
+            <strong>Paired</strong> = inputs and outputs measured in the same cohort (required for supervised training).{' '}
+            <strong>Unpaired</strong> = reference-only context (not valid for supervised training).
             Current v0.1 simulator stages are <strong>UNPAIRED</strong> and use frozen demo coefficients.
           </p>
         </CardHeader>
