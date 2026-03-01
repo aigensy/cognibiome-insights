@@ -12,6 +12,14 @@ Access date for this snapshot set: 2026-03-01 (UTC).
 
 ---
 
+## How bundling works
+
+- **Canonical manifest path:** `/public/reference/public_datasets_manifest.json`
+- **`included: true`** in the manifest controls whether the app build treats a dataset as bundled. The UI reads this field at runtime (via a local fetch of the manifest JSON) and displays "Bundled = Yes" or "Not bundled" accordingly.
+- **Metadata-only snapshots** are used when raw datasets are too large or carry usage constraints that prevent redistribution. These snapshots contain only study IDs, titles, and official entry-point URLs — enough for offline review without redistributing restricted data.
+
+---
+
 ## NHANES — `nhanes_nutrient_reference.csv`
 
 A small table of **variable names and observed ranges** transcribed from the NHANES

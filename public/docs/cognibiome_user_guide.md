@@ -327,6 +327,12 @@ This screen is meant to clearly separate:
 - datasets actually included as local snapshots
 - datasets planned but not included (with reasons)
 
+**Bundling rule (how "Bundled = Yes" works)**
+- The status table is driven entirely by `/public/reference/public_datasets_manifest.json` — no runtime API calls are made.
+- "Bundled = Yes" means: the manifest entry has `included: true` AND the referenced file exists on disk under `/public/<file>`.
+- To add a new snapshot: place the file under `/public/reference/…`, set `included: true`, then update `row_count` and `sha256` in the manifest.
+- For datasets that are too large or have usage constraints, CogniBiome bundles a **metadata-only snapshot** (study IDs, titles, and official entry-point URLs) so the app remains offline-first and judge-reviewable without redistributing restricted data.
+
 ---
 
 ## 7.8 Help / Docs (`/help`)

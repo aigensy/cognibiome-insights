@@ -10,6 +10,7 @@ application and explains how each is used in the offline-first 3-stage model.
 Key principle: the app works fully offline without any network dependencies.
 All external sources are used exclusively as pre-prepared reference snapshots
 bundled with the project. No pilot data is transmitted externally.
+Bundling is controlled by /public/reference/public_datasets_manifest.json (included: true).
 
 | Source                                | Used?   | How used (inside the app)                                                                                                       | What to prepare                                                                          |
 | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
