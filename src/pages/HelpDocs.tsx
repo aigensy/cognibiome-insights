@@ -507,7 +507,7 @@ export default function HelpDocs() {
       const headers = rows[0] ?? [];
       const dataRows = rows.slice(1, 101);
       return (
-        <div className="overflow-auto max-h-[60vh]">
+        <div className="overflow-auto max-h-[60vh]" data-testid="csv-view">
           <p className="text-[10px] text-muted-foreground mb-2">
             {rows.length - 1} rows total (showing first {Math.min(dataRows.length, 100)})
           </p>
@@ -539,7 +539,7 @@ export default function HelpDocs() {
 
     if (mt.includes('markdown')) {
       return (
-        <div className="max-h-[60vh] overflow-auto text-[12px] leading-5">
+        <div className="max-h-[60vh] overflow-auto text-[12px] leading-5" data-testid="markdown-view">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{

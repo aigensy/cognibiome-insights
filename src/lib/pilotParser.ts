@@ -64,7 +64,7 @@ export function parsePilotCSV(
   }
 
   const headerLine = lines[0];
-  let headers = headerLine.split(',').map(h => h.trim().replace(/\r$/, ''));
+  const headers = headerLine.split(',').map(h => h.trim().replace(/\r$/, ''));
 
   // Drop Unnamed: columns, track valid indices
   const validIndices: number[] = [];
