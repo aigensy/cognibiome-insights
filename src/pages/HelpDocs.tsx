@@ -680,6 +680,19 @@ export default function HelpDocs() {
               pre: ({ children }) => (
                 <pre className="text-[11px] p-2 rounded bg-muted/30 border border-border overflow-auto">{children}</pre>
               ),
+              img: ({ src, alt }) => (
+                <span className="block my-3">
+                  <img
+                    src={src}
+                    alt={alt ?? ''}
+                    className="max-w-full rounded border border-border shadow-sm"
+                    style={{ maxHeight: '480px', objectFit: 'contain' }}
+                  />
+                  {alt && (
+                    <span className="block mt-1 text-[10px] text-muted-foreground italic">{alt}</span>
+                  )}
+                </span>
+              ),
               // External links are rendered as non-clickable plain text with a URL label.
               // This prevents accidental browser navigation during live demos.
               a: ({ href, children }) => (

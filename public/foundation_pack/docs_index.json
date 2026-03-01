@@ -265,6 +265,14 @@
       "category": "Foundation",
       "media_type": "text/markdown",
       "description": "Timing-safe speech materials: 2-min video script, 2-3 min ISEF-style judge script (Introduction/Methods/Results/Discussion/Conclusions), 20-sec abstract-mismatch answer, and quick-reference card."
+    },
+    {
+      "id": "DOC-034",
+      "title": "Methods & Rigor — Presenter Mode (User Guide)",
+      "path": "/docs/methods_rigor_presenter_mode.md",
+      "category": "Foundation",
+      "media_type": "text/markdown",
+      "description": "Annotated guide to the Methods & Rigor screen: Limitations & Scientific Wording, Leakage Guardrails, Data Sources (Paired vs Unpaired), and MiMeDB Evidence. Includes screenshots and presenter-safe wording."
     }
   ]
 }
