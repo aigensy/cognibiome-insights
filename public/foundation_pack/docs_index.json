@@ -117,16 +117,16 @@
     {
       "id": "DOC-015",
       "title": "External Sources Overview",
-      "path": "/external_sources_for_Gut_overview.txt",
-      "category": "Reference",
-      "media_type": "text/plain",
-      "description": "Source list used for evidence and background."
+      "path": "/docs/external_sources_overview.md",
+      "category": "User Docs",
+      "media_type": "text/markdown",
+      "description": "Reference datasets used in CogniBiome: which sources are bundled, how each is embedded offline, and licensing notes."
     },
     {
       "id": "DOC-016",
       "title": "Reference Data Build Notes",
       "path": "/reference/README_data_build.md",
-      "category": "Reference",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "How reference snapshots were prepared."
     },
@@ -134,23 +134,15 @@
       "id": "DOC-017",
       "title": "References & Licenses",
       "path": "/reference/REFERENCES_AND_LICENSES.md",
-      "category": "Reference",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Licenses and attribution notes for reference snapshots."
-    },
-    {
-      "id": "DOC-018",
-      "title": "Upload Manifest (SHA256)",
-      "path": "/UPLOAD_FILES_MANIFEST.md",
-      "category": "Reference",
-      "media_type": "text/markdown",
-      "description": "Integrity list of uploaded artifacts with hashes."
     },
     {
       "id": "DOC-019",
       "title": "User Guide",
       "path": "/docs/cognibiome_user_guide.md",
-      "category": "Foundation",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Judge walkthrough + full UI reference."
     },
@@ -174,7 +166,7 @@
       "id": "DOC-022",
       "title": "Public Datasets README",
       "path": "/reference/public_datasets_README.md",
-      "category": "Data",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Provenance notes for all reference snapshots included or attempted."
     },
@@ -182,7 +174,7 @@
       "id": "DOC-023",
       "title": "Implementation Plan (Lovable)",
       "path": "/docs/implementation_plan.md",
-      "category": "Foundation",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Lovable implementation plan used as build roadmap (Phase 1–3)."
     },
@@ -206,7 +198,7 @@
       "id": "DOC-026",
       "title": "Presenter Guide (Presenter Mode)",
       "path": "/docs/presenter_guide.md",
-      "category": "Foundation",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Presenter-mode demo script + control-by-control explanation."
     },
@@ -254,7 +246,7 @@
       "id": "DOC-032",
       "title": "Presentation Addendum (What we learned + Roadmap)",
       "path": "/docs/presentation_addendum.md",
-      "category": "Foundation",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. Does not modify the approved abstract."
     },
@@ -262,7 +254,7 @@
       "id": "DOC-033",
       "title": "Speech Package (Video + Judge Script + Q&A)",
       "path": "/docs/speech_package.md",
-      "category": "Foundation",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Timing-safe speech materials: 2-min video script, 2-3 min ISEF-style judge script (Introduction/Methods/Results/Discussion/Conclusions), 20-sec abstract-mismatch answer, and quick-reference card."
     },
@@ -270,7 +262,7 @@
       "id": "DOC-034",
       "title": "Methods & Rigor — Presenter Mode (User Guide)",
       "path": "/docs/methods_rigor_presenter_mode.md",
-      "category": "Foundation",
+      "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Annotated guide to the Methods & Rigor screen: Limitations & Scientific Wording, Leakage Guardrails, Data Sources (Paired vs Unpaired), and MiMeDB Evidence. Includes screenshots and presenter-safe wording."
     }

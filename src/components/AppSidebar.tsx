@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard, BarChart3, Cpu, FileOutput, ShieldCheck, GitCompare, Database,
-  BookOpen, ChevronRight, FileJson, FileText, FileSpreadsheet, ScrollText,
+  BookOpen, ChevronRight, FileJson, FileText, FileSpreadsheet,
 } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -46,7 +46,7 @@ function docIcon(mediaType: string) {
   return FileText;
 }
 
-const CATEGORY_ORDER = ['Foundation', 'Data', 'Reference'];
+const CATEGORY_ORDER = ['User Docs', 'Foundation', 'Data', 'Reference'];
 
 export function AppSidebar() {
   const { state } = useSidebar();
@@ -79,8 +79,12 @@ export function AppSidebar() {
   const searchParams = new URLSearchParams(location.search);
   const selectedDocId = searchParams.get('doc');
 
+  const visibleDocs = presenterMode
+    ? docs.filter(d => d.media_type === 'text/markdown')
+    : docs;
+
   const docsByCategory = CATEGORY_ORDER.reduce<Record<string, DocItem[]>>((acc, cat) => {
-    acc[cat] = docs.filter(d => d.category === cat);
+    acc[cat] = visibleDocs.filter(d => d.category === cat);
     return acc;
   }, {});
 
@@ -144,26 +148,10 @@ export function AppSidebar() {
                 );
               })}
 
-              {/* Presenter Guide — pinned link, visible ONLY in Presenter Mode */}
-              {presenterMode && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    isActive={location.pathname === '/help' && new URLSearchParams(location.search).get('doc') === 'DOC-026'}
-                    className="hover:bg-muted/50 w-full"
-                    onClick={() => navigate('/help?doc=DOC-026')}
-                  >
-                    <ScrollText className="h-4 w-4 shrink-0 text-primary" />
-                    {!collapsed && (
-                      <span className="font-semibold text-primary">Presenter Guide</span>
-                    )}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
 
               {/* Docs — collapsible with category sub-groups */}
-              {!presenterMode && (
-                <Collapsible open={docsOpen} onOpenChange={setDocsOpen} asChild>
-                  <SidebarMenuItem>
+              <Collapsible open={docsOpen} onOpenChange={setDocsOpen} asChild>
+                <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
                         isActive={location.pathname === '/help'}
@@ -192,9 +180,11 @@ export function AppSidebar() {
                             if (catDocs.length === 0) return null;
                             return (
                               <div key={cat}>
-                                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground px-2 py-1">
-                                  {cat}
-                                </p>
+                                {!presenterMode && (
+                                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground px-2 py-1">
+                                    {cat}
+                                  </p>
+                                )}
                                 {catDocs.map(doc => {
                                   const Icon = docIcon(doc.media_type);
                                   const isSelected = selectedDocId === doc.id && location.pathname === '/help';
@@ -221,7 +211,6 @@ export function AppSidebar() {
                     )}
                   </SidebarMenuItem>
                 </Collapsible>
-              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
