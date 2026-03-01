@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Download, Eye, Code2 } from 'lucide-react';
+import { Copy, Download, Eye, Code2, ChevronDown, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -78,52 +78,233 @@ function parseCSV(text: string): string[][] {
 // ---------------------------------------------------------------------------
 
 /** Stable key order for known object fields in evidence/sources arrays. */
-const KNOWN_OBJ_KEY_ORDER = ['source_id', 'loc', 'snippet', 'sha256', 'url', 'notes', 'dataset', 'file', 'included', 'reason'];
+const KNOWN_OBJ_KEY_ORDER = [
+  'id', 'gate_id', 'flow_id', 'screen_id', 'source_id', 'loc', 'snippet',
+  'type', 'name', 'role', 'priority', 'statement', 'rationale',
+  'acceptance_criteria', 'depends_on', 'data_entities', 'trace_to_brd',
+  'test_ids', 'notes', 'blocking', 'what_must_be_true', 'evidence_path',
+  'sha256', 'url', 'dataset', 'file', 'included', 'reason', 'description',
+];
 
 /** Determine stable column order for an array of objects. */
 function deriveColumns(items: Record<string, unknown>[]): string[] {
   const seen = new Set<string>();
   const ordered: string[] = [];
-  // First, prefer known key order
   for (const k of KNOWN_OBJ_KEY_ORDER) {
-    if (items.some(item => k in item)) {
-      ordered.push(k);
-      seen.add(k);
-    }
+    if (items.some(item => k in item)) { ordered.push(k); seen.add(k); }
   }
-  // Then any remaining keys
   for (const item of items) {
     for (const k of Object.keys(item)) {
-      if (!seen.has(k)) {
-        ordered.push(k);
-        seen.add(k);
-      }
+      if (!seen.has(k)) { ordered.push(k); seen.add(k); }
     }
   }
   return ordered;
 }
 
-/** Render a value for display in a table cell or plain text context. */
-function cellValue(v: unknown): string {
+/** Whether an array is entirely objects (not primitives). */
+function isObjArray(arr: unknown[]): arr is Record<string, unknown>[] {
+  return arr.length > 0 && arr.every(v => typeof v === 'object' && v !== null && !Array.isArray(v));
+}
+
+/** Safely coerce a leaf value to string for plain display. Never returns [object Object]. */
+function leafStr(v: unknown): string {
   if (v === undefined || v === null) return '';
   if (typeof v === 'boolean') return v ? 'yes' : 'no';
   if (typeof v === 'string' || typeof v === 'number') return String(v);
-  if (Array.isArray(v)) {
-    // Join primitive arrays; for object arrays emit compact JSON per element
-    return v.map(item =>
-      item === null || item === undefined ? ''
-        : typeof item === 'object' ? JSON.stringify(item)
-        : String(item)
-    ).join(', ');
-  }
-  return JSON.stringify(v);
+  return JSON.stringify(v, null, 2);
 }
 
-/** Long-text column keys where full wrapping is preferred over truncation. */
-const WRAP_COLS = new Set([
-  'statement', 'rationale', 'acceptance_criteria', 'notes', 'description',
-  'snippet', 'text', 'title', 'goal', 'summary', 'details', 'note',
-]);
+/** Try to parse a string as JSON; returns parsed value or null. */
+function tryParseJson(s: string): unknown | null {
+  const t = s.trim();
+  if ((t.startsWith('{') && t.endsWith('}')) || (t.startsWith('[') && t.endsWith(']'))) {
+    try { return JSON.parse(t); } catch { /* fall through */ }
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// SmartValue — type-aware recursive value renderer (never [object Object])
+// ---------------------------------------------------------------------------
+
+/**
+ * Collapsible block for large values (objects / arrays with many entries).
+ * Shows a one-line summary and expands to full pretty-printed JSON on click.
+ */
+function CollapsibleJson({ value, label }: { value: unknown; label?: string }) {
+  const [open, setOpen] = useState(false);
+  const json = JSON.stringify(value, null, 2);
+  const lineCount = json.split('\n').length;
+  const summaryLabel = label ?? (Array.isArray(value) ? `[${(value as unknown[]).length} items]` : '{object}');
+  if (lineCount <= 4) {
+    // Small enough to just show inline
+    return <pre className="text-[11px] font-mono bg-muted/30 rounded p-1 whitespace-pre-wrap break-all">{json}</pre>;
+  }
+  return (
+    <div>
+      <button
+        className="flex items-center gap-1 text-[11px] text-primary hover:underline"
+        onClick={() => setOpen(o => !o)}
+      >
+        {open ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+        {open ? 'Collapse' : `Expand ${summaryLabel}`}
+      </button>
+      {open && (
+        <pre className="mt-1 text-[11px] font-mono bg-muted/30 rounded p-2 whitespace-pre-wrap break-all overflow-auto max-h-64">
+          {json}
+        </pre>
+      )}
+    </div>
+  );
+}
+
+/** Evidence list — special treatment for [{source_id, loc, snippet}] arrays. */
+function EvidenceList({ items }: { items: Record<string, unknown>[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const PREVIEW = 3;
+  const visible = showAll ? items : items.slice(0, PREVIEW);
+  return (
+    <div className="space-y-1.5">
+      {visible.map((ev, i) => {
+        const src = leafStr(ev['source_id']);
+        const loc = leafStr(ev['loc']);
+        const snippet = leafStr(ev['snippet']);
+        const others = Object.entries(ev).filter(([k]) => !['source_id', 'loc', 'snippet'].includes(k));
+        return (
+          <div key={i} className="rounded border border-border/50 bg-muted/10 p-2 text-xs space-y-0.5">
+            <div className="flex gap-2 flex-wrap">
+              {src && <span className="font-semibold text-primary">{src}</span>}
+              {loc && <span className="text-muted-foreground font-mono">{loc}</span>}
+            </div>
+            {snippet && (
+              <p className="whitespace-pre-wrap break-words text-muted-foreground leading-relaxed">{snippet}</p>
+            )}
+            {others.map(([k, v]) => (
+              <div key={k} className="flex gap-1">
+                <span className="font-mono text-muted-foreground">{k}:</span>
+                <SmartValue value={v} compact />
+              </div>
+            ))}
+          </div>
+        );
+      })}
+      {items.length > PREVIEW && (
+        <button className="text-[10px] text-primary underline" onClick={() => setShowAll(a => !a)}>
+          {showAll ? `Show fewer` : `Show all ${items.length} evidence items`}
+        </button>
+      )}
+    </div>
+  );
+}
+
+/**
+ * SmartValue — the single, type-aware renderer for any JSON value.
+ * Used in both section-level rendering and inside table cells.
+ *
+ * compact=true → more concise, suitable for table cells (clamped height + expand).
+ */
+function SmartValue({ value, compact = false }: { value: unknown; compact?: boolean }) {
+  // Null / undefined
+  if (value === null || value === undefined) return <span className="text-muted-foreground text-xs">—</span>;
+
+  // Boolean
+  if (typeof value === 'boolean') {
+    return <Badge variant="outline" className="text-[10px]">{value ? 'yes' : 'no'}</Badge>;
+  }
+
+  // String — may be JSON-encoded nested value
+  if (typeof value === 'string') {
+    const parsed = tryParseJson(value);
+    if (parsed !== null) return <SmartValue value={parsed} compact={compact} />;
+    if (!compact) return <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{value}</p>;
+    return <ExpandableText text={value} />;
+  }
+
+  // Number
+  if (typeof value === 'number') {
+    return <span className="text-xs font-mono">{String(value)}</span>;
+  }
+
+  // Array
+  if (Array.isArray(value)) {
+    if (value.length === 0) return <span className="text-muted-foreground text-xs">[ ]</span>;
+
+    // Evidence arrays [{source_id, loc, snippet}]
+    if (isObjArray(value) && value.some(v => 'source_id' in v || 'snippet' in v)) {
+      return compact
+        ? <CollapsibleJson value={value} label={`[${value.length} evidence items]`} />
+        : <EvidenceList items={value} />;
+    }
+
+    // Generic object arrays → table
+    if (isObjArray(value)) {
+      return compact
+        ? <CollapsibleJson value={value} label={`[${value.length} items]`} />
+        : <ObjArrayTable items={value} />;
+    }
+
+    // Mixed/primitive arrays → bullet list
+    return (
+      <ul className="list-disc list-inside space-y-0.5">
+        {value.map((item, i) => (
+          <li key={i} className="text-xs leading-relaxed">
+            <SmartValue value={item} compact />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  // Plain object
+  if (typeof value === 'object') {
+    const obj = value as Record<string, unknown>;
+
+    // Wrapper objects like {summary, evidence} or {primary, evidence} — render structured
+    const keys = Object.keys(obj);
+    const hasEvidence = 'evidence' in obj && Array.isArray(obj['evidence']);
+    if (!compact && (hasEvidence || keys.length <= 8)) {
+      return <SmartObject obj={obj} />;
+    }
+
+    return <CollapsibleJson value={value} />;
+  }
+
+  return <span className="text-xs">{leafStr(value)}</span>;
+}
+
+/** Expandable text for long strings inside compact (table-cell) context. */
+function ExpandableText({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const CLAMP = 120;
+  if (text.length <= CLAMP) {
+    return <span className="text-xs whitespace-pre-wrap break-words">{text}</span>;
+  }
+  return (
+    <span className="text-xs whitespace-pre-wrap break-words">
+      {expanded ? text : text.slice(0, CLAMP) + '…'}
+      <button
+        className="ml-1 text-primary underline text-[10px]"
+        onClick={() => setExpanded(e => !e)}
+      >
+        {expanded ? 'less' : 'more'}
+      </button>
+    </span>
+  );
+}
+
+/** Renders a plain object as a key/value definition list, each value via SmartValue. */
+function SmartObject({ obj }: { obj: Record<string, unknown> }) {
+  return (
+    <dl className="space-y-1 text-xs" data-testid="obj-grid">
+      {Object.entries(obj).map(([k, v]) => (
+        <div key={k} className="grid grid-cols-[auto_1fr] gap-x-3 items-start">
+          <dt className="font-mono text-muted-foreground whitespace-nowrap pt-0.5">{k}</dt>
+          <dd><SmartValue value={v} /></dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 /** Table rendered from an array of objects, with "Show more" expand. */
 function ObjArrayTable({ items }: { items: Record<string, unknown>[] }) {
@@ -148,23 +329,11 @@ function ObjArrayTable({ items }: { items: Record<string, unknown>[] }) {
           <tbody>
             {visible.map((row, ri) => (
               <tr key={ri} className="hover:bg-muted/20 align-top">
-                {cols.map(c => {
-                  const val = cellValue(row[c]);
-                  const isWrap = WRAP_COLS.has(c);
-                  return (
-                    <td
-                      key={c}
-                      className={`border border-border px-2 py-1 font-mono ${
-                        isWrap
-                          ? 'whitespace-pre-wrap break-words max-w-[320px]'
-                          : 'whitespace-nowrap'
-                      }`}
-                      title={isWrap ? undefined : val}
-                    >
-                      {val}
-                    </td>
-                  );
-                })}
+                {cols.map(c => (
+                  <td key={c} className="border border-border px-2 py-1 max-w-[280px]">
+                    <SmartValue value={row[c]} compact />
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
@@ -182,46 +351,6 @@ function ObjArrayTable({ items }: { items: Record<string, unknown>[] }) {
   );
 }
 
-/** Pretty key/value grid for a plain object. */
-function ObjGrid({ obj }: { obj: Record<string, unknown> }) {
-  return (
-    <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-xs" data-testid="obj-grid">
-      {Object.entries(obj).map(([k, v]) => (
-        <div key={k} className="contents">
-          <dt className="font-mono text-muted-foreground whitespace-nowrap">{k}</dt>
-          <dd className="break-words">{cellValue(v)}</dd>
-        </div>
-      ))}
-    </dl>
-  );
-}
-
-/** Whether an array is entirely objects (not primitives). */
-function isObjArray(arr: unknown[]): arr is Record<string, unknown>[] {
-  return arr.length > 0 && arr.every(v => typeof v === 'object' && v !== null && !Array.isArray(v));
-}
-
-/**
- * Render a field value: array-of-objects → table, plain object → grid, else → string.
- */
-function FieldValue({ value }: { value: unknown }) {
-  if (Array.isArray(value)) {
-    if (isObjArray(value)) return <ObjArrayTable items={value} />;
-    // Primitive array
-    return (
-      <ul className="list-disc list-inside space-y-0.5">
-        {value.map((s, i) => (
-          <li key={i} className="text-xs leading-relaxed">{cellValue(s)}</li>
-        ))}
-      </ul>
-    );
-  }
-  if (typeof value === 'object' && value !== null) {
-    return <ObjGrid obj={value as Record<string, unknown>} />;
-  }
-  return <span className="text-xs leading-relaxed">{cellValue(value)}</span>;
-}
-
 /** Extract a single string from a value, or null if absent/empty. */
 function fieldStr(value: unknown): string | null {
   if (value === undefined || value === null || value === '') return null;
@@ -236,7 +365,6 @@ function fieldStr(value: unknown): string | null {
   }
   return null;
 }
-
 
 // ---------------------------------------------------------------------------
 // Section-level label map: maps JSON field names to human-readable headings
@@ -256,7 +384,10 @@ const SECTION_LABELS: Record<string, string> = {
   scope: 'Scope',
   platforms: 'Platforms',
   user_flows: 'User Flows',
+  core_flows: 'Core Flows',
+  screens: 'Screens',
   requirements: 'Requirements',
+  requirement_format: 'Requirement Format',
   unknowns: 'Open Unknowns',
   gates: 'Approval Gates',
   key_decisions: 'Key Decisions',
@@ -276,7 +407,10 @@ const SECTION_LABELS: Record<string, string> = {
   limitations: 'Limitations',
   constraints: 'Constraints',
   caveats: 'Caveats',
+  personas: 'Personas',
   pages: 'Document Pages',
+  records: 'Records',
+  provenance: 'Provenance',
 };
 
 // Fields we skip in generic rendering (schema metadata, already extracted as badges)
@@ -286,64 +420,16 @@ const SKIP_FIELDS = new Set([
   'doc_id', 'source', 'outline',
 ]);
 
-/** Render a generic field value as human-readable section content. */
-function GenericFieldValue({ value }: { value: unknown }) {
-  if (Array.isArray(value)) {
-    // Pages array: [{page, text}] — render as readable paragraphs
-    const firstItem = value[0];
-    if (
-      value.length > 0 &&
-      typeof firstItem === 'object' &&
-      firstItem !== null &&
-      'text' in (firstItem as object)
-    ) {
-      return (
-        <div className="space-y-3">
-          {(value as Array<{ page?: number; text?: string }>).map((p, i) => (
-            <div key={i}>
-              {p.page !== undefined && (
-                <p className="text-[10px] font-semibold text-muted-foreground mb-0.5">Page {p.page}</p>
-              )}
-              <p className="text-xs leading-relaxed whitespace-pre-wrap">{p.text ?? ''}</p>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    if (isObjArray(value)) return <ObjArrayTable items={value} />;
-    return (
-      <ul className="list-disc list-inside space-y-0.5">
-        {value.map((s, i) => <li key={i} className="text-xs leading-relaxed">{cellValue(s)}</li>)}
-      </ul>
-    );
-  }
-  if (typeof value === 'object' && value !== null) {
-    return <ObjGrid obj={value as Record<string, unknown>} />;
-  }
-  return <p className="text-xs leading-relaxed whitespace-pre-wrap">{cellValue(value)}</p>;
-}
-
 /**
  * HumanView — renders a JSON doc as human-readable sections.
- * Covers all known field schemas generically; unknown fields get auto-labelled.
+ * Every value is rendered through SmartValue, which never shows [object Object].
  */
 function HumanView({ parsed }: { parsed: unknown }) {
   // Handle top-level arrays (e.g. manifest JSON)
   if (Array.isArray(parsed)) {
-    if (isObjArray(parsed)) {
-      return (
-        <div className="overflow-auto max-h-[60vh] p-1" data-testid="human-view">
-          <ObjArrayTable items={parsed} />
-        </div>
-      );
-    }
     return (
       <div className="overflow-auto max-h-[60vh] p-1" data-testid="human-view">
-        <ul className="list-disc list-inside text-xs space-y-0.5">
-          {(parsed as unknown[]).map((v, i) => (
-            <li key={i}>{cellValue(v)}</li>
-          ))}
-        </ul>
+        <SmartValue value={parsed} />
       </div>
     );
   }
@@ -365,13 +451,14 @@ function HumanView({ parsed }: { parsed: unknown }) {
 
   const Section = ({ heading, children }: { heading: string; children: React.ReactNode }) => (
     <div className="mb-4">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">{heading}</h3>
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1 border-b border-border/30 pb-0.5">
+        {heading}
+      </h3>
       {children}
     </div>
   );
 
-  // If pages[] is present and non-empty, skip full_text / full_content — they are just
-  // a concatenation of the page texts and would duplicate what the Pages section shows.
+  // If pages[] is present and non-empty, skip full_text / full_content — duplicate of Pages section.
   const hasPages = Array.isArray(doc['pages']) && (doc['pages'] as unknown[]).length > 0;
   const effectiveSkip = hasPages
     ? new Set([...SKIP_FIELDS, 'full_text', 'full_content', 'text'])
@@ -410,7 +497,7 @@ function HumanView({ parsed }: { parsed: unknown }) {
 
       {sections.map(({ key, heading, value }) => (
         <Section key={key} heading={heading}>
-          <GenericFieldValue value={value} />
+          <SmartValue value={value} />
         </Section>
       ))}
 

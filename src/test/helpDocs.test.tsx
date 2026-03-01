@@ -311,20 +311,18 @@ describe('HelpDocs (TST-007)', () => {
     expect(screen.queryByText(/Purpose \/ Objective/i)).not.toBeInTheDocument();
   });
 
-  it('D.2 — JSON doc with evidence as array-of-objects renders as a table', async () => {
+  it('D.2 — JSON doc with evidence as array-of-objects renders readably (not [object Object])', async () => {
     global.fetch = makeFetch() as unknown as typeof fetch;
     renderWithDoc('D001d');
     await waitFor(() => {
       expect(screen.getByTestId('human-view')).toBeInTheDocument();
     });
-    // Should render as obj-array-table, not raw JSON blob
-    expect(screen.getByTestId('obj-array-table')).toBeInTheDocument();
-    // Column headers should be present
-    expect(screen.getByText('source_id')).toBeInTheDocument();
-    expect(screen.getByText('snippet')).toBeInTheDocument();
-    // Row values should be visible
+    // Row values (source_id, snippet content) must be visible — not hidden behind [object Object]
     expect(screen.getByText('src-1')).toBeInTheDocument();
-    // Must NOT show raw "{" JSON blob
+    expect(screen.getByText('First snippet')).toBeInTheDocument();
+    expect(screen.getByText('src-2')).toBeInTheDocument();
+    // Must NOT show raw "[object Object]" or undecorated "{" JSON blob
+    expect(screen.queryByText(/\[object Object\]/)).not.toBeInTheDocument();
     expect(screen.queryByText(/^\{/)).not.toBeInTheDocument();
   });
 
