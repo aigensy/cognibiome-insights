@@ -345,20 +345,27 @@ function HumanView({ parsed }: { parsed: unknown }) {
     </div>
   );
 
+  // If pages[] is present and non-empty, skip full_text / full_content — they are just
+  // a concatenation of the page texts and would duplicate what the Pages section shows.
+  const hasPages = Array.isArray(doc['pages']) && (doc['pages'] as unknown[]).length > 0;
+  const effectiveSkip = hasPages
+    ? new Set([...SKIP_FIELDS, 'full_text', 'full_content', 'text'])
+    : SKIP_FIELDS;
+
   // Collect sections: known fields first (in SECTION_LABELS order), then any remainder
   const renderedKeys = new Set<string>();
   const sections: Array<{ key: string; heading: string; value: unknown }> = [];
 
   for (const key of Object.keys(SECTION_LABELS)) {
     const val = doc[key];
-    if (val !== undefined && val !== null && val !== '' && !SKIP_FIELDS.has(key)) {
+    if (val !== undefined && val !== null && val !== '' && !effectiveSkip.has(key)) {
       sections.push({ key, heading: SECTION_LABELS[key], value: val });
       renderedKeys.add(key);
     }
   }
 
   for (const key of Object.keys(doc)) {
-    if (!renderedKeys.has(key) && !SKIP_FIELDS.has(key)) {
+    if (!renderedKeys.has(key) && !effectiveSkip.has(key)) {
       const val = doc[key];
       if (val !== undefined && val !== null && val !== '') {
         const heading = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
