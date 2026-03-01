@@ -212,27 +212,95 @@ function fieldStr(value: unknown): string | null {
   return null;
 }
 
-/** Extract a list of strings from array values, or null if absent/empty. */
-function fieldStrList(value: unknown): string[] | null {
-  if (!Array.isArray(value) || value.length === 0) return null;
-  const results: string[] = [];
-  for (const item of value) {
-    if (typeof item === 'string') { results.push(item); continue; }
-    for (const key of ['assumption', 'question', 'requirement', 'text', 'description', 'title', 'statement', 'name', 'primary']) {
-      if (typeof (item as Record<string, unknown>)[key] === 'string') {
-        const prefix = (item as Record<string, unknown>)['id'] ? `[${(item as Record<string, unknown>)['id']}] ` : '';
-        results.push(`${prefix}${(item as Record<string, unknown>)[key]}`);
-        break;
-      }
+
+// ---------------------------------------------------------------------------
+// Section-level label map: maps JSON field names to human-readable headings
+// ---------------------------------------------------------------------------
+const SECTION_LABELS: Record<string, string> = {
+  title: 'Title / Document',
+  name: 'Name',
+  purpose: 'Purpose / Objective',
+  objective: 'Purpose / Objective',
+  summary: 'Summary',
+  description: 'Description',
+  goal: 'Goal',
+  business_idea: 'Business Idea',
+  problem_statement: 'Problem Statement',
+  primary_user: 'Primary User',
+  success_metrics: 'Success Metrics',
+  scope: 'Scope',
+  platforms: 'Platforms',
+  user_flows: 'User Flows',
+  requirements: 'Requirements',
+  unknowns: 'Open Unknowns',
+  gates: 'Approval Gates',
+  key_decisions: 'Key Decisions',
+  features: 'Features',
+  decisions: 'Decisions',
+  key_points: 'Key Points',
+  modules: 'Modules',
+  assumptions: 'Assumptions',
+  questions: 'Open Questions',
+  open_questions: 'Open Questions',
+  risks: 'Risks',
+  non_goals: 'Non-Goals',
+  data_sources: 'Data Sources',
+  sources: 'Sources',
+  references: 'References',
+  evidence: 'Evidence',
+  limitations: 'Limitations',
+  constraints: 'Constraints',
+  caveats: 'Caveats',
+  pages: 'Document Pages',
+};
+
+// Fields we skip in generic rendering (schema metadata, already extracted as badges)
+const SKIP_FIELDS = new Set([
+  'meta', 'schema_version', 'template_id', 'template_version', 'template_kind',
+  'phase', 'state', 'status', 'generated_utc', 'last_updated_utc', 'build_timestamp',
+  'doc_id', 'source', 'outline',
+]);
+
+/** Render a generic field value as human-readable section content. */
+function GenericFieldValue({ value }: { value: unknown }) {
+  if (Array.isArray(value)) {
+    // Pages array: [{page, text}] — render as readable paragraphs
+    const firstItem = value[0];
+    if (
+      value.length > 0 &&
+      typeof firstItem === 'object' &&
+      firstItem !== null &&
+      'text' in (firstItem as object)
+    ) {
+      return (
+        <div className="space-y-3">
+          {(value as Array<{ page?: number; text?: string }>).map((p, i) => (
+            <div key={i}>
+              {p.page !== undefined && (
+                <p className="text-[10px] font-semibold text-muted-foreground mb-0.5">Page {p.page}</p>
+              )}
+              <p className="text-xs leading-relaxed whitespace-pre-wrap">{p.text ?? ''}</p>
+            </div>
+          ))}
+        </div>
+      );
     }
+    if (isObjArray(value)) return <ObjArrayTable items={value} />;
+    return (
+      <ul className="list-disc list-inside space-y-0.5">
+        {value.map((s, i) => <li key={i} className="text-xs leading-relaxed">{cellValue(s)}</li>)}
+      </ul>
+    );
   }
-  return results.length > 0 ? results : null;
+  if (typeof value === 'object' && value !== null) {
+    return <ObjGrid obj={value as Record<string, unknown>} />;
+  }
+  return <p className="text-xs leading-relaxed whitespace-pre-wrap">{cellValue(value)}</p>;
 }
 
 /**
  * HumanView — renders a JSON doc as human-readable sections.
- * RULE: if a field is absent, do not render that section at all.
- * No "cannot confirm (missing field)" text is shown to the user.
+ * Covers all known field schemas generically; unknown fields get auto-labelled.
  */
 function HumanView({ parsed }: { parsed: unknown }) {
   // Handle top-level arrays (e.g. manifest JSON)
@@ -266,42 +334,9 @@ function HumanView({ parsed }: { parsed: unknown }) {
   const doc = parsed as Record<string, unknown>;
   const meta = doc['meta'] as Record<string, unknown> | undefined;
 
-  // Extract optional fields — null means absent/empty, do not render section
-  const title = fieldStr(doc['title'] ?? doc['name'] ?? meta?.['canonical_path'] ?? doc['template_id']);
-  const purposeRaw = doc['purpose'] ?? doc['objective'] ?? doc['summary'] ?? doc['description'];
-  const purpose = typeof purposeRaw === 'object' && purposeRaw !== null
-    ? fieldStr((purposeRaw as Record<string, unknown>)['primary'] ?? (purposeRaw as Record<string, unknown>)['text'])
-    : fieldStr(purposeRaw);
-
   const phase = fieldStr(doc['phase'] ?? meta?.['adlc_phase']);
   const state = fieldStr(meta?.['adlc_state'] ?? doc['state'] ?? doc['status']);
   const updated = fieldStr(meta?.['last_updated_utc'] ?? doc['last_updated_utc'] ?? doc['generated_utc'] ?? doc['build_timestamp']);
-
-  // Sections that render as string lists (if extractable)
-  const decisionsRaw = doc['key_decisions'] ?? doc['features'] ?? doc['decisions'] ?? doc['key_points'] ?? doc['modules'];
-  const decisionsStr = fieldStrList(decisionsRaw);
-  // For decisions, if it's an obj-array, fall through to generic rendering below
-  const decisionsFull = Array.isArray(decisionsRaw) && isObjArray(decisionsRaw as unknown[]) ? decisionsRaw as Record<string, unknown>[] : null;
-
-  const assumptionsStr = fieldStrList(doc['assumptions']);
-  const assumptionsFull = Array.isArray(doc['assumptions']) && isObjArray(doc['assumptions'] as unknown[]) ? doc['assumptions'] as Record<string, unknown>[] : null;
-
-  const questionsStr = fieldStrList(doc['questions'] ?? doc['open_questions']);
-  const questionsFull = Array.isArray(doc['questions'] ?? doc['open_questions']) && isObjArray((doc['questions'] ?? doc['open_questions']) as unknown[]) ? (doc['questions'] ?? doc['open_questions']) as Record<string, unknown>[] : null;
-
-  const risksStr = fieldStrList(doc['risks'] ?? doc['non_goals']);
-  const risksFull = Array.isArray(doc['risks'] ?? doc['non_goals']) && isObjArray((doc['risks'] ?? doc['non_goals']) as unknown[]) ? (doc['risks'] ?? doc['non_goals']) as Record<string, unknown>[] : null;
-
-  const sourcesRaw = doc['data_sources'] ?? doc['sources'] ?? doc['references'] ?? doc['evidence'];
-  const sourcesStr = fieldStrList(sourcesRaw);
-  const sourcesFull = Array.isArray(sourcesRaw) && isObjArray(sourcesRaw as unknown[]) ? sourcesRaw as Record<string, unknown>[] : null;
-
-  const limitsRaw = doc['limitations'] ?? doc['constraints'] ?? doc['caveats'];
-  const limitsStr = fieldStrList(limitsRaw);
-  const limitsFull = Array.isArray(limitsRaw) && isObjArray(limitsRaw as unknown[]) ? limitsRaw as Record<string, unknown>[] : null;
-
-  const hasAny = title || purpose || decisionsStr || decisionsFull || assumptionsStr || assumptionsFull ||
-    questionsStr || questionsFull || risksStr || risksFull || sourcesStr || sourcesFull || limitsStr || limitsFull;
 
   const Section = ({ heading, children }: { heading: string; children: React.ReactNode }) => (
     <div className="mb-4">
@@ -310,20 +345,27 @@ function HumanView({ parsed }: { parsed: unknown }) {
     </div>
   );
 
-  const StrListSection = ({ heading, items, full }: { heading: string; items: string[] | null; full: Record<string, unknown>[] | null }) => {
-    if (!items && !full) return null;
-    return (
-      <Section heading={heading}>
-        {full ? (
-          <ObjArrayTable items={full} />
-        ) : (
-          <ul className="list-disc list-inside space-y-0.5">
-            {items!.map((s, i) => <li key={i} className="text-xs leading-relaxed">{s}</li>)}
-          </ul>
-        )}
-      </Section>
-    );
-  };
+  // Collect sections: known fields first (in SECTION_LABELS order), then any remainder
+  const renderedKeys = new Set<string>();
+  const sections: Array<{ key: string; heading: string; value: unknown }> = [];
+
+  for (const key of Object.keys(SECTION_LABELS)) {
+    const val = doc[key];
+    if (val !== undefined && val !== null && val !== '' && !SKIP_FIELDS.has(key)) {
+      sections.push({ key, heading: SECTION_LABELS[key], value: val });
+      renderedKeys.add(key);
+    }
+  }
+
+  for (const key of Object.keys(doc)) {
+    if (!renderedKeys.has(key) && !SKIP_FIELDS.has(key)) {
+      const val = doc[key];
+      if (val !== undefined && val !== null && val !== '') {
+        const heading = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        sections.push({ key, heading, value: val });
+      }
+    }
+  }
 
   return (
     <div className="overflow-auto max-h-[60vh] space-y-1 p-1" data-testid="human-view">
@@ -334,18 +376,15 @@ function HumanView({ parsed }: { parsed: unknown }) {
         {updated && <Badge variant="outline" className="text-[10px]">Updated: {updated.replace('T', ' ').replace('Z', ' UTC')}</Badge>}
       </div>
 
-      {title && <Section heading="Title / Document"><p className="text-xs leading-relaxed">{title}</p></Section>}
-      {purpose && <Section heading="Purpose / Objective"><p className="text-xs leading-relaxed">{purpose}</p></Section>}
-      <StrListSection heading="Key Decisions / Modules" items={decisionsStr} full={decisionsFull} />
-      <StrListSection heading="Assumptions" items={assumptionsStr} full={assumptionsFull} />
-      <StrListSection heading="Open Questions" items={questionsStr} full={questionsFull} />
-      <StrListSection heading="Risks / Non-Goals" items={risksStr} full={risksFull} />
-      <StrListSection heading="Data Sources / Evidence" items={sourcesStr} full={sourcesFull} />
-      <StrListSection heading="Limitations / Constraints" items={limitsStr} full={limitsFull} />
+      {sections.map(({ key, heading, value }) => (
+        <Section key={key} heading={heading}>
+          <GenericFieldValue value={value} />
+        </Section>
+      ))}
 
-      {!hasAny && (
+      {sections.length === 0 && (
         <p className="text-xs italic text-muted-foreground">
-          This document uses a custom schema. Switch to Raw JSON to view full content.
+          No displayable fields found. Switch to Raw JSON to view full content.
         </p>
       )}
     </div>

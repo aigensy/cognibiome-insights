@@ -631,12 +631,5 @@
     "brd_to_srs_rule": "Each SRS requirement must reference at least one BRD-REQ id.",
     "srs_to_tests_rule": "Each SRS requirement must reference at least one TST id (placeholder allowed).",
     "notes": "Some requirements depend on blocking open questions; see open_questions."
-  },
-  "open_questions": [
-    "OQ-001",
-    "OQ-002",
-    "OQ-003",
-    "OQ-005",
-    "OQ-006"
-  ]
+  }
 }
