@@ -249,6 +249,14 @@
       "category": "Data",
       "media_type": "application/json",
       "description": "Small, offline index of Metabolomics Workbench studies relevant to gut microbiome/metabolome topics."
+    },
+    {
+      "id": "DOC-032",
+      "title": "Presentation Addendum (What we learned + Roadmap)",
+      "path": "/docs/presentation_addendum.md",
+      "category": "Foundation",
+      "media_type": "text/markdown",
+      "description": "Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. Does not modify the approved abstract."
     }
   ]
 }

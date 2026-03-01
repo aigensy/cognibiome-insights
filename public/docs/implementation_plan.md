@@ -25,6 +25,53 @@
 ## Phase 4: Evidence Library
 15. **Evidence panel integration** — Read `/public/reference/usda_fdc.json` for nutrient definitions, `reactome.json` + `wikipathways.json` for pathway cards, `mimedb.json` for microbe↔metabolite links (empty-state if unpopulated). All labeled as "illustrative / proxy / supports plausibility" — not official full exports.
 
+## Phase 4+: Backend ML Roadmap (Future — not in this build)
+
+> **Status:** planned. None of the items below exist in the current browser-only v0.1 build.
+> The simulator currently runs on frozen demo coefficients (directional placeholders, not trained results).
+> This section documents what Phase 2+ would look like when paired datasets and compute access are available.
+
+### Current vs Future — explicit distinction
+
+| Aspect | Current (v0.1) | Future (Phase 2+) |
+|---|---|---|
+| Computation | Browser-only (Vite/React) | Python/FastAPI backend |
+| Model parameters | Frozen demo JSON artifacts (`/public/models/stage*.json`) | Trained artifacts exported from offline pipeline |
+| Training data | None — no training happens in this build | Paired public datasets where access exists |
+| Pilot dataset role | Validation-only analytics (n=66) | Continues as held-out validation |
+| Deployment | Offline-first PWA | PWA frontend + API backend (hybrid) |
+
+### Planned backend components (Phase 2+)
+
+20. **Python training pipeline** — Offline script (not in-browser) that:
+    - Ingests paired public datasets (see dataset targets below)
+    - Trains stage-wise models (scikit-learn or XGBoost for interpretability)
+    - Exports `stage1.json`, `stage2.json`, `stage3.json` replacing demo artifacts
+    - Generates `MODEL_CARD.md` documenting dataset, splits, metrics per stage
+
+21. **FastAPI backend (optional)** — Lightweight REST layer to:
+    - Accept diet inputs from the React frontend
+    - Return simulation outputs from loaded stage artifacts
+    - Support SHAP explainability payloads for feature importance display
+
+22. **Dataset reality check — target datasets per stage**
+
+    | Stage | Target dataset | Constraint |
+    |---|---|---|
+    | D→X (Diet→Microbiome) | ZOE PREDICT | Public metagenomes available; richer metadata may require data access request |
+    | X→M (Microbiome→Metabolites) | iHMP / IBDMDB | IBD population; longitudinal paired multi-omics; access via HMP portal |
+    | M→Y (Metabolites→Cognition) | No open dataset found yet | Requires new approved study or research partnership |
+
+23. **Artifact swap contract** — The React frontend is designed to accept replacement stage JSON files
+    without code changes. Replace `/public/models/stage*.json` with trained artifact exports and the
+    simulator will use the new coefficients automatically. No frontend rebuild required.
+
+### What is NOT planned (in any phase)
+
+- In-browser model training (not feasible for omics data sizes)
+- Claiming HMP Phase 1 / NHANES as IBD training sources (HMP1 is a healthy-baseline resource; NHANES is UI context only in this build)
+- Skipping the MODEL_CARD.md when replacing artifacts (provenance must be documented)
+
 ## Phase 5: Presenter Mode, Reset & Admin
 16. **Presenter Mode** — Toggle hides admin/advanced controls. Shows "2-minute demo path" stepper: Pilot Results → Methods & Rigor → Simulator → Export.
 17. **Reset demo state** — Confirmation dialog → restore default scenario values, clear stored runs from localStorage.

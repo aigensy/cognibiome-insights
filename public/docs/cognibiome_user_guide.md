@@ -51,6 +51,16 @@ This app is a **computational modeling + visualization tool**:
 - The teen pilot dataset (n=66) is **de-identified** and **validation-only** (never used for training).
 - Microbiome and metabolite values shown in the app are **MODELED / ESTIMATED proxies**, not measured teen biomarkers.
 
+### Measured vs Modeled — explicit summary
+
+| What you see in the app | Is it measured or modeled? |
+|---|---|
+| Pilot Results scatter plots, correlations, summary stats | **Measured** — computed live from the real `pilot_dataset_n66.csv` |
+| Simulator microbiome outputs | **Modeled proxy** — frozen demo coefficients, not measured biomarkers |
+| Simulator metabolite outputs | **Modeled proxy** — frozen demo coefficients, not measured biomarkers |
+| Simulator cognitive domain outputs | **Modeled proxy** — frozen demo coefficients, not measured biomarkers |
+| NHANES reference ranges panel | **UI reference context only** — no participant data; does not affect model math |
+
 These guardrails align with the project plan’s pipeline framing (diet → microbiome → metabolite → cognition) and its statement that the pilot dataset is for validation only.  
 
 ---
@@ -215,6 +225,10 @@ Admin mode does **not** enable model-artifact uploads in this build.
 - Pearson correlations: diet_score vs each cognitive metric
 - scatter plots for each metric vs diet_score
 
+> **Note:** p-values shown in the Correlations table are **approximate as displayed in-app**
+> (Abramowitz & Stegun formula; not corrected for multiple comparisons). Interpret as descriptive
+> signals, not confirmatory statistics.
+
 **Badges**
 - “REAL DATA (de-identified teen pilot, n=66) • computed live • no synthetic points”
 - dataset source (bundled vs upload)
@@ -262,7 +276,9 @@ If the uploaded CSV contains multiple Diet Score columns with different values, 
 - Metabolite proxy outputs (modeled)
 - Cognitive outputs (modeled)
 - Provenance panel
-  - full Run Hash (for reproducibility)
+  - full Run Hash (for reproducibility): a SHA-256 digest of `{normalized_inputs, model_versions}`.
+    The same slider values with the same artifact versions always produce the identical hash —
+    making every run independently verifiable and auditable.
   - demo-params disclaimer (hidden in Presenter mode)
 
 **NHANES reference ranges panel**
@@ -418,6 +434,7 @@ This repo ships:
 | DOC-024 | Project Plan (PDF → JSON) | `/docs/project_plan_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Plan.pdf, stored as JSON for offline Docs viewer. |
 | DOC-025 | Project Abstract (PDF → JSON) | `/docs/project_abstract_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Abstract.pdf, stored as JSON for offline Docs viewer. |
 | DOC-026 | Presenter Guide (Presenter Mode) | `/docs/presenter_guide.md` | MD | Foundation | Help / Docs viewer | Presenter-mode demo script + control-by-control explanation. |
+| DOC-032 | Presentation Addendum (What we learned + Roadmap) | `/docs/presentation_addendum.md` | MD | Foundation | Help / Docs viewer | Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. |
 
 ---
 
