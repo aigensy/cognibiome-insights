@@ -50,11 +50,14 @@ export default function Dashboard() {
 
       {presenterMode && (
         <Card className="border-primary/30 bg-primary/5">
-          <CardContent className="pt-4">
-            <p className="text-sm font-medium text-primary">🎯 2-Minute Demo Path</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Pilot Results → Simulator → Compare
-            </p>
+          <CardContent className="pt-4 space-y-1">
+            <p className="text-sm font-semibold text-primary tracking-tight">Demo Sequence — Judge Path</p>
+            <ol className="text-xs text-muted-foreground space-y-0.5 list-decimal list-inside">
+              <li>Pilot Results — real n=66 data, correlations</li>
+              <li>Simulator — deterministic diet-to-cognition pipeline</li>
+              <li>Methods &amp; Rigor — disclaimers, data-source table</li>
+              <li>Export Report — auditable run artifact</li>
+            </ol>
           </CardContent>
         </Card>
       )}

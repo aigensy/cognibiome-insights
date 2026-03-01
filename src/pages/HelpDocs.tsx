@@ -680,6 +680,22 @@ export default function HelpDocs() {
               pre: ({ children }) => (
                 <pre className="text-[11px] p-2 rounded bg-muted/30 border border-border overflow-auto">{children}</pre>
               ),
+              // External links are rendered as non-clickable plain text with a URL label.
+              // This prevents accidental browser navigation during live demos.
+              a: ({ href, children }) => (
+                <span
+                  className="inline-flex flex-wrap items-baseline gap-x-1"
+                  data-testid="safe-link"
+                  data-href={href}
+                >
+                  <span className="text-primary">{children}</span>
+                  {href && (
+                    <span className="text-[10px] font-mono text-muted-foreground break-all">
+                      [{href}]
+                    </span>
+                  )}
+                </span>
+              ),
             }}
           >
             {content}

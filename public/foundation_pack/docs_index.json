@@ -257,6 +257,14 @@
       "category": "Foundation",
       "media_type": "text/markdown",
       "description": "Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. Does not modify the approved abstract."
+    },
+    {
+      "id": "DOC-033",
+      "title": "Speech Package (Video + Judge Script + Q&A)",
+      "path": "/docs/speech_package.md",
+      "category": "Foundation",
+      "media_type": "text/markdown",
+      "description": "Timing-safe speech materials: 2-min video script, 2-3 min ISEF-style judge script (Introduction/Methods/Results/Discussion/Conclusions), 20-sec abstract-mismatch answer, and quick-reference card."
     }
   ]
 }

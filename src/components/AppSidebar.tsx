@@ -24,6 +24,9 @@ interface DocItem {
   description: string;
 }
 
+// Items visible in presenter mode (full judge flow: Pilot → Simulator → Methods → Export)
+const PRESENTER_VISIBLE = new Set(['/', '/pilot', '/simulator', '/compare', '/methods', '/export']);
+
 // Items that are on the primary "judge path" shown prominently in presenter mode
 const JUDGE_PATH = new Set(['/', '/pilot', '/simulator', '/compare']);
 
@@ -69,7 +72,7 @@ export function AppSidebar() {
   }, [location.pathname]);
 
   const visibleItems = presenterMode
-    ? navItems.filter(item => JUDGE_PATH.has(item.url))
+    ? navItems.filter(item => PRESENTER_VISIBLE.has(item.url))
     : navItems;
 
   // Current selected doc id from URL

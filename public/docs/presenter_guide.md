@@ -88,13 +88,15 @@ Thank you. I would be happy to answer questions about the biology, the data limi
 
 Presenter Mode is a "demo simplifier":
 
-- The sidebar shows **only** the four judge-path screens:
+- The sidebar shows the **full judge-flow screens** (six items):
   - Dashboard (`/`)
   - Pilot Results (`/pilot`)
   - Simulator (`/simulator`)
   - Compare Scenarios (`/compare`)
-- Plus this **Presenter Guide** link (the only doc accessible in Presenter Mode).
-- The full Docs section, Export Report, Methods & Rigor, and Public Datasets are hidden to reduce visual noise.
+  - Methods & Rigor (`/methods`)
+  - Export Report (`/export`)
+- Plus this **Presenter Guide** link (pinned, always accessible in Presenter Mode).
+- The Docs section and Public Datasets are hidden to reduce visual noise during the demo.
 - The app remains **offline-first** and makes **no runtime API calls** regardless of mode.
 
 ---
