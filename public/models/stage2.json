@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "id": "demo-v0-stage2",
+    "stage": "microbiome_to_metabolites",
+    "label": "Demo Param Set v0 — Stage 2 (X→M)",
+    "description": "Demo parameters (directional), replaceable. Higher beneficial microbiota → higher SCFAs and 5-HTP precursor index.",
+    "version": "0.1.0",
+    "created": "2026-03-01",
+    "is_demo": true
+  },
+  "coefficients": {
+    "acetate": {
+      "intercept": 0.3,
+      "bifidobacterium": 0.4,
+      "lactobacillus": 0.3,
+      "fb_ratio": -0.08
+    },
+    "propionate": {
+      "intercept": 0.25,
+      "bifidobacterium": 0.35,
+      "lactobacillus": 0.25,
+      "fb_ratio": -0.06
+    },
+    "butyrate": {
+      "intercept": 0.2,
+      "bifidobacterium": 0.45,
+      "lactobacillus": 0.35,
+      "fb_ratio": -0.10
+    },
+    "five_htp_index": {
+      "intercept": 0.15,
+      "bifidobacterium": 0.3,
+      "lactobacillus": 0.2,
+      "fb_ratio": -0.05
+    }
+  },
+  "output_ranges": {
+    "acetate": { "min": 0, "max": 1, "unit": "standardized score (proxy)" },
+    "propionate": { "min": 0, "max": 1, "unit": "standardized score (proxy)" },
+    "butyrate": { "min": 0, "max": 1, "unit": "standardized score (proxy)" },
+    "five_htp_index": { "min": 0, "max": 1, "unit": "precursor proxy index" }
+  }
+}
