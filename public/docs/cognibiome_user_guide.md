@@ -20,6 +20,10 @@ It does **not** claim that model artifacts were trained inside the app. The simu
 
 ## 1. 2-minute judge demo path (recommended)
 
+> **Before you start:** click the **Presenter** button in the top-right corner so it reads **Presenter ON**.
+> This trims the sidebar to only the four judge-path screens and hides all developer controls,
+> giving judges a clean, distraction-free walkthrough.
+
 1) **Pilot Results**  
    Show the “REAL DATA” badge and the live scatter plots (diet score vs cognitive metrics).
 
@@ -153,15 +157,23 @@ Routes:
 - Public Datasets (`/datasets`)
 
 ### 6.2 Top bar controls
-- **Presenter Mode toggle**
-  - ON: sidebar shows only the “judge path” items (Dashboard, Pilot Results, Simulator, Compare)
-  - OFF: shows all screens
+
+#### Presenter Mode
+Toggle the **Presenter** button (top-right) to switch between modes.
+
+| State | Label shown | What changes |
+|---|---|---|
+| OFF (default) | "Presenter" | All screens visible; Reset and Admin badge visible |
+| ON | **"Presenter ON"** | Sidebar trimmed to 4 judge-path screens; Docs hidden; Reset hidden; Admin badge hidden; sidebar group label changes to "Judge Path"; "PRESENTER MODE" badge shown under version badge |
+
+The four screens kept visible in Presenter ON mode are: **Dashboard**, **Pilot Results**, **Simulator**, **Compare Scenarios**.
+
+Toggling Presenter ON does **not** delete data — all saved runs and the loaded pilot dataset are preserved. Toggle it off at any time to restore the full view.
+
 - **Reset Demo State** (hidden in Presenter Mode)
   - clears saved runs from localStorage
   - resets simulator sliders to defaults
   - clears loaded pilot dataset (it will reload automatically)
-- **Docs button**
-  - opens Help / Docs (`/help`)
 - **Offline indicator**
   - shows OFFLINE when the browser reports no network
 
