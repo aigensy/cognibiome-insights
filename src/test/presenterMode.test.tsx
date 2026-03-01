@@ -291,11 +291,11 @@ describe('Methods — disclaimers section highlight', () => {
       expect(screen.getByTestId('disclaimers-card')).toBeInTheDocument();
     });
 
-    // "Point to this" badge should appear in presenter mode
-    expect(screen.getByText('Point to this')).toBeInTheDocument();
+    // "Presenter cue" badge should appear in presenter mode
+    expect(screen.getByText('Presenter cue')).toBeInTheDocument();
   });
 
-  it('renders the disclaimers card without "Point to this" when presenterMode=false', async () => {
+  it('renders the disclaimers card without "Presenter cue" when presenterMode=false', async () => {
     const useAppState = await getUseAppState();
     useAppState.mockReturnValue(makeContextValue({ presenterMode: false }));
 
@@ -310,7 +310,7 @@ describe('Methods — disclaimers section highlight', () => {
       expect(screen.getByTestId('disclaimers-card')).toBeInTheDocument();
     });
 
-    expect(screen.queryByText('Point to this')).not.toBeInTheDocument();
+    expect(screen.queryByText('Presenter cue')).not.toBeInTheDocument();
   });
 
   it('data sources table shows "Current v0.1: frozen demo coefficients" wording', async () => {

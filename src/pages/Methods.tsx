@@ -20,28 +20,28 @@ const dataSources = [
     stage: 'D→X',
     inputs: 'Fiber, Sugar, Sat Fat, Omega-3',
     outputs: 'Bifidobacterium, Lactobacillus, F:B ratio',
-    datasets: 'Current v0.1: frozen demo coefficients (not trained on NHANES). Future plan: train on paired datasets where access exists (e.g. ZOE PREDICT; iHMP/IBDMDB).',
+    datasets: 'Current v0.1 (UNPAIRED): frozen demo coefficients (not trained on NHANES). Future (PAIRED): train on paired cohorts where permitted (e.g., ZOE PREDICT; iHMP/IBDMDB).',
     notes: 'NHANES codebook used as UI reference context only — not a training source in this build.',
   },
   {
     stage: 'X→M',
     inputs: 'Microbiome proxies',
     outputs: 'Acetate, Propionate, Butyrate, 5-HTP Index',
-    datasets: 'Current v0.1: frozen demo coefficients. Future plan: train on iHMP/IBDMDB (longitudinal paired multi-omics) where available.',
+    datasets: 'Current v0.1 (UNPAIRED): frozen demo coefficients. Future (PAIRED): train on iHMP/IBDMDB (longitudinal paired multi-omics) where available.',
     notes: 'MiMeDB evidence used for reference context; all microbe↔metabolite links are labeled unconfirmed.',
   },
   {
     stage: 'M→Y',
     inputs: 'Metabolite proxies',
     outputs: 'Stroop, Language, Memory, Logical, Overall',
-    datasets: 'Current v0.1: frozen demo coefficients. Future plan: requires a properly paired cohort with cognitive + metabolomics data.',
+    datasets: 'Current v0.1 (UNPAIRED): frozen demo coefficients. Future (PAIRED): requires a properly paired cohort with cognitive + metabolomics data.',
     notes: 'Pilot dataset (n=66) is validation-only — never used for training.',
   },
   {
     stage: 'Validation',
     inputs: 'Diet Score',
-    outputs: 'Cognitive metrics',
-    datasets: 'Teen pilot (n=66, de-identified)',
+    outputs: 'Cognitive metrics (Diet Score ↔ Cognitive metrics only)',
+    datasets: 'Teen pilot (n=66, de-identified) — PAIRED for Diet Score ↔ Cognitive metrics only. No paired microbiome or metabolomics in pilot.',
     notes: 'De-identified. Never used for training.',
   },
 ];
@@ -103,12 +103,12 @@ interface MiMeDBSnapshot {
   microbe_metabolite_links: MiMeDBLink[];
 }
 
-function MiMeDBSection() {
+function MiMeDBSection({ presenterMode }: { presenterMode: boolean }) {
   const [data, setData] = useState<MiMeDBSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [tab, setTab] = useState<'metabolites' | 'microbes' | 'links'>('links');
+  const [tab, setTab] = useState<'metabolites' | 'microbes' | 'links'>(presenterMode ? 'metabolites' : 'links');
 
   useEffect(() => {
     fetch('/reference/mimedb.json')
@@ -207,19 +207,25 @@ function MiMeDBSection() {
 
       {/* Tab buttons */}
       <div className="flex gap-2">
-        {(['links', 'metabolites', 'microbes'] as const).map(t => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`text-xs px-3 py-1 rounded border transition-colors ${
-              tab === t
-                ? 'bg-primary/10 border-primary/30 text-primary'
-                : 'border-transparent hover:bg-muted/50 text-muted-foreground'
-            }`}
-          >
-            {t === 'links' ? 'Microbe↔Metabolite Links' : t.charAt(0).toUpperCase() + t.slice(1)}
-          </button>
-        ))}
+        {(['links', 'metabolites', 'microbes'] as const).map(t => {
+          if (t === 'links' && presenterMode) return null;
+          const label = t === 'links'
+            ? 'Example links (unconfirmed)'
+            : t.charAt(0).toUpperCase() + t.slice(1);
+          return (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`text-xs px-3 py-1 rounded border transition-colors ${
+                tab === t
+                  ? 'bg-primary/10 border-primary/30 text-primary'
+                  : 'border-transparent hover:bg-muted/50 text-muted-foreground'
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
 
       {tab === 'links' && (
@@ -235,7 +241,7 @@ function MiMeDBSection() {
                 <TableHead className="text-xs">MIME ID</TableHead>
                 <TableHead className="text-xs">Microbe Genera</TableHead>
                 <TableHead className="text-xs">Status</TableHead>
-                <TableHead className="text-xs">Context</TableHead>
+                {!presenterMode && <TableHead className="text-xs">Context</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -253,9 +259,11 @@ function MiMeDBSection() {
                         unconfirmed
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-[10px] text-muted-foreground max-w-[200px]" title={statusText + ' — ' + contextText}>
-                      {contextText}
-                    </TableCell>
+                    {!presenterMode && (
+                      <TableCell className="text-[10px] text-muted-foreground max-w-[200px]" title={statusText + ' — ' + contextText}>
+                        {contextText}
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })}
@@ -273,7 +281,12 @@ function MiMeDBSection() {
               <TableHead className="text-xs">App Role</TableHead>
               <TableHead className="text-xs">Formula</TableHead>
               <TableHead className="text-xs text-right">Avg Mass</TableHead>
-              <TableHead className="text-xs text-right"># Microbe Links</TableHead>
+              <TableHead
+                className="text-xs text-right"
+                title="Count only; export does not list microbes."
+              >
+                Relations count (export)
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -348,8 +361,11 @@ export default function Methods() {
           <CardTitle className="text-sm flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-warning" /> Limitations & Scientific Wording
             {presenterMode && (
-              <Badge className="text-[9px] bg-primary/20 text-primary border-primary/30 px-1.5 py-0 ml-1">
-                Point to this
+              <Badge
+                className="text-[9px] bg-primary/20 text-primary border-primary/30 px-1.5 py-0 ml-1"
+                title="Presenter cue: point to these three lines"
+              >
+                Presenter cue
               </Badge>
             )}
           </CardTitle>
@@ -399,6 +415,11 @@ export default function Methods() {
       <Card>
         <CardHeader>
           <CardTitle className="text-sm">Data Sources (Paired vs Unpaired)</CardTitle>
+          <p className="text-xs text-muted-foreground mt-1">
+            <strong>Paired</strong> = inputs and outputs measured in the same participants (needed to train ML).{' '}
+            <strong>Unpaired</strong> = separate studies/knowledge bases combined as reference context.
+            Current v0.1 simulator stages are <strong>UNPAIRED</strong> and use frozen demo coefficients.
+          </p>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -433,16 +454,17 @@ export default function Methods() {
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-2">
             <FlaskConical className="h-4 w-4 text-accent" /> MiMeDB Evidence
-            <Badge variant="outline" className="text-[9px]">Non-commercial reference</Badge>
+            <Badge variant="outline" className="text-[9px]">License not confirmed</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-xs text-muted-foreground mb-3">
-            Reference evidence from the Microbiome-Metabolome Database (MiMeDB v2).
-            Loaded offline from a build-time snapshot. Non-commercial, reference-only.
-            Microbe↔metabolite links are literature-derived where direct join data is unavailable.
+            We bundle a build-time offline snapshot derived from MiMeDB v2 CSV exports (metabolites + microbes).
+            The CSV exports do not include a verified microbe↔metabolite join table in this build.
+            Therefore we do not claim confirmed microbe↔metabolite links from MiMeDB offline;
+            any "links" (if shown) are labeled unconfirmed.
           </p>
-          <MiMeDBSection />
+          <MiMeDBSection presenterMode={presenterMode} />
         </CardContent>
       </Card>
     </div>

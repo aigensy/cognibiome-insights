@@ -244,7 +244,7 @@ Presenter Mode intentionally hides three pages. To show them:
 - **Disclaimers block** (highlighted in Presenter Mode) — "proxy models vs measured data"
 - **Leakage guardrails checklist** — documents how pilot data is isolated from training
 - **Data source table** — current v0.1 (frozen demo coefficients, not trained on NHANES) vs future plan (train on paired datasets where access exists: iHMP/IBDMDB; ZOE PREDICT subject to access)
-- **MiMeDB snapshot explorer** — searchable table of microbe ↔ metabolite reference associations (literature-derived, labeled "cannot confirm from official CSV" per provenance rules)
+- **MiMeDB snapshot** (metabolites + microbes + export limitations; no confirmed links bundled in this build) — searchable tables of metabolites and microbes from MiMeDB v2 CSV exports; any "links" tab entries are labeled unconfirmed because the CSV exports do not include a verified microbe↔metabolite join table
 
 **What to say:** "This is the transparency layer: disclaimers, limitations, and a full data-boundary checklist."
 
@@ -283,7 +283,7 @@ Presenter Mode intentionally hides three pages. To show them:
 |---|---|
 | Causality / leakage disclaimers | Methods & Rigor (`/methods`) → Disclaimers block |
 | Data source table (current vs future) | Methods & Rigor (`/methods`) → Data Sources table |
-| Microbe ↔ metabolite reference associations | Methods & Rigor (`/methods`) → MiMeDB snapshot explorer |
+| MiMeDB snapshot (metabolites + microbes; no confirmed links) | Methods & Rigor (`/methods`) → MiMeDB snapshot explorer |
 | Dataset bundling status | Public Datasets (`/datasets`) |
 | Run report (downloadable HTML) | Export Report (`/export`) |
 | All supporting docs (SRS, BRD, User Guide, etc.) | Help / Docs (`/help`) — Foundation, Data, Reference tabs |
