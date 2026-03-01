@@ -28,8 +28,10 @@ const CHART_FIELDS: { field: keyof PilotRecord; label: string; color: string }[]
   { field: 'overall_score', label: 'Overall Score', color: 'hsl(0, 72%, 55%)' },
 ];
 
+const PRESENTER_HIGHLIGHT_FIELDS = new Set(['overall_score', 'language_test']);
+
 export default function PilotResults() {
-  const { pilotDataset, setPilotDataset, adminMode } = useAppState();
+  const { pilotDataset, setPilotDataset, adminMode, presenterMode } = useAppState();
   const [showRegression, setShowRegression] = useState(true);
   const [showQuartiles, setShowQuartiles] = useState(false);
   const [uploadText, setUploadText] = useState<string | null>(null);
@@ -264,16 +266,35 @@ export default function PilotResults() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {correlations.map(c => (
-                    <TableRow key={c.fieldY}>
-                      <TableCell className="text-xs font-medium">{c.labelY}</TableCell>
-                      <TableCell className="text-xs text-right font-mono">{c.pearsonR.toFixed(3)}</TableCell>
-                      <TableCell className="text-xs text-right font-mono">
-                        {c.pValue !== null ? c.pValue.toFixed(4) : '—'}
-                      </TableCell>
-                      <TableCell className="text-xs text-right font-mono">{c.n}</TableCell>
-                    </TableRow>
-                  ))}
+                  {correlations.map(c => {
+                    const highlight = presenterMode && PRESENTER_HIGHLIGHT_FIELDS.has(c.fieldY);
+                    return (
+                      <TableRow
+                        key={c.fieldY}
+                        className={highlight ? 'bg-primary/10 ring-1 ring-inset ring-primary/30' : ''}
+                        data-testid={highlight ? 'presenter-highlight-row' : undefined}
+                      >
+                        <TableCell className="text-xs font-medium">
+                          <span className="flex items-center gap-2">
+                            {c.labelY}
+                            {highlight && (
+                              <Badge
+                                className="text-[9px] bg-primary/20 text-primary border-primary/30 px-1 py-0"
+                                data-testid="mention-in-speech-badge"
+                              >
+                                Mention in speech
+                              </Badge>
+                            )}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-xs text-right font-mono">{c.pearsonR.toFixed(3)}</TableCell>
+                        <TableCell className="text-xs text-right font-mono">
+                          {c.pValue !== null ? c.pValue.toFixed(4) : '—'}
+                        </TableCell>
+                        <TableCell className="text-xs text-right font-mono">{c.n}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
               <p className="text-[10px] text-muted-foreground mt-2">

@@ -242,6 +242,14 @@ export default function Simulator() {
                 <CardContent className="pt-4 space-y-1">
                   <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Hash className="h-3 w-3" /> Run Hash
+                    {presenterMode && (
+                      <span
+                        className="ml-1 inline-flex h-2 w-2 rounded-full bg-primary animate-pulse"
+                        data-testid="run-hash-presenter-cue"
+                        aria-label="Mention reproducibility"
+                        title="Mention: same inputs always produce the same hash — reproducible by design"
+                      />
+                    )}
                   </div>
                   <p className="text-[10px] font-mono break-all">{result.runHash}</p>
                   {!presenterMode && (

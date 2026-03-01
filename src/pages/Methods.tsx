@@ -6,6 +6,7 @@ import { CheckCircle2, AlertTriangle, ShieldCheck, FlaskConical, Search } from '
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { DISCLAIMERS } from '@/world_model/worldModel';
+import { useAppState } from '@/contexts/AppContext';
 
 const leakageItems = [
   { label: 'Pilot dataset is validation-only', desc: 'Not used for training or tuning.', ok: true },
@@ -15,10 +16,34 @@ const leakageItems = [
 ];
 
 const dataSources = [
-  { stage: 'D→X', inputs: 'Fiber, Sugar, Sat Fat, Omega-3', outputs: 'Bifidobacterium, Lactobacillus, F:B ratio', datasets: 'NHANES (training), USDA FDC (reference-only)', notes: 'Reference datasets not used for supervised paired training.' },
-  { stage: 'X→M', inputs: 'Microbiome proxies', outputs: 'Acetate, Propionate, Butyrate, 5-HTP Index', datasets: 'Public microbiome-metabolite studies (training)', notes: 'Unpaired datasets labeled reference-only where applicable.' },
-  { stage: 'M→Y', inputs: 'Metabolite proxies', outputs: 'Stroop, Language, Memory, Logical, Overall', datasets: 'Cognitive-metabolite literature (training)', notes: 'Pilot dataset (n=66) is validation-only.' },
-  { stage: 'Validation', inputs: 'Diet Score', outputs: 'Cognitive metrics', datasets: 'Teen pilot (n=66)', notes: 'De-identified. Never used for training.' },
+  {
+    stage: 'D→X',
+    inputs: 'Fiber, Sugar, Sat Fat, Omega-3',
+    outputs: 'Bifidobacterium, Lactobacillus, F:B ratio',
+    datasets: 'Current v0.1: frozen demo coefficients (not trained on NHANES). Future plan: train on paired datasets where access exists (e.g. ZOE PREDICT; iHMP/IBDMDB).',
+    notes: 'NHANES codebook used as UI reference context only — not a training source in this build.',
+  },
+  {
+    stage: 'X→M',
+    inputs: 'Microbiome proxies',
+    outputs: 'Acetate, Propionate, Butyrate, 5-HTP Index',
+    datasets: 'Current v0.1: frozen demo coefficients. Future plan: train on iHMP/IBDMDB (longitudinal paired multi-omics) where available.',
+    notes: 'MiMeDB evidence used for reference context; all microbe↔metabolite links are labeled unconfirmed.',
+  },
+  {
+    stage: 'M→Y',
+    inputs: 'Metabolite proxies',
+    outputs: 'Stroop, Language, Memory, Logical, Overall',
+    datasets: 'Current v0.1: frozen demo coefficients. Future plan: requires a properly paired cohort with cognitive + metabolomics data.',
+    notes: 'Pilot dataset (n=66) is validation-only — never used for training.',
+  },
+  {
+    stage: 'Validation',
+    inputs: 'Diet Score',
+    outputs: 'Cognitive metrics',
+    datasets: 'Teen pilot (n=66, de-identified)',
+    notes: 'De-identified. Never used for training.',
+  },
 ];
 
 interface MiMeDBMetabolite {
@@ -308,31 +333,41 @@ function MiMeDBSection() {
 }
 
 export default function Methods() {
+  const { presenterMode } = useAppState();
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <h1 className="text-2xl font-bold">Methods & Rigor</h1>
 
-      {/* A: Limitations */}
-      <Card>
+      {/* A: Limitations / Disclaimers */}
+      <Card
+        className={presenterMode ? 'ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}
+        data-testid="disclaimers-card"
+      >
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-warning" /> Limitations & Scientific Wording
+            {presenterMode && (
+              <Badge className="text-[9px] bg-primary/20 text-primary border-primary/30 px-1.5 py-0 ml-1">
+                Point to this
+              </Badge>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-xs text-muted-foreground">
-          <div className="p-3 rounded bg-muted/50 border border-border">
+          <div className={`p-3 rounded border ${presenterMode ? 'bg-primary/5 border-primary/20' : 'bg-muted/50 border-border'}`}>
             <p className="font-medium text-foreground">{DISCLAIMERS.modeledProxy}</p>
           </div>
-          <div className="p-3 rounded bg-muted/50 border border-border">
+          <div className={`p-3 rounded border ${presenterMode ? 'bg-primary/5 border-primary/20' : 'bg-muted/50 border-border'}`}>
             <p className="font-medium text-foreground">{DISCLAIMERS.nonCausal}</p>
           </div>
-          <div className="p-3 rounded bg-muted/50 border border-border">
+          <div className={`p-3 rounded border ${presenterMode ? 'bg-primary/5 border-primary/20' : 'bg-muted/50 border-border'}`}>
             <p className="font-medium text-foreground">{DISCLAIMERS.nonDiagnostic}</p>
           </div>
           <p className="text-[10px]">
             Teens in the pilot study do not have measured microbiome or metabolomics data.
-            All intermediate outputs (X, M) are modeled proxy variables derived from published reference datasets —
-            not biomarker measurements from pilot participants.
+            All intermediate outputs (X, M) are <strong>proxy models vs measured data</strong> — modeled proxy variables
+            derived from published reference datasets, not biomarker measurements from pilot participants.
           </p>
         </CardContent>
       </Card>
