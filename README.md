@@ -102,6 +102,79 @@ without code changes — only the JSON stage files need to be replaced.
 
 ---
 
+## How to verify (CI / headless)
+
+### One-command full check
+
+```bash
+npm run verify
+```
+
+This runs `npm run lint && npm run test && npm run build` in sequence.
+Exit code 0 means the codebase is lint-clean, all tests pass, and the production bundle builds successfully.
+
+### Unit / component tests (Vitest + React Testing Library)
+
+```bash
+npm test
+```
+
+The test suite includes **screen-contract tests** (`src/test/screens.presenterMode.test.tsx`) that render every judge-critical route in a jsdom environment with `presenterMode = true` and assert presence of key strings without a running browser:
+
+| Route | Asserted strings |
+|---|---|
+| `/` (Dashboard) | `Demo Sequence — Judge Path`, `NOT medical advice` |
+| `/pilot` | `REAL DATA`, `p-value (approx)`, `Pearson r` |
+| `/simulator` | `MODELED PROXY`, `Run Hash`, run-hash presenter cue element |
+| `/methods` | `Paired`, `UNPAIRED`, `License not confirmed`, `Relations count (export)` |
+| `/compare` | `modeled proxies`, `not measured values` |
+| `/export` | `Download HTML`, `Print to PDF` |
+| `/help?doc=DOC-026` | `Presenter Guide (Presenter Mode)`, `educational hypothesis generator` |
+
+Tests use substring matching (`toContain` / `getAllByText`) so layout changes don't break them.
+
+### Playwright E2E + screenshots (CI only)
+
+Full-browser screenshot tests live in `e2e/presenterMode.spec.ts`.
+They require a production build and a running vite preview server:
+
+```bash
+# Build first
+npm run build
+
+# Install Playwright browsers (first time only)
+npx playwright install --with-deps chromium
+
+# Run E2E tests (starts vite preview automatically)
+npx playwright test
+```
+
+Screenshots are written to `e2e/screenshots/` with names like `01-dashboard-presenter.png`.
+
+In CI (GitHub Actions) the `e2e` job:
+1. Runs after the `verify` job passes.
+2. Installs Playwright browsers with OS dependencies.
+3. Builds the app.
+4. Runs the spec and uploads `e2e/screenshots/` and `playwright-report/` as artifacts retained for 30 days.
+
+### CI workflow (GitHub Actions)
+
+`.github/workflows/ci.yml` triggers on every push and pull request to `main`/`master`:
+
+```
+verify job:
+  → checkout → setup-node@22 → npm ci → lint → test → build
+  → uploads dist/ as artifact
+
+e2e job (runs after verify):
+  → checkout → setup-node@22 → npm ci
+  → install Playwright browsers
+  → build → playwright test
+  → uploads screenshots + playwright-report/ as artifacts
+```
+
+Artifacts are available in the GitHub Actions run summary page.
+
 ## Quick start
 
 ```bash
@@ -114,7 +187,10 @@ npm run dev
 # Run tests (Vitest)
 npm test
 
-# Production build
+# Lint + test + build in one command
+npm run verify
+
+# Production build only
 npm run build
 
 # Lint

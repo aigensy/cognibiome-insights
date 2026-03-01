@@ -15,6 +15,7 @@
     "build:mimedb": "tsx scripts/build-mimedb.ts",
     "check:no-cyrillic": "tsx scripts/check-no-cyrillic.ts",
     "pretest": "tsx scripts/check-no-cyrillic.ts",
+    "verify": "npm run lint && npm run test && npm run build",
     "manifest:public": "tsx scripts/generate-upload-files-manifest.ts public public/UPLOAD_FILES_MANIFEST.md",
     "manifest:app": "tsx scripts/generate-upload-files-manifest.ts app_context app_context/UPLOAD_FILES_MANIFEST.md",
     "manifest:all": "npm run manifest:public && npm run manifest:app"
@@ -74,6 +75,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.0.0",
