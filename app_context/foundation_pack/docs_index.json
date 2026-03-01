@@ -209,6 +209,46 @@
       "category": "Foundation",
       "media_type": "text/markdown",
       "description": "Presenter-mode demo script + control-by-control explanation."
+    },
+    {
+      "id": "DOC-027",
+      "title": "NHANES Nutrient Reference (CSV)",
+      "path": "/reference/nhanes_nutrient_reference.csv",
+      "category": "Data",
+      "media_type": "text/csv",
+      "description": "Nutrient variable codebook ranges from NHANES DR1TOT_L (2021–2022). No participant-level data."
+    },
+    {
+      "id": "DOC-028",
+      "title": "HMP Reference Snapshot",
+      "path": "/reference/hmp_reference.json",
+      "category": "Data",
+      "media_type": "application/json",
+      "description": "Offline-friendly index of official HMP/iHMP community profiling resources."
+    },
+    {
+      "id": "DOC-029",
+      "title": "American Gut Reference Snapshot",
+      "path": "/reference/american_gut_reference.json",
+      "category": "Data",
+      "media_type": "application/json",
+      "description": "Offline-friendly index of the American Gut Project primary accessions and entry points."
+    },
+    {
+      "id": "DOC-030",
+      "title": "MetaboLights Reference Snapshot",
+      "path": "/reference/metabolights_reference.json",
+      "category": "Data",
+      "media_type": "application/json",
+      "description": "Small, offline index of MetaboLights studies relevant to the gut-brain / microbiome context."
+    },
+    {
+      "id": "DOC-031",
+      "title": "Metabolomics Workbench Reference Snapshot",
+      "path": "/reference/metabolomics_workbench_reference.json",
+      "category": "Data",
+      "media_type": "application/json",
+      "description": "Small, offline index of Metabolomics Workbench studies relevant to gut microbiome/metabolome topics."
     }
   ]
 }

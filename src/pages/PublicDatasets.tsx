@@ -276,6 +276,16 @@ function NhanesPreview({ rows }: { rows: NhanesRow[] }) {
   );
 }
 
+// Maps dataset name → docs_index id for the "Open in Docs" deep-link.
+// Fallback: DOC-020 (Public Datasets Manifest) if no specific entry exists.
+const DATASET_DOC_ID: Record<string, string> = {
+  NHANES: 'DOC-027',
+  HMP: 'DOC-028',
+  'American Gut': 'DOC-029',
+  MetaboLights: 'DOC-030',
+  'Metabolomics Workbench': 'DOC-031',
+};
+
 function ManifestCard({
   entry,
   nhanesRows,
@@ -287,6 +297,8 @@ function ManifestCard({
 }) {
   const [showPreview, setShowPreview] = useState(false);
   const ctx = DATASET_CONTEXT[entry.dataset];
+
+  const docId = DATASET_DOC_ID[entry.dataset] ?? 'DOC-020';
 
   // The NHANES file path served from /public root
   const filePath = entry.file.startsWith('reference/')
@@ -392,9 +404,18 @@ function ManifestCard({
               size="sm"
               variant="outline"
               className="h-7 text-xs gap-1"
-              onClick={() => navigate('/help')}
+              onClick={() => navigate(`/help?doc=${docId}`)}
+              data-testid={`open-docs-btn-${entry.dataset.replace(/\s+/g, '-')}`}
             >
               <ExternalLink className="h-3 w-3" /> Open in Docs
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-7 text-xs gap-1"
+              onClick={() => navigate('/help?doc=DOC-022')}
+            >
+              <ExternalLink className="h-3 w-3" /> README
             </Button>
             <a href={filePath} download>
               <Button
