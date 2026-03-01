@@ -1,7 +1,10 @@
+import { useEffect, useState, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { CheckCircle2, AlertTriangle, ShieldCheck, FlaskConical, Search } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { DISCLAIMERS } from '@/world_model/worldModel';
 
 const leakageItems = [
@@ -18,6 +21,268 @@ const dataSources = [
   { stage: 'Validation', inputs: 'Diet Score', outputs: 'Cognitive metrics', datasets: 'Teen pilot (n=66)', notes: 'De-identified. Never used for training.' },
 ];
 
+interface MiMeDBMetabolite {
+  id: string | null;
+  mime_id: string | null;
+  name: string | null;
+  hmdb_id: string | null;
+  cas: string | null;
+  formula: string | null;
+  average_mass: number | null;
+  microbe_relation_count: number | null;
+  app_role: string;
+}
+
+interface MiMeDBMicrobe {
+  id: string | null;
+  microbe_id: string | null;
+  name: string | null;
+  species: string | null;
+  genus: string | null;
+  phylum: string | null;
+  gram: string | null;
+  activity: string | null;
+  health_type: string | null;
+}
+
+interface MiMeDBLink {
+  metabolite_name: string;
+  metabolite_mime_id: string;
+  microbe_genera: string[];
+  evidence: string;
+  note: string;
+}
+
+interface MiMeDBSnapshot {
+  metadata: {
+    source: string;
+    build_timestamp: string;
+    row_count_metabolites: number;
+    row_count_microbes: number;
+    matched_metabolites: number;
+    matched_microbes: number;
+    limitations: string[];
+    license: string;
+  };
+  metabolites: MiMeDBMetabolite[];
+  microbes: MiMeDBMicrobe[];
+  microbe_metabolite_links: MiMeDBLink[];
+}
+
+function MiMeDBSection() {
+  const [data, setData] = useState<MiMeDBSnapshot | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [tab, setTab] = useState<'metabolites' | 'microbes' | 'links'>('links');
+
+  useEffect(() => {
+    fetch('/reference/mimedb.json')
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(setData)
+      .catch(e => setError(String(e)))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const q = search.trim().toLowerCase();
+
+  const filteredMetabolites = useMemo(() => {
+    if (!data) return [];
+    if (!q) return data.metabolites;
+    return data.metabolites.filter(m =>
+      (m.name ?? '').toLowerCase().includes(q) ||
+      (m.mime_id ?? '').toLowerCase().includes(q) ||
+      (m.app_role ?? '').toLowerCase().includes(q)
+    );
+  }, [data, q]);
+
+  const filteredMicrobes = useMemo(() => {
+    if (!data) return [];
+    if (!q) return data.microbes.slice(0, 50);
+    return data.microbes.filter(m =>
+      (m.species ?? '').toLowerCase().includes(q) ||
+      (m.genus ?? '').toLowerCase().includes(q) ||
+      (m.phylum ?? '').toLowerCase().includes(q)
+    ).slice(0, 50);
+  }, [data, q]);
+
+  const filteredLinks = useMemo(() => {
+    if (!data) return [];
+    if (!q) return data.microbe_metabolite_links;
+    return data.microbe_metabolite_links.filter(l =>
+      l.metabolite_name.toLowerCase().includes(q) ||
+      l.microbe_genera.some(g => g.toLowerCase().includes(q))
+    );
+  }, [data, q]);
+
+  if (loading) {
+    return <p className="text-xs text-muted-foreground animate-pulse">Loading MiMeDB snapshot…</p>;
+  }
+
+  if (error || !data) {
+    return (
+      <Alert>
+        <AlertDescription className="text-xs">
+          MiMeDB snapshot not available: {error ?? 'file not found'}.
+          Run <code>npm run build:mimedb</code> to generate it from local CSV files.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {/* Metadata */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+        <div>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Source</p>
+          <p className="font-medium">{data.metadata.source}</p>
+        </div>
+        <div>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Built</p>
+          <p className="font-medium">{new Date(data.metadata.build_timestamp).toLocaleDateString()}</p>
+        </div>
+        <div>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Metabolites</p>
+          <p className="font-mono font-medium">{data.metadata.matched_metabolites} / {data.metadata.row_count_metabolites.toLocaleString()}</p>
+        </div>
+        <div>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Microbes</p>
+          <p className="font-mono font-medium">{data.metadata.matched_microbes} / {data.metadata.row_count_microbes.toLocaleString()}</p>
+        </div>
+      </div>
+
+      {/* License */}
+      <p className="text-[10px] text-muted-foreground border border-border rounded px-2 py-1">
+        {data.metadata.license}
+      </p>
+
+      {/* Search */}
+      <div className="relative max-w-sm">
+        <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+        <Input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search metabolite or microbe…"
+          className="pl-8 h-8 text-xs"
+        />
+      </div>
+
+      {/* Tab buttons */}
+      <div className="flex gap-2">
+        {(['links', 'metabolites', 'microbes'] as const).map(t => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`text-xs px-3 py-1 rounded border transition-colors ${
+              tab === t
+                ? 'bg-primary/10 border-primary/30 text-primary'
+                : 'border-transparent hover:bg-muted/50 text-muted-foreground'
+            }`}
+          >
+            {t === 'links' ? 'Microbe↔Metabolite Links' : t.charAt(0).toUpperCase() + t.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'links' && (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-xs">Metabolite</TableHead>
+              <TableHead className="text-xs">MIME ID</TableHead>
+              <TableHead className="text-xs">Microbe Genera</TableHead>
+              <TableHead className="text-xs">Evidence</TableHead>
+              <TableHead className="text-xs">Note</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredLinks.map((link, i) => (
+              <TableRow key={i}>
+                <TableCell className="text-xs font-medium">{link.metabolite_name}</TableCell>
+                <TableCell className="text-[10px] font-mono text-muted-foreground">{link.metabolite_mime_id}</TableCell>
+                <TableCell className="text-xs">{link.microbe_genera.join(', ')}</TableCell>
+                <TableCell className="text-xs">
+                  <Badge variant="outline" className="text-[9px]">{link.evidence}</Badge>
+                </TableCell>
+                <TableCell className="text-[10px] text-muted-foreground max-w-[200px]">{link.note}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+
+      {tab === 'metabolites' && (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-xs">Name</TableHead>
+              <TableHead className="text-xs">MIME ID</TableHead>
+              <TableHead className="text-xs">App Role</TableHead>
+              <TableHead className="text-xs">Formula</TableHead>
+              <TableHead className="text-xs text-right">Avg Mass</TableHead>
+              <TableHead className="text-xs text-right"># Microbe Links</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredMetabolites.map((m, i) => (
+              <TableRow key={i}>
+                <TableCell className="text-xs font-medium">{m.name}</TableCell>
+                <TableCell className="text-[10px] font-mono text-muted-foreground">{m.mime_id}</TableCell>
+                <TableCell className="text-[10px]">
+                  <Badge variant="secondary" className="text-[9px]">{m.app_role}</Badge>
+                </TableCell>
+                <TableCell className="text-xs font-mono">{m.formula ?? '—'}</TableCell>
+                <TableCell className="text-xs text-right font-mono">{m.average_mass?.toFixed(2) ?? '—'}</TableCell>
+                <TableCell className="text-xs text-right font-mono">{m.microbe_relation_count ?? '—'}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+
+      {tab === 'microbes' && (
+        <>
+          <p className="text-[10px] text-muted-foreground">Showing first 50 matching microbe entries.</p>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-xs">Species</TableHead>
+                <TableHead className="text-xs">Genus</TableHead>
+                <TableHead className="text-xs">Phylum</TableHead>
+                <TableHead className="text-xs">Gram</TableHead>
+                <TableHead className="text-xs">Activity</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredMicrobes.map((m, i) => (
+                <TableRow key={i}>
+                  <TableCell className="text-xs italic">{m.species}</TableCell>
+                  <TableCell className="text-xs">{m.genus}</TableCell>
+                  <TableCell className="text-xs">{m.phylum}</TableCell>
+                  <TableCell className="text-xs">{m.gram ?? '—'}</TableCell>
+                  <TableCell className="text-xs">{m.activity ?? '—'}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </>
+      )}
+
+      {/* Limitations */}
+      <div className="space-y-1">
+        <p className="text-[10px] font-medium text-muted-foreground">Limitations:</p>
+        {data.metadata.limitations.map((l, i) => (
+          <p key={i} className="text-[10px] text-muted-foreground">• {l}</p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Methods() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -25,7 +290,11 @@ export default function Methods() {
 
       {/* A: Limitations */}
       <Card>
-        <CardHeader><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-warning" /> Limitations & Scientific Wording</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle className="text-sm flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-warning" /> Limitations & Scientific Wording
+          </CardTitle>
+        </CardHeader>
         <CardContent className="space-y-3 text-xs text-muted-foreground">
           <div className="p-3 rounded bg-muted/50 border border-border">
             <p className="font-medium text-foreground">{DISCLAIMERS.modeledProxy}</p>
@@ -36,13 +305,21 @@ export default function Methods() {
           <div className="p-3 rounded bg-muted/50 border border-border">
             <p className="font-medium text-foreground">{DISCLAIMERS.nonDiagnostic}</p>
           </div>
-          <p className="text-[10px]">Teens in the pilot study do not have measured microbiome or metabolomics data. All intermediate outputs (X, M) are modeled proxy variables derived from published reference datasets — not biomarker measurements from pilot participants.</p>
+          <p className="text-[10px]">
+            Teens in the pilot study do not have measured microbiome or metabolomics data.
+            All intermediate outputs (X, M) are modeled proxy variables derived from published reference datasets —
+            not biomarker measurements from pilot participants.
+          </p>
         </CardContent>
       </Card>
 
       {/* B: Leakage Guardrails */}
       <Card>
-        <CardHeader><CardTitle className="text-sm flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-success" /> Leakage Guardrails</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle className="text-sm flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-success" /> Leakage Guardrails
+          </CardTitle>
+        </CardHeader>
         <CardContent className="space-y-2">
           {leakageItems.map((item, i) => (
             <div key={i} className="flex items-start gap-2 text-xs">
@@ -53,13 +330,17 @@ export default function Methods() {
               </div>
             </div>
           ))}
-          <p className="text-[10px] text-muted-foreground mt-2">No model performance numbers are fabricated. Demo parameters are directional placeholders.</p>
+          <p className="text-[10px] text-muted-foreground mt-2">
+            No model performance numbers are fabricated. Demo parameters are directional placeholders.
+          </p>
         </CardContent>
       </Card>
 
       {/* C: Data Sources */}
       <Card>
-        <CardHeader><CardTitle className="text-sm">Data Sources (Paired vs Unpaired)</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle className="text-sm">Data Sources (Paired vs Unpaired)</CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <Table>
@@ -85,6 +366,24 @@ export default function Methods() {
               </TableBody>
             </Table>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* D: MiMeDB Evidence */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm flex items-center gap-2">
+            <FlaskConical className="h-4 w-4 text-accent" /> MiMeDB Evidence
+            <Badge variant="outline" className="text-[9px]">Non-commercial reference</Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-xs text-muted-foreground mb-3">
+            Reference evidence from the Microbiome-Metabolome Database (MiMeDB v2).
+            Loaded offline from a build-time snapshot. Non-commercial, reference-only.
+            Microbe↔metabolite links are literature-derived where direct join data is unavailable.
+          </p>
+          <MiMeDBSection />
         </CardContent>
       </Card>
     </div>

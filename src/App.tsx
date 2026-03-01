@@ -14,6 +14,7 @@ import ExportReport from "./pages/ExportReport";
 import Methods from "./pages/Methods";
 import Compare from "./pages/Compare";
 import HelpDocs from "./pages/HelpDocs";
+import PublicDatasets from "./pages/PublicDatasets";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
                     <Route path="/methods" element={<Methods />} />
                     <Route path="/compare" element={<Compare />} />
                     <Route path="/help" element={<HelpDocs />} />
+                    <Route path="/datasets" element={<PublicDatasets />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>

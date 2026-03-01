@@ -1,0 +1,56 @@
+{
+  "metadata": {
+    "source": "Reactome database",
+    "release_version": "current as of 2026-02-28"
+  },
+  "pathways": [
+    {
+      "reactome_id": "R-HSA-888590",
+      "name": "GABA synthesis, release, reuptake and degradation",
+      "species": "Homo sapiens",
+      "top_level_parent": "Neuronal System \u2192 Transmission across Chemical Synapses \u2192 Neurotransmitter release cycle",
+      "short_summary": "Gamma-aminobutyric acid (GABA) is a major inhibitory neurotransmitter. It is synthesised in presynaptic neurons, loaded into synaptic vesicles, released into the synaptic cleft and then recaptured by transporters or taken up by astrocytes for metabolism.",
+      "citation": "\u3010222754517448648\u2020L860-L865\u3011\u3010963220768469669\u2020L185-L189\u3011"
+    },
+    {
+      "reactome_id": "R-HSA-71240",
+      "name": "Tryptophan catabolism",
+      "species": "Homo sapiens",
+      "top_level_parent": "Metabolism \u2192 Metabolism of amino acids and derivatives",
+      "short_summary": "Tryptophan is catabolised in seven steps to yield aminomuconate; intermediates in this process are also used to synthesise serotonin and kynurenine.",
+      "citation": "\u301061025227191290\u2020L842-L845\u3011\u3010896023150879508\u2020L184-L191\u3011"
+    },
+    {
+      "reactome_id": "R-HSA-209931",
+      "name": "Serotonin and melatonin biosynthesis",
+      "species": "Homo sapiens",
+      "top_level_parent": "Metabolism \u2192 Metabolism of amino acids and derivatives \u2192 Metabolism of amine-derived hormones",
+      "short_summary": "Serotonin (5-HT) is a hormone and neurotransmitter involved in many physiological functions and serves as a precursor for melatonin. It is synthesised from tryptophan and can be further converted to melatonin.",
+      "citation": "\u3010420996985920844\u2020L856-L860\u3011\u3010169970217285775\u2020L184-L188\u3011"
+    },
+    {
+      "reactome_id": "R-HSA-380612",
+      "name": "Metabolism of serotonin",
+      "species": "Homo sapiens",
+      "top_level_parent": "Neuronal System \u2192 Transmission across Chemical Synapses \u2192 Neurotransmitter clearance \u2192 Serotonin clearance from the synaptic cleft",
+      "short_summary": "Serotonin released into the synaptic cleft is metabolised to 5-hydroxyindole acetaldehyde by monoamine oxidase and then to 5-hydroxyindoleacetic acid by aldehyde dehydrogenase.",
+      "citation": "\u3010611227375037093\u2020L880-L884\u3011\u3010476045600366150\u2020L184-L189\u3011"
+    },
+    {
+      "reactome_id": "R-HSA-390666",
+      "name": "Serotonin receptors",
+      "species": "Homo sapiens",
+      "top_level_parent": "Signal Transduction \u2192 Signaling by GPCR \u2192 GPCR ligand binding \u2192 Class A/1 (Rhodopsin-like receptors) \u2192 Amine ligand-binding receptors",
+      "short_summary": "Serotonin (5-hydroxytryptamine) modulates multiple physiological functions such as mood and appetite. Seven families of serotonin receptors exist; all except the 5-HT3 family are G protein\u2011coupled receptors (GPCRs).",
+      "citation": "\u3010711614200324502\u2020L892-L895\u3011\u30108256827742453\u2020L180-L186\u3011"
+    },
+    {
+      "reactome_id": "R-HSA-168164",
+      "name": "Toll-like receptor 3 (TLR3) cascade",
+      "species": "Homo sapiens",
+      "top_level_parent": "Immune System \u2192 Innate Immune System \u2192 Toll-like Receptor Cascades",
+      "short_summary": "Toll\u2011like receptor 3 (TLR3) is expressed in dendritic cells and intestinal cells. It recognises double\u2011stranded RNA, signalling through the adaptor TRIF to activate NF\u2011kappa\u2011B and induce type I interferon genes.",
+      "citation": "\u3010828576529763095\u2020L865-L868\u3011\u3010725612490274013\u2020L185-L189\u3011"
+    }
+  ]
+}

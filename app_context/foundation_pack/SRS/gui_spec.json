@@ -1,0 +1,195 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "SRS/gui_spec.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "DESIGN",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 3,
+    "last_updated_utc": "2026-03-01T00:12:29Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 draft GUI spec for judge-ready demo. | Phase 2: aligned UI spec with confirmed I/O and dataset handling."
+  },
+  "template_id": "DF.OUTPUT.SRS.GUI_SPEC.JSON.V1",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "DESIGN",
+  "purpose": "Define UI/UX screens and flows for the Gut–Brain Simulator app, optimized for science fair judging.",
+  "platforms": {
+    "targets": [
+      "Web",
+      "Desktop",
+      "MobilePWA"
+    ],
+    "responsive": "Mobile-first responsive layout; desktop-optimized charts."
+  },
+  "core_flows": [
+    {
+      "flow_id": "FLOW-01",
+      "name": "Judge walkthrough",
+      "screen_path": [
+        "SCR-001",
+        "SCR-002",
+        "SCR-003",
+        "SCR-004"
+      ]
+    },
+    {
+      "flow_id": "FLOW-02",
+      "name": "Pilot dataset check",
+      "screen_path": [
+        "SCR-001",
+        "SCR-005"
+      ]
+    },
+    {
+      "flow_id": "FLOW-03",
+      "name": "Scenario comparison",
+      "screen_path": [
+        "SCR-001",
+        "SCR-003",
+        "SCR-006",
+        "SCR-004"
+      ]
+    },
+    {
+      "flow_id": "FLOW-04",
+      "name": "Transparency: Foundation Docs",
+      "screen_path": [
+        "SCR-001",
+        "SCR-007"
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": "SCR-001",
+      "name": "Home / Dashboard",
+      "purpose": "Entry point with quick links to Pilot Results, Simulator, Methods & Rigor, and Export.",
+      "key_components": [
+        "Navigation tiles",
+        "Current model version badge",
+        "Last run summary"
+      ],
+      "data_dependencies": [
+        "model_versions (default)",
+        "optional last simulation run"
+      ],
+      "acceptance_notes": "Must load without login in kiosk mode (confirmed OQ-003). Help/Docs button must be visible."
+    },
+    {
+      "id": "SCR-002",
+      "name": "Pilot Results (n=66)",
+      "purpose": "Show real validation charts and tables from the pilot dataset.",
+      "key_components": [
+        "Dataset selector (bundled default + upload/replace in admin mode)",
+        "Summary statistics table",
+        "Scatter plots per cognitive metric",
+        "Correlation table"
+      ],
+      "data_dependencies": [
+        "pilot_datasets",
+        "pilot_records"
+      ],
+      "open_questions": []
+    },
+    {
+      "id": "SCR-003",
+      "name": "Simulator",
+      "purpose": "Run diet→microbiome→metabolites→cognition simulation and show outputs.",
+      "key_components": [
+        "Diet inputs: fiber, added sugar, saturated fat, omega-3 proxy (optional calories)",
+        "Run button",
+        "Stage outputs panels: Microbiome (Bifidobacterium, Lactobacillus, F:B ratio), Metabolites (acetate/propionate/butyrate + 5-HTP index), Cognition (Stroop/memory/language/logical/overall)",
+        "Run id / provenance (run_hash + model versions)"
+      ],
+      "data_dependencies": [
+        "model_versions",
+        "simulation_runs"
+      ],
+      "open_questions": []
+    },
+    {
+      "id": "SCR-004",
+      "name": "Export Report",
+      "purpose": "Generate and preview/download a 1-page report for a run.",
+      "key_components": [
+        "Run selector",
+        "Format toggle (PDF/HTML)",
+        "Preview",
+        "Generate button"
+      ],
+      "data_dependencies": [
+        "simulation_runs",
+        "export_artifacts"
+      ],
+      "open_questions": [
+        "OQ-007"
+      ]
+    },
+    {
+      "id": "SCR-005",
+      "name": "Methods & Rigor",
+      "purpose": "Explain limitations, leakage guardrails, dataset boundaries, and disclaimers.",
+      "key_components": [
+        "Leakage checklist",
+        "Causality disclaimer card",
+        "Data sources panel"
+      ],
+      "data_dependencies": [
+        "static content"
+      ],
+      "acceptance_notes": "Must explicitly state pilot validation-only and non-diagnostic disclaimer (UR-004)."
+    },
+    {
+      "id": "SCR-006",
+      "name": "Scenario Comparison",
+      "purpose": "Compare two scenarios side-by-side and export.",
+      "key_components": [
+        "Scenario A controls",
+        "Scenario B controls",
+        "Comparison charts",
+        "Save/export"
+      ],
+      "data_dependencies": [
+        "simulation_runs"
+      ],
+      "acceptance_notes": "Optional v1 (UR-014)."
+    },
+    {
+      "id": "SCR-007",
+      "name": "Help / Docs (Foundation Pack Viewer)",
+      "purpose": "Show all packaged foundation documents and reference snapshots to judges; render JSON/CSV/MD/TXT offline.",
+      "key_components": [
+        "Document category tabs: Foundation, Reference, Data",
+        "Search + filter (by title, category, type)",
+        "Document list loaded from /foundation_pack/docs_index.json",
+        "Viewer panel with on-the-fly rendering: JSON (pretty + optional derived table), CSV table preview, Markdown render, Text render",
+        "Copy-to-clipboard and Download link for the current document"
+      ],
+      "data_dependencies": [
+        "static asset: /foundation_pack/docs_index.json",
+        "static assets: files referenced by docs_index items"
+      ],
+      "acceptance_notes": "Must work fully offline and load within 1s after app shell loads; Help button visible on every screen."
+    }
+  ],
+  "accessibility_notes": [
+    "Charts must have readable labels and sufficient contrast.",
+    "Keyboard navigation for key controls.",
+    "Avoid tiny fonts; judge viewing distance can be >1 meter."
+  ],
+  "open_questions": [
+    "OQ-007",
+    "OQ-009"
+  ],
+  "global_components": [
+    "Top app bar: CogniBiome title, model-version badge, kiosk/offline indicator, Export button (optional), Help/Docs button (always visible).",
+    "Help/Docs opens SCR-007 and is accessible from every screen.",
+    "All content is read-only; no user accounts; no PHI."
+  ]
+}

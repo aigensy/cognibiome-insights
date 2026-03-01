@@ -1,0 +1,312 @@
+ROLE
+You are Lovable’s senior full-stack engineer (React/TypeScript) and scientific-dashboard UX designer.
+
+MISSION
+Build a best-in-class (2026), judge-ready, offline-first PWA for the project:
+“Modeling Diet-Driven Microbiome and Neurotransmitter Pathways Influencing Cognitive Performance”.
+App name: “CogniBiome”.
+
+NON-NEGOTIABLE FRAMING (MUST MATCH PROJECT PACKET)
+- This is a deterministic simulator / hypothesis generator.
+- It does NOT prove causality.
+- It is NOT medical advice and NOT a diagnostic device.
+- The teen pilot dataset (n=66) is de-identified and validation-only.
+- Teens do NOT have measured microbiome/metabolomics in the pilot; microbiome/metabolites shown are modeled proxy variables.
+
+WORLD MODELING REQUIREMENT (FOR CONSISTENCY + TRACEABILITY)
+Represent the domain as a small, explicit “world model” (typed graph) that drives both the simulator and the UI.
+- Entities: DietFeatures, NutrientProxies, MicrobeGenera (modeled), MetaboliteProxies (modeled), CognitiveDomains (modeled), EvidenceSources, DatasetArtifacts.
+- Relations: DietFeatures→MicrobeGenera, MicrobeGenera→MetaboliteProxies, MetaboliteProxies→CognitiveDomains, plus EvidenceSources that justify each module.
+- Implementation: create /src/world_model/worldModel.ts (and/or JSON under /src/world_model/world_model.json) and have the simulator read from it.
+- This is NOT a “knowledge graph claim.” It is an internal representation to keep labels, units, tooltips, and module wiring deterministic and consistent with UR/SRS.
+
+
+STACK (MUST USE)
+- React + Vite + TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Recharts
+- PWA offline-first: after first load, core experience works with no network.
+
+
+OFFLINE-FIRST HARD RULE
+- Do not call external APIs at runtime for evidence or definitions. Use the uploaded /public/reference/*.json snapshots.
+- Network may be unavailable during judging. If the browser is offline, the judge path must still work fully.
+
+CRITICAL BUILD GUARDRAILS (ANTI-DRIFT / ANTI-HALLUCINATION)
+1) Implement ONLY what is needed to satisfy the foundation pack requirements (UR-* + SRS-REQ-*). Do not add unrelated features.
+2) Never fabricate pilot results. All pilot charts/tables must be computed directly from the loaded CSV.
+3) If a required input is missing (pilot CSV or model artifacts), do NOT invent data. Show a clear UI state: “Upload required file to proceed.”
+4) All simulator outputs must be labeled “MODELED / ESTIMATED (proxy)”.
+5) Keep dependencies minimal and stable (avoid niche libraries). Performance must stay within demo budgets.
+
+UPLOADED FILES WITH THIS PROMPT (YOU MUST USE THEM)
+
+You are given a set of uploaded files. Start by reading them all. Then, create the same files inside the generated repo so the project is self-contained.
+
+A) Canonical foundation pack (treat as source-of-truth requirements; do not rewrite content)
+- foundation_pack/user_requirements.json — user-level MUST/SHOULD requirements (UR-###)
+- foundation_pack/BRD/brd.json — business requirements (BRD-REQ-###)
+- foundation_pack/SRS/traceable_requirements.json — traceable software requirements (SRS-REQ-###)
+- foundation_pack/SRS/gui_spec.json — screens + UI spec (SCR-###)
+- foundation_pack/SRS/agentic_prompt_gates.json — anti-drift / anti-hallucination gates
+- foundation_pack/SRS/nfr_budgets.json — performance budgets
+- foundation_pack/SRS/test_plan_and_ci.json — minimal tests that must exist in repo
+- plus the remaining JSONs in foundation_pack/ as supporting context (assumptions, open_questions, etc.)
+
+B) External reference snapshots (offline evidence; one JSON per source)
+- reference/usda_fdc.json — FoodData Central snapshot metadata + nutrient proxy mapping (no live API calls)
+- reference/reactome.json — curated Reactome pathway IDs for evidence cards
+- reference/wikipathways.json — curated WikiPathways IDs + optional local diagram pointers
+- reference/mimedb.json — schema placeholder for microbe↔metabolite evidence table (not populated)
+- reference/REFERENCES_AND_LICENSES.md — license & citation notes
+
+C) Pilot dataset (real data; used only for validation charts/tables, never for training)
+- pilot/pilot_dataset_n66.csv — numeric-only teen pilot dataset (n=66)
+
+D) Decision memo (human-readable; may be used to inform UI copy)
+- external_sources_for_Gut_overview.txt — external sources plan and offline-first rationale
+
+REPO FILE PLACEMENT RULES (IMPORTANT)
+- Keep an exact copy of all uploaded files under /app_context/... for auditability:
+  /app_context/foundation_pack/...
+  /app_context/reference/...
+  /app_context/pilot/...
+  /app_context/external_sources_for_Gut_overview.txt
+- For runtime use, also copy reference JSONs into /public/reference/ and the default pilot CSV into /public/pilot/
+- The app must still work if the reference files are missing (show a clear “reference pack not present” empty state), but MUST work with the files provided here.
+
+
+OUTPUT REQUIRED
+A complete Lovable project implementing the app described below.
+
+===========================================================
+1) INFORMATION ARCHITECTURE (MUST FOLLOW SRS GUI SPEC)
+===========================================================
+
+LEFT SIDEBAR NAV (6 items)
+1) Dashboard (SCR-001)
+2) Pilot Results (SCR-002)
+3) Simulator (SCR-003)
+4) Export Report (SCR-004)
+5) Methods & Rigor (SCR-005)
+6) Compare Scenarios (SCR-006)
+
+Global controls (top-right)
+- Presenter Mode toggle (simplifies UI for judging)
+- Reset demo state (restores default dataset + default scenario + clears runs)
+
+Visual style
+- “Modern AI research console”: dark theme, high contrast, clean typography, dense but readable.
+- No gamification, no playful illustrations, no medical branding.
+
+===========================================================
+2) PILOT DATASET (MUST BE REAL, n=66)
+===========================================================
+
+Goal: implement SRS-REQ-001..SRS-REQ-006 and tests TST-001..TST-002.
+
+A) Default pilot dataset
+- If a pilot CSV is provided in context, bundle it as: /public/pilot/pilot_dataset_n66.csv
+- If not provided, ship WITHOUT a default dataset and require upload in Admin mode (do not add synthetic data).
+
+B) Ingestion + validation (robust)
+- Allow loading from bundled default OR from local upload (CSV file input).
+- Drop columns matching: /^Unnamed:/.
+- Detect and handle duplicate diet score columns: Diet Score, Diet Score.1, Diet Score.2, Diet Score.3, Diet Score.4
+  - Default mapping: use the first non-empty Diet Score column.
+  - If multiple are present, verify row-wise equality; if not equal, require the user to choose mapping.
+- Canonical fields (store internally with these names):
+  - diet_score
+  - stroop_test
+  - language_test
+  - memory_test
+  - logical_test
+  - overall_score
+- Integrity check (MUST):
+  overall_score == stroop_test + language_test + memory_test + logical_test (row-wise).
+  If mismatch exists, show a red warning banner and mark dataset “integrity_failed”.
+
+C) Pilot Results screen (SCR-002)
+- Summary statistics table: mean, median, n for each canonical metric.
+- Correlation table:
+  - Pearson r (diet_score vs each cognitive metric including overall_score).
+  - p-value for each correlation.
+- Charts:
+  - Scatter plot for diet_score vs each cognitive metric (5 plots).
+  - Toggle: regression line on/off.
+  - Toggle: show quartiles on/off.
+- Prominent badge:
+  “REAL DATA (de-identified teen pilot, n=66) • computed live from CSV • no synthetic points”.
+
+===========================================================
+3) SIMULATOR (DETERMINISTIC, OFFLINE)
+===========================================================
+
+Goal: implement SRS-REQ-007..SRS-REQ-013.
+
+Diet input variables (D) (SCR-003)
+- Provide 4 sliders with numeric ranges and helper text:
+  - fiber_proxy
+  - added_sugar_proxy
+  - sat_fat_proxy
+  - omega3_proxy
+- Show derived diet_score_proxy (deterministic mapping from the 4 inputs).
+- Validate ranges and show units (even if “proxy units”).
+
+Simulation engine (D→X→M→Y)
+- Run is deterministic: same normalized inputs + same model artifacts => same outputs + same run_hash.
+- Compute run_hash = sha256(JSON.stringify({normalized_inputs, model_versions}))
+- Persist runs locally (IndexedDB or localStorage) with:
+  - run_hash, timestamp, inputs, outputs, model_versions, notes
+
+Model artifacts (NO LIVE TRAINING)
+- Preferred: read fixed JSON artifacts from /public/models/:
+  - stage1.json (D→X)
+  - stage2.json (X→M)
+  - stage3.json (M→Y)
+- If real artifacts are not provided, create a bundled “Demo Param Set v0” that is:
+  - monotonic and directionally consistent with the hypothesis
+  - explicitly labeled “Demo parameters (directional), replaceable”
+- Provide hidden “Admin” controls (only when a local admin toggle is enabled) to load replacement model JSON files.
+- Never claim models were trained inside the app.
+
+Stage outputs (must match scope)
+X (Microbiome, modeled proxy)
+- Show numeric proxy outputs (0..1 or %), labeled clearly as modeled.
+- At minimum show:
+  - Bifidobacterium
+  - Lactobacillus
+  - Firmicutes:Bacteroidetes ratio
+
+M (Metabolites, modeled proxy)
+- At minimum show:
+  - acetate
+  - propionate
+  - butyrate
+  - 5-HTP index (explicitly as “precursor proxy”, not “serotonin in brain”)
+
+Y (Cognition, modeled proxy)
+- At minimum show:
+  - stroop_test
+  - language_test
+  - memory_test
+  - logical_test
+  - overall_score
+
+Provenance panel (SCR-003)
+- Show model version identifiers (hash or semantic version) and run_hash.
+- “Frozen before pilot validation” (text only, no fabricated metrics).
+
+===========================================================
+4) METHODS & RIGOR (JUDGE-FACING)
+===========================================================
+
+Goal: implement SRS-REQ-014..SRS-REQ-016 and BRD-REQ-003/006/007/008.
+
+Methods & Rigor screen (SCR-005) must include three card sections:
+
+A) Limitations and correct scientific wording
+- Teens do not have measured microbiome/metabolomics; X and M are modeled proxies.
+- Non-causality disclaimer: simulator generates testable hypotheses; does not prove mechanism.
+- Non-diagnostic disclaimer: educational research prototype; not medical advice.
+
+B) Leakage guardrails (checklist UI)
+- Pilot dataset is validation-only and not used for training/tuning.
+- No peeking during tuning (conceptual).
+- Fit-only-on-train (conceptual).
+- Duplicate/near-duplicate awareness (conceptual).
+Important: do not invent model performance numbers.
+
+C) Data Sources panel (paired vs unpaired)
+- Present a simple table with columns:
+  Stage | Inputs | Outputs | Dataset types | Notes
+- If a dataset is unpaired, label it “reference-only” (not used for supervised paired training).
+
+Optional (SHOULD): Evidence panel
+- Preload a small local JSON library of 6–10 citations.
+- Each stage output has a tooltip “Evidence (plausibility)” linking to 1–2 citations.
+
+===========================================================
+5) EXPORT (1-PAGE REPORT, OFFLINE)
+===========================================================
+
+Goal: implement SRS-REQ-017..SRS-REQ-020.
+
+Export Report screen (SCR-004)
+- Select a stored run by run_hash.
+- Generate a one-page report as:
+  - HTML file download (always works offline), and
+  - PDF via print-to-PDF workflow (window.print) OR client-side PDF library if reliable offline.
+- Report MUST include:
+  - Run provenance: run_hash + model versions
+  - Diet inputs (sliders values + diet_score_proxy)
+  - Stage outputs X/M/Y with “MODELED / proxy” labels
+  - Pilot summary (at least one scatter plot OR a compact correlation table, computed from loaded CSV)
+  - Leakage checklist status
+  - Disclaimers (non-diagnostic, non-causal)
+
+===========================================================
+6) PRESENTER MODE + RESET
+===========================================================
+
+Presenter Mode (SRS-REQ-021)
+- Hides admin and advanced controls
+- Shows a “2-minute demo path” helper:
+  Pilot Results → Methods & Rigor → Simulator → Export
+
+Reset demo state (SRS-REQ-022)
+- Restores default scenario values and clears stored runs (with confirmation)
+
+===========================================================
+7) PERFORMANCE + RELIABILITY
+===========================================================
+
+Meet NFR budgets (SRS/nfr_budgets.json):
+- Cold start UI <= 3s (typical laptop)
+- Simulation run <= 500ms
+- Pilot charts render <= 2s
+
+===========================================================
+8) TESTS (IN REPO)
+===========================================================
+
+Add a minimal test setup (Vitest preferred):
+- TST-001: Pilot CSV parsing/mapping + row_count==66 (when default CSV present) + integrity check.
+- TST-002: Stats/correlation computation returns stable values (no NaNs, no crashes).
+
+===========================================================
+DONE = SUCCESS CRITERIA
+===========================================================
+
+The build is complete when:
+- All MUST requirements UR-001..UR-015 and SRS-REQ-001..SRS-REQ-030 are implemented.
+- App works as a kiosk demo without login.
+- Pilot Results show real charts from the loaded CSV (no synthetic points).
+- Simulator runs deterministically, stores runs, shows run_hash, and exports a one-page report offline.===========================================================
+0) EVIDENCE LIBRARY (OFFLINE)
+===========================================================
+
+Use /public/reference/*.json to power an Evidence panel:
+- Nutrient proxy definitions (from usda_fdc.json)
+- Pathway cards (from reactome.json and wikipathways.json)
+- Optional microbe↔metabolite links table (from mimedb.json; show empty-state if not populated)
+
+Rules:
+- Evidence panels must use cautious language: “supports plausibility”, “associated with”, “hypothesis generator”.
+- Never present evidence as medical advice or diagnosis.
+
+
+
+
+HELP / DOCS (FOUNDATION PACK VIEWER) [NEW, REQUIRED]
+- Add a global top-bar Help/Docs button visible on every screen.
+- Implement screen SCR-007 using GUI spec guidance in foundation_pack/SRS/gui_spec.json.
+- Load /foundation_pack/docs_index.json (static asset) to enumerate documents.
+- Render documents offline with a safe renderer:
+  - JSON: pretty-print; for known schemas show a derived table view (e.g., list of requirements).
+  - CSV: parse and show a table preview (first 100 rows) + basic stats (row count).
+  - Markdown: render Markdown to HTML safely.
+  - TXT: render as text (preformatted).
+- Read-only. Do not execute scripts or HTML embedded in docs.
+- Provide Copy and Download actions for each document.

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,16 +8,15 @@ import { useAppState } from '@/contexts/AppContext';
 import { DIET_FEATURES, MICROBE_GENERA, METABOLITE_PROXIES, COGNITIVE_DOMAINS, DISCLAIMERS, computeDietScoreProxy } from '@/world_model/worldModel';
 import { runSimulation, saveRun, type DietInputs, type SimulationResult } from '@/lib/simulator';
 import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 export default function Simulator() {
-  const { setLastRun } = useAppState();
+  const { setLastRun, simulatorInputs, setSimulatorInputs, presenterMode } = useAppState();
   const { toast } = useToast();
-  const [inputs, setInputs] = useState<DietInputs>({
-    fiber_proxy: 25, added_sugar_proxy: 30, sat_fat_proxy: 15, omega3_proxy: 2,
-  });
   const [result, setResult] = useState<SimulationResult | null>(null);
   const [running, setRunning] = useState(false);
 
+  const inputs = simulatorInputs;
   const dietScore = computeDietScoreProxy(inputs as unknown as Record<string, number>);
 
   const handleRun = async () => {
@@ -31,37 +29,49 @@ export default function Simulator() {
       toast({ title: 'Simulation complete', description: `Run hash: ${r.runHash.slice(0, 12)}…` });
     } catch (e) {
       toast({ title: 'Simulation failed', description: String(e), variant: 'destructive' });
-    } finally { setRunning(false); }
+    } finally {
+      setRunning(false);
+    }
   };
 
   const updateInput = (key: keyof DietInputs, val: number) => {
-    setInputs(prev => ({ ...prev, [key]: val }));
+    setSimulatorInputs({ ...inputs, [key]: val });
   };
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Simulator</h1>
-        <p className="text-xs text-muted-foreground mt-1">Diet → Microbiome → Metabolites → Cognition (deterministic pipeline)</p>
+        <p className="text-xs text-muted-foreground mt-1">
+          Diet → Microbiome → Metabolites → Cognition (deterministic pipeline)
+        </p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Inputs */}
         <Card>
-          <CardHeader className="pb-2"><CardTitle className="text-sm">Diet Inputs (D)</CardTitle></CardHeader>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm">Diet Inputs (D)</CardTitle>
+          </CardHeader>
           <CardContent className="space-y-5">
             {DIET_FEATURES.map(f => (
               <div key={f.id} className="space-y-1.5">
                 <div className="flex justify-between text-xs">
                   <span className="font-medium">{f.label}</span>
-                  <span className="font-mono text-primary">{inputs[f.id as keyof DietInputs]} {f.unit}</span>
+                  <span className="font-mono text-primary">
+                    {inputs[f.id as keyof DietInputs]} {f.unit}
+                  </span>
                 </div>
                 <Slider
-                  min={f.min} max={f.max} step={f.step}
+                  min={f.min}
+                  max={f.max}
+                  step={f.step}
                   value={[inputs[f.id as keyof DietInputs]]}
                   onValueChange={([v]) => updateInput(f.id as keyof DietInputs, v)}
                 />
-                <p className="text-[10px] text-muted-foreground">{f.description}</p>
+                {!presenterMode && (
+                  <p className="text-[10px] text-muted-foreground">{f.description}</p>
+                )}
               </div>
             ))}
             <Separator />
@@ -96,6 +106,7 @@ export default function Simulator() {
                   ))}
                 </CardContent>
               </Card>
+
               <Card>
                 <CardHeader className="pb-1">
                   <CardTitle className="text-sm flex items-center gap-2">
@@ -113,6 +124,7 @@ export default function Simulator() {
                   ))}
                 </CardContent>
               </Card>
+
               <Card>
                 <CardHeader className="pb-1">
                   <CardTitle className="text-sm flex items-center gap-2">
@@ -130,13 +142,20 @@ export default function Simulator() {
                   ))}
                 </CardContent>
               </Card>
+
               {/* Provenance */}
               <Card className="border-muted">
                 <CardContent className="pt-4 space-y-1">
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground"><Hash className="h-3 w-3" /> Run Hash</div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Hash className="h-3 w-3" /> Run Hash
+                  </div>
                   <p className="text-[10px] font-mono break-all">{result.runHash}</p>
-                  <p className="text-[10px] text-muted-foreground mt-1">{DISCLAIMERS.demoParams}</p>
-                  <p className="text-[10px] text-muted-foreground">Frozen before pilot validation.</p>
+                  {!presenterMode && (
+                    <>
+                      <p className="text-[10px] text-muted-foreground mt-1">{DISCLAIMERS.demoParams}</p>
+                      <p className="text-[10px] text-muted-foreground">Frozen before pilot validation.</p>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             </>

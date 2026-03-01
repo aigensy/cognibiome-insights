@@ -1,0 +1,89 @@
+External Reference Sources — CogniBiome App
+============================================
+
+This document describes which external data sources are used in the CogniBiome app
+and how they are integrated in an offline-first manner.
+
+KEY PRINCIPLE: The app runs fully offline. External sources are used ONLY as
+pre-built "reference snapshots" bundled with the project. Pilot data is never
+sent to any external service.
+
+---
+
+## Decision Matrix: External Sources Used in the App
+
+| Source                          | Used in App? | How it is used (inside the app)                                                                                                       |
+| ------------------------------- | :----------: | ------------------------------------------------------------------------------------------------------------------------------------- |
+| USDA FoodData Central (FDC)     |     YES      | "Food/Nutrient Evidence" layer: explains how diet quality changes map to fiber/sugar/fat at the nutrient level. FDC data is CC0.      |
+| Reactome                        |     YES      | "Pathway Cards": short biological pathway cards (e.g. tryptophan/serotonin) with citations. Reactome data is CC0; images CC BY 4.0.  |
+| WikiPathways (JSON)             |     YES      | "Mechanism Diagrams" layer: local JSON for key pathway diagrams. WikiPathways content is CC0.                                         |
+| MiMeDB (Microbial Metabolome DB)|     YES      | "Microbe ↔ Metabolite Evidence" table: reference links for the X→M stage. License: BY-NC (non-commercial).                          |
+| PubChem                         |      NO      | Not used in v1: adds network dependency and rate limits; Reactome/WikiPathways/MiMeDB already cover what is needed.                   |
+| HMDB                            |      NO      | Not used in v1: higher licensing/volume risk; MiMeDB + Reactome are sufficient for the judge-ready scenario.                         |
+
+---
+
+## How External Data Is Embedded (Offline, No Runtime API Calls)
+
+### 1) USDA FoodData Central (FDC) — Nutrient explanation for Diet Score
+
+- UI: "Nutrition Evidence" panel in Methods & Rigor / Simulator.
+- Function: when a user changes "diet quality" in the simulator, the app shows
+  which nutrients typically shift and why that is scientifically logical.
+- Technically: the app reads a local JSON file — no live API calls.
+- Why: The FDC API requires a data.gov API key that cannot be published publicly
+  and is subject to rate limits. A pre-built snapshot is safer for a demo.
+- Data: FDC data is in the public domain (CC0). Attribution: USDA FoodData Central.
+
+### 2) Reactome — Pathway Cards
+
+- UI: "Pathway Cards" block with 5–10 cards, each: name → short description →
+  "why it matters" (no medical claims) → citation.
+- Technically: local reactome_pathways_min.json.
+- License: CC0 for data; CC BY 4.0 for illustrations/branding.
+  See: https://reactome.org/license
+
+### 3) WikiPathways — Local Pathway Diagrams
+
+- UI: small gallery (2–4 diagrams) in Methods & Rigor.
+- Technically: local *.json files, no external requests.
+- License: CC0 waiver. See: https://classic.wikipathways.org/index.php/WikiPathways:License_Terms
+
+### 4) MiMeDB — Microbe ↔ Metabolite Reference
+
+- UI: "Evidence table" (searchable/filterable) + link-outs.
+- Technically: local CSV/JSON, pre-filtered to a small set of rows/fields
+  (fast load, relevant to the D→X→M→Y model).
+- Data available for download from: https://mimedb.org/downloads
+- License: BY-NC (non-commercial use only).
+  See: https://academic.oup.com/nar/article/51/D1/D611/6754917
+
+---
+
+## Recommended "External Reference Pack" Structure
+
+reference/
+  fdc_foods_min.json          — small set of representative foods + nutrients
+  fdc_nutrients_map.json      — map: which nutrients explain Diet Score components
+  reactome_pathways_min.json  — selected pathways + descriptions + identifiers
+  wikipathways/
+    WP_xxx.json
+  mimedb_links_min.json       — filtered MiMeDB snapshot (metabolites + microbes)
+  REFERENCES_AND_LICENSES.md  — licenses and attribution for all reference data
+
+---
+
+## Summary
+
+Sources USED: USDA FDC, Reactome, WikiPathways, MiMeDB.
+Sources NOT USED in v1: PubChem, HMDB.
+
+All external data is bundled as local snapshots. No API key is required at runtime.
+The FDC snapshot uses CC0 data. MiMeDB data is BY-NC; do not use commercially.
+
+References:
+[1] https://fdc.nal.usda.gov/api-guide — USDA FoodData Central API Guide
+[2] https://reactome.org/license — Reactome License Agreement
+[3] https://classic.wikipathways.org/index.php/WikiPathways:License_Terms
+[4] https://academic.oup.com/nar/article/51/D1/D611/6754917 — MiMeDB paper (OUP)
+[5] https://mimedb.org/downloads — MiMeDB Downloads

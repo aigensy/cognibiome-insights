@@ -18,11 +18,11 @@ export interface CorrelationResult {
   fieldY: string;
   labelY: string;
   pearsonR: number;
-  pValue: number | null; // approximate, labeled as such
+  pValue: number | null; // approximate, labeled as such in UI
   n: number;
 }
 
-function getValues(records: PilotRecord[], field: keyof PilotRecord): number[] {
+function getValidValues(records: PilotRecord[], field: keyof PilotRecord): number[] {
   return records.map(r => r[field]).filter(v => !isNaN(v));
 }
 
@@ -55,7 +55,7 @@ export function computeSummaryStats(records: PilotRecord[]): SummaryStats[] {
   ];
 
   return fields.map(({ field, label }) => {
-    const vals = getValues(records, field);
+    const vals = getValidValues(records, field);
     const m = mean(vals);
     return {
       field,
@@ -87,20 +87,16 @@ export function pearsonR(x: number[], y: number[]): number {
   return denom === 0 ? 0 : num / denom;
 }
 
-// Approximate p-value for Pearson r using t-distribution approximation
+// Approximate two-tailed p-value for Pearson r using Abramowitz & Stegun
 function approxPValue(r: number, n: number): number | null {
   if (n < 4) return null;
   const t = r * Math.sqrt((n - 2) / (1 - r * r + 1e-15));
-  const df = n - 2;
-  // Simple approximation using normal distribution for large df
   const absT = Math.abs(t);
-  // Approximate two-tailed p using Abramowitz and Stegun
   const p = Math.exp(-0.717 * absT - 0.416 * absT * absT);
   return Math.min(1, Math.max(0, 2 * p));
 }
 
 export function computeCorrelations(records: PilotRecord[]): CorrelationResult[] {
-  const xVals = getValues(records, 'diet_score');
   const targets: { field: keyof PilotRecord; label: string }[] = [
     { field: 'stroop_test', label: 'Stroop Test' },
     { field: 'language_test', label: 'Language Test' },
@@ -110,17 +106,21 @@ export function computeCorrelations(records: PilotRecord[]): CorrelationResult[]
   ];
 
   return targets.map(({ field, label }) => {
-    const yVals = getValues(records, field);
-    // Align x and y arrays (both should have n=66)
-    const n = Math.min(xVals.length, yVals.length);
-    const r = pearsonR(xVals.slice(0, n), yVals.slice(0, n));
+    // Paired filtering: only include rows where BOTH diet_score and target field are valid numbers.
+    // This prevents index misalignment from separate filtered arrays.
+    const pairs = records.filter(
+      r => !isNaN(r.diet_score) && !isNaN(r[field])
+    );
+    const xVals = pairs.map(r => r.diet_score);
+    const yVals = pairs.map(r => r[field] as number);
+    const r = pearsonR(xVals, yVals);
     return {
       fieldX: 'diet_score',
       fieldY: field,
       labelY: label,
       pearsonR: Math.round(r * 1000) / 1000,
-      pValue: approxPValue(r, n),
-      n,
+      pValue: approxPValue(r, pairs.length),
+      n: pairs.length,
     };
   });
 }

@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "open_questions.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "INCEPTION",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 2,
+    "last_updated_utc": "2026-02-28T21:25:04Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 draft. Blocking questions prevent READY_FOR_BUILD. | Phase 2: applied user answers/confirmations; closed blocking questions OQ-001/002/003/005/006."
+  },
+  "template_id": "DF.OUTPUT.OPEN_QUESTIONS.JSON.V1",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "INCEPTION",
+  "questions": [
+    {
+      "id": "OQ-001",
+      "question": "What is the exact runtime modeling approach for the simulator stages (diet→microbiome, microbiome→metabolites, metabolites→cognition): pre-trained ML models, lookup tables, or heuristic rules?",
+      "context": "This determines whether the app can produce numeric predictions, how determinism is enforced, and what model artifacts must be bundled or hosted.",
+      "options_if_any": [
+        "Option A: Bundle fixed, pre-trained model artifacts (recommended for judge-ready reproducibility).",
+        "Option B: Use fixed lookup tables / parameterized curves calibrated from training outputs.",
+        "Option C: Use simple directional/qualitative rules only (lowest effort, weakest scientific impact)."
+      ],
+      "impact": "High. Affects app credibility, implementation complexity, and schema/contracts for runs + model versioning.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-003",
+        "UR-006",
+        "UR-009",
+        "UR-012"
+      ],
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L58-L64",
+          "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+        },
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L62-L68",
+          "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+        },
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L186-L190",
+          "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+        }
+      ],
+      "status": "answered",
+      "resolution": "Use pre-trained supervised regression models trained offline in Python (scikit-learn, gradient boosting). At runtime, execute frozen deterministic model artifacts stored as JSON (either coefficient tables or compact GBDT/tree representation)."
+    },
+    {
+      "id": "OQ-002",
+      "question": "Do you already have trained model artifacts (files) for each stage? If yes, provide file names/formats (e.g., sklearn pickle, ONNX, JSON coefficients) and where they should live (client bundle vs Supabase storage).",
+      "context": "Without real artifacts, the simulator output must be placeholder or rule-based, which changes scope.",
+      "options_if_any": [],
+      "impact": "High. Determines if outputs are numeric and whether the app can be 'judge-ready' without placeholder data.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-003",
+        "UR-006",
+        "UR-012"
+      ],
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L58-L64",
+          "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+        }
+      ],
+      "status": "answered",
+      "resolution": "Cannot confirm final artifacts exist today. Phase-2 decision: ship bundled demo artifacts so the app works offline, and provide 'Load model artifact' controls to replace them when final training is completed. Recommended locations: /public/models/stage1_D_to_X.json, /public/models/stage2_X_to_M.json, /public/models/stage3_M_to_Y.json (each includes version, notes, and coefficients/trees; UI displays model hash/version)."
+    },
+    {
+      "id": "OQ-003",
+      "question": "Should the app run without login (kiosk/presenter mode) or require authentication (e.g., to protect de-identified pilot data and prevent edits)?",
+      "context": "Impacts database schema (users, roles), UI flows, and deployment configuration.",
+      "options_if_any": [
+        "No login (kiosk mode)",
+        "Simple password for admin actions only",
+        "Full auth (Supabase auth / email)"
+      ],
+      "impact": "Medium-High. Changes core flows and storage security posture.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-001",
+        "UR-004",
+        "UR-008"
+      ],
+      "evidence": [
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        },
+        {
+          "source_id": "Data Sheet 1.csv",
+          "loc": "rows=66, cols=14",
+          "snippet": "File contains 66 rows of pilot data with diet score and cognitive tests (Stroop, Language, Memory, Logical, Overall)."
+        }
+      ],
+      "status": "answered",
+      "resolution": "Default is no-login kiosk/presenter mode for judging. Optional hidden admin controls (e.g., load artifacts / load pilot CSV) behind a local-only toggle (URL param or secret click). No full authentication in MVP."
+    },
+    {
+      "id": "OQ-004",
+      "question": "Should diet input be manual nutrient sliders only, or also support food search via USDA FoodData Central (requires API key)?",
+      "context": "Food lookup adds UX value but adds integration + key management.",
+      "options_if_any": [
+        "Manual nutrients only (default)",
+        "Manual + FoodData Central lookup"
+      ],
+      "impact": "Medium. Changes integrations and UI complexity.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-002",
+        "UR-003"
+      ],
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L125-L131",
+          "snippet": "○ NHANES dietary intake datasets for nutrient intake variables  ○ USDA Food and Nutrient Database for nutrient definition standardization and  nutrient mapping"
+        },
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L73-L77",
+          "snippet": "**FoodData Central provides an API guide and API key signup, enabling programmatic nutrient lookup for foods, which is ideal for a Lovable front-en"
+        }
+      ],
+      "status": "open",
+      "resolution": null
+    },
+    {
+      "id": "OQ-005",
+      "question": "How should the pilot dataset be handled in the app: bundled as a built-in dataset, or user-uploaded at runtime?",
+      "context": "Bundling improves demo reliability; upload improves privacy and flexibility.",
+      "options_if_any": [
+        "Bundled dataset (read-only)",
+        "Upload at runtime",
+        "Both (bundle default + allow replace)"
+      ],
+      "impact": "Medium. Impacts storage and demo readiness.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-006",
+        "UR-007"
+      ],
+      "evidence": [
+        {
+          "source_id": "Data Sheet 1.csv",
+          "loc": "rows=66, cols=14",
+          "snippet": "File contains 66 rows of pilot data with diet score and cognitive tests (Stroop, Language, Memory, Logical, Overall)."
+        },
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L186-L190",
+          "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+        }
+      ],
+      "status": "answered",
+      "resolution": "Support both: bundle a read-only pilot dataset for reliable offline demo AND allow upload-at-runtime to replace/remove the dataset for any public deployment. Pilot dataset remains validation-only (not used for training)."
+    },
+    {
+      "id": "OQ-006",
+      "question": "What exact outputs and units should each stage display (microbiome taxa list, metabolite list, cognition metrics and scales)?",
+      "context": "The project plan names examples (SCFAs; serotonin/dopamine/GABA-related metabolites; Stroop/memory/language/logical). The UI must be consistent and not overclaim.",
+      "options_if_any": [],
+      "impact": "High. Controls UI fields, schema, and exports.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-003",
+        "UR-006",
+        "UR-012"
+      ],
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L125-L131",
+          "snippet": "○ NHANES dietary intake datasets for nutrient intake variables  ○ USDA Food and Nutrient Database for nutrient definition standardization and  nutrient mapping"
+        },
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L58-L64",
+          "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+        }
+      ],
+      "status": "answered",
+      "resolution": "Define MVP outputs/units: Diet inputs: fiber (g/day), added sugar (g/day), saturated fat (g/day), omega-3 proxy/PUFA (g/day), optional calories. Microbiome outputs: Bifidobacterium (0–1 or %), Lactobacillus (0–1 or %), Firmicutes:Bacteroidetes ratio (unitless). Metabolites: acetate/propionate/butyrate (standardized z-score or low/medium/high bins), plus 5-HTP precursor index (standardized). Cognition: modeled predicted Stroop, memory recall, language accuracy, logical reasoning, and overall composite (same scale as pilot or percentile), all labeled MODELED/proxy; pilot charts show actual scores from CSV."
+    },
+    {
+      "id": "OQ-007",
+      "question": "Export format requirement: PDF, HTML, or both? Any required branding (school, fair name, title page)?",
+      "context": "The MD suggests PDF/HTML 1-page export; branding requirements are not specified.",
+      "options_if_any": [
+        "HTML only",
+        "PDF only",
+        "Both (default)"
+      ],
+      "impact": "Medium. Affects implementation complexity.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-010"
+      ],
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L136-L140",
+          "snippet": "Your “Export 1-page report (PDF/HTML)” should include: - Inputs (diet features),"
+        },
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        }
+      ],
+      "status": "open",
+      "resolution": null
+    },
+    {
+      "id": "OQ-008",
+      "question": "Should the app include an 'Evidence Library' panel with curated 2025+ citations, or keep evidence as static text in Methods & Rigor?",
+      "context": "Evidence library boosts judge confidence but adds content management work.",
+      "options_if_any": [
+        "Static Methods & Rigor only",
+        "Evidence Library with curated citations (recommended)"
+      ],
+      "impact": "Low-Medium.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-011"
+      ],
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L1-L40",
+          "snippet": "Document proposes adding 2025–2026 citations and an in-app Evidence panel."
+        }
+      ],
+      "status": "open",
+      "resolution": null
+    },
+    {
+      "id": "OQ-009",
+      "question": "Do you want a 'Judge Walkthrough / Presenter Mode' that hides advanced controls and guarantees a clean demo in <2 minutes?",
+      "context": "Useful for live judging.",
+      "options_if_any": [
+        "Yes",
+        "No"
+      ],
+      "impact": "Medium. Changes UX flows and screen design.",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-004",
+        "UR-005"
+      ],
+      "evidence": [
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        }
+      ],
+      "status": "open",
+      "resolution": null
+    },
+    {
+      "id": "OQ-010",
+      "question": "What are the concrete success metrics for this app at the STEM Showcase (e.g., time-to-demo, number of exports, judge comprehension outcomes)?",
+      "context": "The questionnaire requires a measurable success metric; the current sources only state the goal of winning and being judge-ready.",
+      "options_if_any": [
+        "Demo readiness only (qualitative)",
+        "Quantitative: load time, error-free exports, # successful demo runs"
+      ],
+      "impact": "Low-Medium. Helps prioritize engineering tradeoffs (performance vs features).",
+      "blocks_progress": false,
+      "depends_on_requirement_ids": [
+        "UR-013"
+      ],
+      "evidence": [
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        }
+      ],
+      "status": "open",
+      "resolution": null
+    }
+  ]
+}

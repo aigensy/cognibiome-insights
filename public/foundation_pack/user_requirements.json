@@ -1,0 +1,405 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "user_requirements.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "INCEPTION",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 3,
+    "last_updated_utc": "2026-03-01T00:12:29Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 draft. HPO MUST approve user_requirements.json before BRD/SRS are treated as READY_FOR_BUILD. | Phase 2: updated requirements using answered OQs; removed blocking unknowns."
+  },
+  "template_id": "DF.OUTPUT.USER_REQUIREMENTS.JSON.V2",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "INCEPTION",
+  "gates": [
+    {
+      "gate_id": "GATE.HPO.APPROVE.USER_REQUIREMENTS",
+      "blocking": true,
+      "what_must_be_true": [
+        "HPO explicitly approves user_requirements.json before any BRD or SRS is treated as ready.",
+        "Approval is recorded with date and hash."
+      ],
+      "evidence_path": "00_admin/APPROVALS/HPO_SIGNOFF.md"
+    }
+  ],
+  "business_idea": {
+    "summary": "Judge-ready Gut–Brain Simulator web app that demonstrates a computational pipeline from diet to predicted microbiome changes to metabolite proxies to cognitive performance signals, and validates with a de-identified teen pilot dataset (n=66).",
+    "evidence": [
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L5-L11",
+        "snippet": "Modeling Diet-Driven Microbiome and Neurotransmitter Pathways"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L58-L64",
+        "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L135-L141",
+        "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L186-L190",
+        "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+      }
+    ]
+  },
+  "goal": {
+    "statement": "Make it easy for judges to understand and trust the project’s mechanistic simulation and pilot validation within a short live demo, with reproducible exports.",
+    "evidence": [
+      {
+        "source_id": "prompt_to_create_gut_brd_srs.txt",
+        "loc": "L1-L2",
+        "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L136-L140",
+        "snippet": "Your “Export 1-page report (PDF/HTML)” should include: - Inputs (diet features),"
+      }
+    ]
+  },
+  "primary_user": {
+    "role": "High school student presenter (Yana) demonstrating to STEM Showcase judges.",
+    "context": "Live demo during science fair judging; needs a stable, low-friction walkthrough.",
+    "constraints": [
+      "No new human subjects; pilot dataset is de-identified and validation-only.",
+      "Avoid medical/diagnostic claims."
+    ],
+    "evidence": [
+      {
+        "source_id": "prompt_to_create_gut_brd_srs.txt",
+        "loc": "L1-L2",
+        "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L135-L141",
+        "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L62-L66",
+        "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+      }
+    ]
+  },
+  "problem_statement": {
+    "current_state": "Most gut–brain studies (and student projects) are judged as correlational; it is hard to communicate intermediate biological mechanisms and ML rigor quickly during judging.",
+    "desired_state": "A transparent simulator dashboard that shows the multi-stage pipeline, real pilot validation charts, and explicit leakage/limitation guardrails.",
+    "evidence": [
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L58-L64",
+        "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L62-L68",
+        "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L186-L190",
+        "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+      }
+    ]
+  },
+  "success_metrics": {
+    "metrics": [
+      {
+        "metric": "Demo reliability",
+        "target": null,
+        "unit": null,
+        "notes": "cannot confirm; define measurable success metrics for the showcase (see OQ-010)."
+      },
+      {
+        "metric": "Time-to-insight for judge walkthrough",
+        "target": 120,
+        "unit": "seconds",
+        "notes": "assumption; adjust if you have a different target."
+      },
+      {
+        "metric": "Export success rate during demo",
+        "target": 0.99,
+        "unit": "fraction",
+        "notes": "assumption; adjust if you prefer a different metric."
+      }
+    ],
+    "evidence": [
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L136-L140",
+        "snippet": "Your “Export 1-page report (PDF/HTML)” should include: - Inputs (diet features),"
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L186-L190",
+        "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+      }
+    ]
+  },
+  "scope": {
+    "in_scope": [
+      "Pilot dataset visualization (n=66): summary stats + charts + correlations.",
+      "Simulator: diet inputs → modeled microbiome → modeled metabolites → modeled cognition.",
+      "Methods & Rigor: leakage guardrails, limitations, and disclaimers.",
+      "Export: 1-page report (PDF/HTML) for a run."
+    ],
+    "out_of_scope": [
+      "Medical diagnosis, treatment, or personalized clinical guidance.",
+      "Collecting new human subject data (surveys, stool samples, etc.).",
+      "Live re-training of large multi-omics models in the app."
+    ],
+    "evidence": [
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L186-L190",
+        "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L136-L140",
+        "snippet": "Your “Export 1-page report (PDF/HTML)” should include: - Inputs (diet features),"
+      },
+      {
+        "source_id": "MultimodalText Deep Research.md",
+        "loc": "L62-L66",
+        "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L135-L141",
+        "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+      }
+    ]
+  },
+  "platforms": {
+    "targets": [
+      "Web",
+      "Desktop",
+      "MobilePWA"
+    ],
+    "notes": "Confirmed via ASM-001."
+  },
+  "user_flows": [
+    {
+      "id": "FLOW-01",
+      "name": "Judge walkthrough",
+      "steps": [
+        "Open app (kiosk/presenter mode).",
+        "Show Pilot Results (n=66) charts/tables.",
+        "Show Methods & Rigor (limitations + leakage guardrails + disclaimer).",
+        "Run a Simulator scenario with diet inputs.",
+        "Generate/export 1-page report."
+      ]
+    },
+    {
+      "id": "FLOW-02",
+      "name": "Pilot dataset check",
+      "steps": [
+        "Upload/select pilot CSV.",
+        "Validate column mapping and row count.",
+        "Compute summary stats and correlations.",
+        "Export pilot summary."
+      ]
+    },
+    {
+      "id": "FLOW-03",
+      "name": "Scenario comparison",
+      "steps": [
+        "Create Scenario A diet inputs.",
+        "Create Scenario B diet inputs.",
+        "Compare predicted microbiome/metabolite/cognition outputs side-by-side.",
+        "Export comparison."
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "UR-001",
+      "statement": "The app must support a low-friction 'kiosk/presenter mode' suitable for live judging (no login by default).",
+      "priority": "MUST",
+      "rationale": "Reduces demo friction and risk of authentication failures during judging.",
+      "acceptance_criteria": [
+        "Opening the app lands on the main dashboard without authentication prompts.",
+        "Admin actions (if any) are protected separately (password or hidden toggle)."
+      ],
+      "notes": "Confirmed by OQ-003: kiosk/presenter mode by default; optional hidden admin controls."
+    },
+    {
+      "id": "UR-002",
+      "statement": "The app must allow users to define a diet scenario using explicit nutrient variables relevant to the project (e.g., fiber, sugar, saturated fat, omega-3/polyunsaturated fat proxy).",
+      "priority": "MUST",
+      "rationale": "These inputs drive the simulator pipeline.",
+      "acceptance_criteria": [
+        "Diet scenario inputs include numeric controls for: fiber_g_per_day, added_sugar_g_per_day, saturated_fat_g_per_day, omega3_proxy_g_per_day.",
+        "Optional input calories_kcal_per_day can be enabled.",
+        "UI validates ranges and missing values with clear error messages."
+      ],
+      "notes": "Confirmed by OQ-006 (exact MVP inputs/units)."
+    },
+    {
+      "id": "UR-003",
+      "statement": "The app must run a deterministic, multi-stage simulation pipeline: diet → microbiome composition → metabolite proxies → cognition outputs.",
+      "priority": "MUST",
+      "rationale": "This is the core scientific contribution and demonstration.",
+      "acceptance_criteria": [
+        "The simulator runs three sequential stages and returns structured outputs for microbiome, metabolites, and cognition.",
+        "Simulation uses frozen, versioned model artifacts (JSON coefficients/trees) and is deterministic for the same (inputs + model_version_ids).",
+        "UI displays model version identifiers and run_hash for every run."
+      ],
+      "notes": "Resolved by OQ-001 and OQ-002; artifacts are expected under /public/models/*.json."
+    },
+    {
+      "id": "UR-004",
+      "statement": "The app must contain a judge-readable 'Methods & Rigor' section that explains limitations, leakage guardrails, and non-diagnostic disclaimer.",
+      "priority": "MUST",
+      "rationale": "Prevents overclaiming and addresses judge concerns.",
+      "acceptance_criteria": [
+        "Methods & Rigor includes: 'validation-only pilot dataset' statement, leakage definition, and 'not medical advice / not diagnostic' disclaimer.",
+        "The text avoids 'proves' language and uses 'simulates' / 'hypothesis generator' framing."
+      ],
+      "notes": "see ASM-005."
+    },
+    {
+      "id": "UR-005",
+      "statement": "The app should include a 'Judge Walkthrough' or 'Presenter Mode' that guides a 2-minute demo.",
+      "priority": "SHOULD",
+      "rationale": "Maximizes clarity under time pressure.",
+      "acceptance_criteria": [
+        "Presenter Mode highlights the minimal set of screens and hides advanced settings.",
+        "Presenter Mode can be reset to a known state."
+      ],
+      "notes": "see OQ-009."
+    },
+    {
+      "id": "UR-006",
+      "statement": "The app must visualize the de-identified teen pilot dataset (n=66) with real charts and tables (no synthetic data).",
+      "priority": "MUST",
+      "rationale": "Provides real validation evidence supporting the project.",
+      "acceptance_criteria": [
+        "App can load a bundled read-only pilot dataset and shows row count = 66.",
+        "App supports upload-at-runtime to replace/remove pilot dataset for non-demo deployments.",
+        "Pilot dataset is labeled 'validation-only' and is never used for simulator training."
+      ],
+      "notes": "Resolved by OQ-005; ASM-006 edited with demo/public-deploy caveat."
+    },
+    {
+      "id": "UR-007",
+      "statement": "The app must compute and display basic statistics for the pilot dataset (summary stats and correlation/regression signals).",
+      "priority": "MUST",
+      "rationale": "Judges expect quantitative analysis, not only visuals.",
+      "acceptance_criteria": [
+        "App shows at least: mean/median for Diet Score and each cognitive metric.",
+        "App shows correlation coefficient between Diet Score and each cognitive metric."
+      ],
+      "notes": "exact statistical methods can be simple; avoid overclaiming causality."
+    },
+    {
+      "id": "UR-008",
+      "statement": "The app must not collect or store personally identifiable information, and must label the pilot dataset as de-identified.",
+      "priority": "MUST",
+      "rationale": "Compliance and privacy protection for teen data.",
+      "acceptance_criteria": [
+        "No UI fields request names/emails/phones for pilot data.",
+        "Stored records contain numeric metrics only."
+      ],
+      "notes": "see ASM-004."
+    },
+    {
+      "id": "UR-009",
+      "statement": "The app must show model provenance: model version identifiers and a run identifier (hash) for each simulation run.",
+      "priority": "MUST",
+      "rationale": "Reproducibility and scientific rigor.",
+      "acceptance_criteria": [
+        "UI displays model_version_ids used for the run (stage1/stage2/stage3).",
+        "UI displays a stable run_hash computed from normalized inputs + model_version_ids.",
+        "If the user loads a different artifact file, the model_version_id and artifact hash change and are reflected in subsequent runs/exports."
+      ],
+      "notes": "Aligned with OQ-002 recommended artifact paths and provenance display."
+    },
+    {
+      "id": "UR-010",
+      "statement": "The app must generate an exportable 1-page report (PDF/HTML) containing inputs, outputs, pilot validation visuals, and key disclaimers.",
+      "priority": "MUST",
+      "rationale": "Judges value a take-home artifact and it reinforces reproducibility.",
+      "acceptance_criteria": [
+        "Export includes: diet inputs, stage outputs, pilot charts/tables, leakage guardrails, disclaimers, and run_id/model_version.",
+        "Export generation succeeds without external tooling beyond the app deployment."
+      ],
+      "notes": "Export should include inputs/outputs, pilot visuals, disclaimers, and run provenance. Export format still open (OQ-007)."
+    },
+    {
+      "id": "UR-011",
+      "statement": "The app should provide evidence references for each simulator module (e.g., SCFAs and tryptophan metabolites) in a judge-friendly way.",
+      "priority": "SHOULD",
+      "rationale": "Strengthens credibility without overclaiming.",
+      "acceptance_criteria": [
+        "Evidence is presented as citations/links or a curated evidence panel.",
+        "Evidence claims are phrased as 'supports plausibility' not 'proves'."
+      ],
+      "notes": "see OQ-008."
+    },
+    {
+      "id": "UR-012",
+      "statement": "All microbiome/metabolite outputs shown for teens must be labeled as modeled proxy variables, not measured biomarkers.",
+      "priority": "MUST",
+      "rationale": "The pilot dataset does not contain microbiome/metabolite measurements; avoiding misrepresentation is critical.",
+      "acceptance_criteria": [
+        "UI uses labels such as 'simulated' / 'estimated' / 'proxy'.",
+        "Methods & Rigor states that teens have no stool/metabolite measurements."
+      ],
+      "notes": "Confirmed by OQ-006: outputs shown for teens are modeled/proxy variables; pilot has no microbiome/metabolite measurements."
+    },
+    {
+      "id": "UR-013",
+      "statement": "The app should meet basic performance targets suitable for live demos (fast load and fast simulation).",
+      "priority": "SHOULD",
+      "rationale": "Reduces demo risk under poor network or device constraints.",
+      "acceptance_criteria": [
+        "Cold start loads core UI in under 3 seconds on a typical laptop.",
+        "A single simulation run completes in under 500 ms once loaded."
+      ],
+      "notes": "targets are assumptions; confirm or adjust via OQ-010."
+    },
+    {
+      "id": "UR-014",
+      "statement": "The app should support side-by-side comparison of two diet scenarios and their predicted outputs.",
+      "priority": "SHOULD",
+      "rationale": "Improves interpretability and demonstrates dose-response behavior.",
+      "acceptance_criteria": [
+        "User can save two scenarios and compare outputs on one screen.",
+        "Export can include the comparison."
+      ],
+      "notes": "may be deferred if schedule is tight."
+    },
+    {
+      "id": "UR-015",
+      "statement": "The app must include an in-app Help/Docs screen that displays all submitted foundation documents and reference snapshots in read-only form, rendering JSON/CSV/MD/TXT in the browser while offline.",
+      "priority": "MUST",
+      "rationale": "Improves transparency and judge trust by making the submitted packet and engineering artifacts available inside the demo app.",
+      "acceptance_criteria": [
+        "Help/Docs is accessible from every screen via a consistent top-bar button.",
+        "Docs list is complete (driven by docs_index.json) and opens documents without network access.",
+        "JSON renders with stable formatting; CSV renders as a table preview; MD renders as Markdown; TXT renders as text."
+      ],
+      "notes": "Read-only. No PHI. No new scientific claims; presentation-only."
+    }
+  ],
+  "unknowns": {
+    "open_questions": [],
+    "assumptions_to_confirm": [],
+    "notes": "Blocking questions answered. Remaining open questions are non-blocking."
+  }
+}

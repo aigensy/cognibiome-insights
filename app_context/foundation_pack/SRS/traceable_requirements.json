@@ -1,0 +1,642 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "SRS/traceable_requirements.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "DESIGN",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 3,
+    "last_updated_utc": "2026-03-01T00:12:29Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 draft SRS requirements with BRD and test traceability. | Phase 2: removed resolved dependencies; traceability unchanged."
+  },
+  "template_id": "DF.OUTPUT.SRS.TRACEABLE_REQUIREMENTS.JSON.V1",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "DESIGN",
+  "purpose": "Provide implementation-ready, traceable SRS requirements for the Gut–Brain Simulator app.",
+  "requirement_format": {
+    "id_format": "SRS-REQ-{3 digits}",
+    "fields": [
+      "id",
+      "type",
+      "statement",
+      "priority",
+      "rationale",
+      "depends_on",
+      "data_entities",
+      "trace_to_brd",
+      "test_ids",
+      "notes"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "SRS-REQ-001",
+      "type": "functional",
+      "statement": "Implement pilot CSV ingestion with deterministic column mapping into canonical fields (diet_score, stroop_test, language_test, memory_test, logical_test, overall_score).",
+      "priority": "MUST",
+      "rationale": "Needed to show real pilot results.",
+      "depends_on": [
+        "EP-001 / pilot_datasets",
+        "pilot_records"
+      ],
+      "data_entities": [
+        "PilotDataset",
+        "PilotRecord"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-001"
+      ],
+      "test_ids": [
+        "TST-001"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-002",
+      "type": "functional",
+      "statement": "Detect and require resolution of ambiguous/duplicated CSV columns (e.g., Diet Score, Diet Score.1, etc.) before computing stats.",
+      "priority": "MUST",
+      "rationale": "Current CSV appears to contain duplicated Diet Score columns; must avoid silent mis-mapping.",
+      "depends_on": [
+        "EP-001"
+      ],
+      "data_entities": [
+        "PilotDataset"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-001"
+      ],
+      "test_ids": [
+        "TST-001"
+      ],
+      "notes": "evidence: Data Sheet 1.csv has multiple Diet Score.* columns; mapping must be explicit."
+    },
+    {
+      "id": "SRS-REQ-003",
+      "type": "functional",
+      "statement": "Compute and display summary statistics for each pilot metric (mean, median, n).",
+      "priority": "MUST",
+      "rationale": "Judges expect quantitative summaries.",
+      "depends_on": [
+        "pilot_records"
+      ],
+      "data_entities": [
+        "PilotRecord"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-001"
+      ],
+      "test_ids": [
+        "TST-002"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-004",
+      "type": "functional",
+      "statement": "Compute and display correlation signals between diet_score and each cognitive metric.",
+      "priority": "MUST",
+      "rationale": "Shows measurable relationship in pilot dataset.",
+      "depends_on": [
+        "pilot_records"
+      ],
+      "data_entities": [
+        "PilotRecord"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-001"
+      ],
+      "test_ids": [
+        "TST-002"
+      ],
+      "notes": "Do not claim causality."
+    },
+    {
+      "id": "SRS-REQ-005",
+      "type": "functional",
+      "statement": "Render pilot dataset charts (scatter plots) for diet_score vs each cognitive metric and overall_score.",
+      "priority": "MUST",
+      "rationale": "Core judge-facing visuals.",
+      "depends_on": [
+        "GUI:SCR-002"
+      ],
+      "data_entities": [
+        "PilotRecord"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-001"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-006",
+      "type": "functional",
+      "statement": "Provide dataset metadata display (row count, file hash, last loaded time).",
+      "priority": "SHOULD",
+      "rationale": "Supports transparency and reproducibility.",
+      "depends_on": [
+        "pilot_datasets"
+      ],
+      "data_entities": [
+        "PilotDataset"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-001",
+        "BRD-REQ-008"
+      ],
+      "test_ids": [
+        "TST-001"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-007",
+      "type": "functional",
+      "statement": "Provide diet input UI controls for the chosen nutrient variables and validate ranges.",
+      "priority": "MUST",
+      "rationale": "Enables simulation runs.",
+      "depends_on": [
+        "GUI:SCR-003"
+      ],
+      "data_entities": [
+        "DietScenario"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-002"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": "Exact variable set depends on OQ-006."
+    },
+    {
+      "id": "SRS-REQ-008",
+      "type": "functional",
+      "statement": "Normalize diet inputs into a canonical feature vector used to compute run_hash.",
+      "priority": "MUST",
+      "rationale": "Ensures deterministic hashing and reproducibility.",
+      "depends_on": [
+        "simulation_runs"
+      ],
+      "data_entities": [
+        "SimulationRun"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-002"
+      ],
+      "test_ids": [
+        "TST-003"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-009",
+      "type": "functional",
+      "statement": "Execute the stage pipeline (diet→microbiome→metabolites→cognition) using the selected runtime approach.",
+      "priority": "MUST",
+      "rationale": "Core simulation behavior.",
+      "depends_on": [
+        "EP-002 / model_versions"
+      ],
+      "data_entities": [
+        "ModelVersion",
+        "SimulationRun"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-002"
+      ],
+      "test_ids": [
+        "TST-003"
+      ],
+      "notes": "blocks on OQ-001/OQ-002/OQ-006."
+    },
+    {
+      "id": "SRS-REQ-010",
+      "type": "functional",
+      "statement": "Compute run_hash deterministically from normalized diet inputs + model_version_ids.",
+      "priority": "MUST",
+      "rationale": "Reproducibility.",
+      "depends_on": [
+        "simulation_runs"
+      ],
+      "data_entities": [
+        "SimulationRun",
+        "ModelVersion"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-002"
+      ],
+      "test_ids": [
+        "TST-003"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-011",
+      "type": "functional",
+      "statement": "Persist simulation runs (inputs, outputs, provenance) for later export.",
+      "priority": "MUST",
+      "rationale": "Exports require stored run context.",
+      "depends_on": [
+        "simulation_runs"
+      ],
+      "data_entities": [
+        "SimulationRun"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-002",
+        "BRD-REQ-004"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": "Storage may be optional if exports are immediate; confirm via OQ-003."
+    },
+    {
+      "id": "SRS-REQ-012",
+      "type": "functional",
+      "statement": "Display stage outputs with clear labels and units; if unknown, show null with 'cannot confirm'.",
+      "priority": "MUST",
+      "rationale": "Avoids hallucinated precision.",
+      "depends_on": [
+        "GUI:SCR-003"
+      ],
+      "data_entities": [
+        "SimulationRun"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-002"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": "Depends on OQ-006."
+    },
+    {
+      "id": "SRS-REQ-013",
+      "type": "functional",
+      "statement": "Support side-by-side comparison of two scenarios (optional v1).",
+      "priority": "SHOULD",
+      "rationale": "Improves interpretability and dose-response demonstrations.",
+      "depends_on": [
+        "GUI:SCR-006"
+      ],
+      "data_entities": [
+        "SimulationRun"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-005"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": "May be deferred."
+    },
+    {
+      "id": "SRS-REQ-014",
+      "type": "functional",
+      "statement": "Provide a Methods & Rigor screen containing: dataset boundary statement, leakage definition, and limitations.",
+      "priority": "MUST",
+      "rationale": "Judge-facing rigor.",
+      "depends_on": [
+        "GUI:SCR-005"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-003"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-015",
+      "type": "functional",
+      "statement": "Include a visible non-diagnostic disclaimer and non-causality language in UI and exports.",
+      "priority": "MUST",
+      "rationale": "Risk reduction.",
+      "depends_on": [
+        "GUI:SCR-005",
+        "GUI:SCR-004"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-003"
+      ],
+      "test_ids": [
+        "TST-006",
+        "TST-005"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-016",
+      "type": "functional",
+      "statement": "Label microbiome/metabolite outputs as simulated proxies; state that teens have no stool/metabolite measurements.",
+      "priority": "MUST",
+      "rationale": "Prevent misrepresentation.",
+      "depends_on": [
+        "GUI:SCR-003",
+        "GUI:SCR-005"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-007"
+      ],
+      "test_ids": [
+        "TST-006"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-017",
+      "type": "functional",
+      "statement": "Generate a 1-page report for a selected simulation run.",
+      "priority": "MUST",
+      "rationale": "Deliverable artifact.",
+      "depends_on": [
+        "EP-003 / export_artifacts"
+      ],
+      "data_entities": [
+        "ExportArtifact",
+        "SimulationRun"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-004"
+      ],
+      "test_ids": [
+        "TST-004",
+        "TST-005"
+      ],
+      "notes": "Format depends on OQ-007."
+    },
+    {
+      "id": "SRS-REQ-018",
+      "type": "functional",
+      "statement": "Export must include run_id/run_hash and model_version_ids.",
+      "priority": "MUST",
+      "rationale": "Reproducibility.",
+      "depends_on": [
+        "export_artifacts"
+      ],
+      "data_entities": [
+        "ExportArtifact",
+        "ModelVersion"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-004"
+      ],
+      "test_ids": [
+        "TST-005"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-019",
+      "type": "functional",
+      "statement": "Export must include diet inputs, stage outputs, and pilot visuals (or pilot summary) when enabled.",
+      "priority": "MUST",
+      "rationale": "Completeness for judges.",
+      "depends_on": [
+        "export_artifacts"
+      ],
+      "data_entities": [
+        "ExportArtifact"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-004"
+      ],
+      "test_ids": [
+        "TST-005"
+      ],
+      "notes": "Pilot visuals inclusion depends on OQ-005."
+    },
+    {
+      "id": "SRS-REQ-020",
+      "type": "functional",
+      "statement": "Export must include leakage guardrails checklist and disclaimers.",
+      "priority": "MUST",
+      "rationale": "Rigor and safety.",
+      "depends_on": [
+        "export_artifacts"
+      ],
+      "data_entities": [
+        "ExportArtifact"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-003",
+        "BRD-REQ-004"
+      ],
+      "test_ids": [
+        "TST-005"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-021",
+      "type": "functional",
+      "statement": "Provide a Presenter Mode that highlights the minimal demo path and hides advanced controls.",
+      "priority": "SHOULD",
+      "rationale": "2-minute demo support.",
+      "depends_on": [
+        "GUI:global"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-005"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": "Depends on OQ-009."
+    },
+    {
+      "id": "SRS-REQ-022",
+      "type": "functional",
+      "statement": "Provide a 'Reset demo state' action that restores default dataset and default scenario.",
+      "priority": "SHOULD",
+      "rationale": "Demo reliability.",
+      "depends_on": [
+        "GUI:global"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-005"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-023",
+      "type": "constraint",
+      "statement": "Do not store or request PII; restrict stored pilot records to numeric metrics only.",
+      "priority": "MUST",
+      "rationale": "Privacy compliance.",
+      "depends_on": [
+        "database_schema integrity_rules"
+      ],
+      "data_entities": [
+        "PilotRecord"
+      ],
+      "trace_to_brd": [
+        "BRD-REQ-006"
+      ],
+      "test_ids": [
+        "TST-001",
+        "TST-006"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-024",
+      "type": "constraint",
+      "statement": "Do not imply measured microbiome/metabolite values for pilot participants; show them only as modeled variables.",
+      "priority": "MUST",
+      "rationale": "Scientific honesty.",
+      "depends_on": [
+        "UI wording rules"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-007"
+      ],
+      "test_ids": [
+        "TST-006"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-025",
+      "type": "functional",
+      "statement": "Provide a Data Sources panel listing which datasets are used per stage and whether they are training, reference, or validation-only.",
+      "priority": "SHOULD",
+      "rationale": "Prevents judge confusion about dataset pairing.",
+      "depends_on": [
+        "static content"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-008"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-026",
+      "type": "functional",
+      "statement": "Explicitly label any unpaired datasets as reference-only if they are not used for supervised paired training.",
+      "priority": "SHOULD",
+      "rationale": "Avoids methodological confusion.",
+      "depends_on": [
+        "static content"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-008"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": "Depends on OQ-001."
+    },
+    {
+      "id": "SRS-REQ-027",
+      "type": "non_functional",
+      "statement": "Meet NFR budgets for demo performance (cold start, simulation latency, chart render).",
+      "priority": "SHOULD",
+      "rationale": "Live demo reliability.",
+      "depends_on": [
+        "SRS/nfr_budgets.json"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-009"
+      ],
+      "test_ids": [
+        "TST-004"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "SRS-REQ-028",
+      "type": "functional",
+      "statement": "If enabled, provide an Evidence panel with curated citations per module, presented as plausibility support only.",
+      "priority": "SHOULD",
+      "rationale": "Credibility enhancement.",
+      "depends_on": [
+        "GUI:optional"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-010"
+      ],
+      "test_ids": [
+        "TST-006"
+      ],
+      "notes": "Depends on OQ-008."
+    },
+    {
+      "id": "SRS-REQ-029",
+      "type": "functional",
+      "statement": "Provide a Help/Docs screen (GUI:SCR-007) that lists all packaged documentation items from /foundation_pack/docs_index.json and opens each item in a viewer, fully offline.",
+      "priority": "MUST",
+      "rationale": "Transparency and judge-ready auditability.",
+      "depends_on": [
+        "GUI:SCR-007",
+        "static asset: /foundation_pack/docs_index.json"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-011"
+      ],
+      "test_ids": [
+        "TST-007"
+      ],
+      "notes": "Read-only; no user-generated content."
+    },
+    {
+      "id": "SRS-REQ-030",
+      "type": "functional",
+      "statement": "The Help/Docs viewer must render JSON/CSV/MD/TXT documents in-browser: JSON pretty-print (and optional derived table for known schemas), CSV table preview, Markdown render, and plain text render.",
+      "priority": "MUST",
+      "rationale": "Usable, consistent doc viewing on demo devices without external tools.",
+      "depends_on": [
+        "SRS-REQ-029"
+      ],
+      "data_entities": [],
+      "trace_to_brd": [
+        "BRD-REQ-011"
+      ],
+      "test_ids": [
+        "TST-007"
+      ],
+      "notes": "Rendering must not execute scripts; treat content as untrusted text."
+    }
+  ],
+  "traceability": {
+    "brd_to_srs_rule": "Each SRS requirement must reference at least one BRD-REQ id.",
+    "srs_to_tests_rule": "Each SRS requirement must reference at least one TST id (placeholder allowed).",
+    "notes": "Some requirements depend on blocking open questions; see open_questions."
+  },
+  "open_questions": [
+    "OQ-001",
+    "OQ-002",
+    "OQ-003",
+    "OQ-005",
+    "OQ-006"
+  ]
+}

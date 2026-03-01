@@ -1,0 +1,150 @@
+{
+  "schema_version": "cognibiome.docs_index.v1",
+  "generated_utc": "2026-03-01T00:12:29Z",
+  "items": [
+    {
+      "id": "DOC-001",
+      "title": "User Requirements (UR)",
+      "path": "/foundation_pack/user_requirements.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Primary user-level scope and acceptance criteria."
+    },
+    {
+      "id": "DOC-002",
+      "title": "BRD",
+      "path": "/foundation_pack/BRD/brd.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Business requirements and success metrics."
+    },
+    {
+      "id": "DOC-003",
+      "title": "SRS Requirements (Traceable)",
+      "path": "/foundation_pack/SRS/traceable_requirements.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Functional and non-functional requirements with traceability."
+    },
+    {
+      "id": "DOC-004",
+      "title": "GUI Spec",
+      "path": "/foundation_pack/SRS/gui_spec.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Screens and flows for judge walkthrough."
+    },
+    {
+      "id": "DOC-005",
+      "title": "Database Schema",
+      "path": "/foundation_pack/SRS/database_schema.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Entities and relationships."
+    },
+    {
+      "id": "DOC-006",
+      "title": "Data Contracts",
+      "path": "/foundation_pack/SRS/data_contracts.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Ingestion and internal data shapes."
+    },
+    {
+      "id": "DOC-007",
+      "title": "NFR Budgets",
+      "path": "/foundation_pack/SRS/nfr_budgets.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Performance budgets for demo reliability."
+    },
+    {
+      "id": "DOC-008",
+      "title": "Test Plan & CI",
+      "path": "/foundation_pack/SRS/test_plan_and_ci.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Test cases and CI commands."
+    },
+    {
+      "id": "DOC-009",
+      "title": "Agentic Prompt Gates",
+      "path": "/foundation_pack/SRS/agentic_prompt_gates.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Prompt-level guardrails for automation."
+    },
+    {
+      "id": "DOC-010",
+      "title": "Technical Requirements (TRD)",
+      "path": "/foundation_pack/SRS/trd.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Implementation guidance and constraints."
+    },
+    {
+      "id": "DOC-011",
+      "title": "Assumptions",
+      "path": "/foundation_pack/assumptions.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Assumptions to revisit and validate."
+    },
+    {
+      "id": "DOC-012",
+      "title": "Open Questions",
+      "path": "/foundation_pack/open_questions.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Unknowns and blockers tracking."
+    },
+    {
+      "id": "DOC-013",
+      "title": "Questionnaire Answers",
+      "path": "/foundation_pack/user_questionnaire_answers.json",
+      "category": "Foundation",
+      "media_type": "application/json",
+      "description": "Answered questionnaire to ground requirements."
+    },
+    {
+      "id": "DOC-014",
+      "title": "Pilot Dataset (n=66)",
+      "path": "/pilot/pilot_dataset_n66.csv",
+      "category": "Data",
+      "media_type": "text/csv",
+      "description": "De-identified pilot dataset used for dashboard validation."
+    },
+    {
+      "id": "DOC-015",
+      "title": "External Sources Overview",
+      "path": "/external_sources_for_Gut_overview.txt",
+      "category": "Reference",
+      "media_type": "text/plain",
+      "description": "Source list used for evidence and background."
+    },
+    {
+      "id": "DOC-016",
+      "title": "Reference Data Build Notes",
+      "path": "/reference/README_data_build.md",
+      "category": "Reference",
+      "media_type": "text/markdown",
+      "description": "How reference snapshots were prepared."
+    },
+    {
+      "id": "DOC-017",
+      "title": "References & Licenses",
+      "path": "/reference/REFERENCES_AND_LICENSES.md",
+      "category": "Reference",
+      "media_type": "text/markdown",
+      "description": "Licenses and attribution notes for reference snapshots."
+    },
+    {
+      "id": "DOC-018",
+      "title": "Upload Manifest (SHA256)",
+      "path": "/UPLOAD_FILES_MANIFEST.md",
+      "category": "Reference",
+      "media_type": "text/markdown",
+      "description": "Integrity list of uploaded artifacts with hashes."
+    }
+  ]
+}

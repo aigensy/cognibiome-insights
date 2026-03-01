@@ -1,0 +1,264 @@
+{
+  "meta": {
+    "schema_version": "adlc_meta.v1",
+    "canonical_path": "BRD/business_knowledge.json",
+    "owner": "HPO",
+    "maintainer": "APO",
+    "adlc_product": "DARKFACTORY",
+    "adlc_category": "Artifact",
+    "adlc_phase": "INCEPTION",
+    "adlc_state": "Final",
+    "adlc_work_cnt": 2,
+    "last_updated_utc": "2026-02-28T21:25:04Z",
+    "last_editor": "chatgpt",
+    "last_writer": "bot",
+    "notes": "Phase 1 draft business/domain knowledge, grounded only in provided project documents. | Phase 2: aligned domain vocabulary with confirmed simulator I/O."
+  },
+  "template_id": "DF.OUTPUT.BRD.BUSINESS_KNOWLEDGE.JSON.V1",
+  "template_version": "2026-02-28",
+  "template_kind": "artifact",
+  "phase": "INCEPTION",
+  "business_idea": {
+    "summary": "Judge-ready Gut–Brain Simulator web app that demonstrates a computational pipeline from diet to predicted microbiome changes to metabolite proxies to cognitive performance signals, and validates with a de-identified teen pilot dataset (n=66).",
+    "context": "Regeneron ISEF / Hudson County STEM Showcase computational biology project demo app.",
+    "evidence": [
+      {
+        "source_id": "prompt_to_create_gut_brd_srs.txt",
+        "loc": "L1-L2",
+        "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L5-L11",
+        "snippet": "Modeling Diet-Driven Microbiome and Neurotransmitter Pathways"
+      }
+    ]
+  },
+  "domain_summary": {
+    "summary": "Gut–brain axis research suggests diet can influence cognition through intermediate biological layers: microbiome composition and microbial metabolites (e.g., SCFAs). This project builds a computational simulator to model these layers and validate against a separate de-identified teen pilot dataset.",
+    "cannot_confirm": false,
+    "evidence": [
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L58-L64",
+        "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L62-L68",
+        "snippet": "This approach allows for simulation of how changes in diet propagate through biological systems  and influence cognitive outcomes. "
+      },
+      {
+        "source_id": "Project Plan.pdf",
+        "loc": "L135-L141",
+        "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+      }
+    ]
+  },
+  "vocabulary": [
+    {
+      "term": "Gut–brain axis",
+      "definition": "Bidirectional signaling network linking GI tract and CNS via neural, immune, endocrine, and metabolic pathways.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L58-L64",
+          "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+        }
+      ]
+    },
+    {
+      "term": "Microbiome (gut)",
+      "definition": "Community of microorganisms in the human gut; represented here as modeled genus-level relative abundances (Bifidobacterium, Lactobacillus) plus Firmicutes:Bacteroidetes ratio.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L125-L131",
+          "snippet": "○ NHANES dietary intake datasets for nutrient intake variables  ○ USDA Food and Nutrient Database for nutrient definition standardization and  nutrient mapping"
+        }
+      ]
+    },
+    {
+      "term": "SCFAs",
+      "definition": "Short-chain fatty acids (acetate, propionate, butyrate) used as modeled metabolite proxy outputs (standardized scores).",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L125-L131",
+          "snippet": "○ NHANES dietary intake datasets for nutrient intake variables  ○ USDA Food and Nutrient Database for nutrient definition standardization and  nutrient mapping"
+        }
+      ]
+    },
+    {
+      "term": "Pilot dataset (n=66)",
+      "definition": "De-identified teen dataset with diet quality score and cognitive test metrics used for validation only.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L135-L141",
+          "snippet": "○ De-identified 2025 student dataset containing only numeric diet quality scores and  cognitive performance metrics, used solely for validation and benchmarking and  not for model training"
+        },
+        {
+          "source_id": "Data Sheet 1.csv",
+          "loc": "rows=66, cols=14",
+          "snippet": "File contains 66 rows of pilot data with diet score and cognitive tests (Stroop, Language, Memory, Logical, Overall)."
+        }
+      ]
+    },
+    {
+      "term": "Data leakage",
+      "definition": "Any training/tuning step that uses validation-only data (pilot dataset) or uses preprocessing fitted on full data before splitting.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L137-L143",
+          "snippet": "not for model training  Procedure  1. Download dietary intake data from NHANES and extract nutrient intake variables"
+        }
+      ]
+    }
+  ],
+  "user_segments": [
+    {
+      "segment": "Student presenter",
+      "needs": [
+        "Fast, reliable demo",
+        "Clear talking points on rigor and limitations",
+        "Export artifact"
+      ],
+      "evidence": [
+        {
+          "source_id": "prompt_to_create_gut_brd_srs.txt",
+          "loc": "L1-L2",
+          "snippet": "Review the attachments to create brd/src pack as defined in the brd_srs_packs.zip and to improve the GUT app prompt for lovable to create this application. The created brd/src foundation documentation"
+        }
+      ]
+    },
+    {
+      "segment": "Judges",
+      "needs": [
+        "Transparent explanation of methodology",
+        "Real validation results",
+        "No overclaiming"
+      ],
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L186-L190",
+          "snippet": "- **Pilot Results (n=66)**: upload/select the real CSV → auto-generate charts and a clean summary table.   - **Simulator**: nutrient inputs (manual or FoodData Central lookup) → predicted microbiome s"
+        },
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L62-L66",
+          "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+        }
+      ]
+    }
+  ],
+  "competitors": {
+    "direct": null,
+    "indirect": null,
+    "notes": "cannot confirm; not doing full competitor research in this phase."
+  },
+  "risks": [
+    {
+      "risk": "Overclaiming causality or diagnostic value during judging",
+      "mitigation": "Use simulator/hypothesis-generator language and add disclaimer.",
+      "evidence": [
+        {
+          "source_id": "MultimodalText Deep Research.md",
+          "loc": "L62-L66",
+          "snippet": "**App fix:** add an “Educational research prototype” label + a small disclaimer: *not medical advice; not a diagnostic device.* This is consistent with how consumer microbiome companies themselves pre"
+        }
+      ]
+    },
+    {
+      "risk": "Cross-dataset integration misunderstood as paired training",
+      "mitigation": "Explicitly label paired vs unpaired datasets and state what is used for training vs reference.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L125-L131",
+          "snippet": "○ NHANES dietary intake datasets for nutrient intake variables  ○ USDA Food and Nutrient Database for nutrient definition standardization and  nutrient mapping"
+        }
+      ]
+    },
+    {
+      "risk": "No available model artifacts for numeric simulation outputs",
+      "mitigation": "Confirm artifacts; otherwise use explicit qualitative outputs and mark limits.",
+      "evidence": [
+        {
+          "source_id": "Project Plan.pdf",
+          "loc": "L58-L64",
+          "snippet": "datasets are rarely integrated into a unified biological framework. This project uses a multi-stage  machine learning approach to explicitly model the biological sequence linking diet to cognition.  I"
+        }
+      ]
+    }
+  ],
+  "assumptions": [
+    "ASM-001",
+    "ASM-002",
+    "ASM-003",
+    "ASM-004",
+    "ASM-005",
+    "ASM-006"
+  ],
+  "unknowns": [
+    "OQ-001",
+    "OQ-002",
+    "OQ-003",
+    "OQ-004",
+    "OQ-005",
+    "OQ-006",
+    "OQ-007",
+    "OQ-008",
+    "OQ-009",
+    "OQ-010"
+  ],
+  "sources": [
+    {
+      "source_id": "prompt_to_create_gut_brd_srs.txt",
+      "sha256": "6c089d663b1339cb032e90477bfe5ddc265ee877f4d5e67d877478586d597083",
+      "notes": ""
+    },
+    {
+      "source_id": "Yana_Gut_Package_for_Stem_Showcase.zip",
+      "sha256": "cb02a0400e86cbb139714e5fd5f3be89895dbdfbe389b59f5a8629c725f28ab8",
+      "notes": ""
+    },
+    {
+      "source_id": "foundation_docs.zip",
+      "sha256": "e8ff0300233f74315cdec43272468ea8f2c82430bf352348e1227d3c3d28e34b",
+      "notes": ""
+    },
+    {
+      "source_id": "Project Plan.pdf",
+      "sha256": "09c0ff5f2c0a13465c409c22543426108e073b63ed646dd733b82d943582299e",
+      "notes": ""
+    },
+    {
+      "source_id": "Project Abstract.pdf",
+      "sha256": "bb53f4b86ba7f1f17e78c2b349a626e1e5cd9b036dfd464881f407a536dd24e8",
+      "notes": ""
+    },
+    {
+      "source_id": "Student Checklist 1A - Checklist Research Plan.pdf",
+      "sha256": "8162f9de2f6049acee7e1ba185954b09c2639b53ec65243432b269428c8b28e7",
+      "notes": ""
+    },
+    {
+      "source_id": "ISEF Form 7 - Continuation Projects.pdf",
+      "sha256": "b9b16b19cd391dd2addb4feb516d6e9bb1b973819800ae54188bada45c9a8c5a",
+      "notes": ""
+    },
+    {
+      "source_id": "Data Sheet 1.csv",
+      "sha256": "1da31235481832fb30a63566bc56b2afe7aaa5dbe1cc75f60d6e620459a63c67",
+      "notes": ""
+    },
+    {
+      "source_id": "Yana Gut project - MultimodalText Deep Research A Judge-Ready Diet-Microbiome-Metabolites-Cognition Simulator App.md",
+      "sha256": "39d1d4356a95cb8ddcf6045d358fe5e9dcc433aa983f53666991223119aaeb22",
+      "notes": ""
+    }
+  ]
+}
