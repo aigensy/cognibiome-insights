@@ -2,18 +2,18 @@
  * CogniBiome — Playwright E2E screen-contract tests (CI / headless)
  *
  * What these tests do:
- *   1. Enable Presenter Mode via localStorage before each page load.
- *   2. Navigate to each judge-critical route.
- *   3. Assert that the key strings required by TASK A are present in the DOM.
- *   4. Take a full-page screenshot, saved to e2e/screenshots/.
- *
- * Presenter Mode is activated by setting localStorage.presenterMode = "true"
- * before navigation. The app's AppContext reads this key on init via useState
- * with a localStorage initializer — or we use a storage state that survives
- * across page loads within one browser context.
+ *   1. Enable Presenter Mode by clicking the TopBar toggle button (aria-label="Presenter mode").
+ *   2. Assert that the button reflects the ON state (visible text "Presenter ON").
+ *   3. Navigate to each judge-critical route.
+ *   4. Assert that key judge-critical strings are present in the DOM.
+ *   5. Take a full-page screenshot saved to e2e/screenshots/.
  *
  * NOTE: These tests require `npm run build` to have been run first.
  *       The CI workflow handles this before running Playwright.
+ *
+ * Presenter Mode is React state managed by AppContext (not localStorage).
+ * Activation is done by clicking the TopBar button, which is the same action
+ * a real presenter would take — reliable, no internal state hacks needed.
  */
 
 import { test, expect, Page } from '@playwright/test';
@@ -33,24 +33,19 @@ function ensureScreenshotDir() {
 }
 
 /**
- * Enable presenter mode via localStorage, then navigate to the given path.
- * The app reads presenterMode from localStorage on initial render (via
- * the AppProvider which uses useState initializer from localStorage).
+ * Click the Presenter Mode toggle button and assert it switched ON.
  *
- * If the app doesn't persist presenterMode to localStorage on its own we
- * inject it directly before navigation so the SPA picks it up on mount.
+ * The button has aria-label="Presenter mode" (stable selector) and its
+ * visible text changes from "Presenter" to "Presenter ON" when active.
  */
-async function gotoWithPresenterMode(page: Page, route: string) {
-  // Open a blank page first so we can set localStorage before SPA boot
-  await page.goto('about:blank');
-  await page.evaluate(() => {
-    // The app may not use localStorage for presenterMode — we inject a flag
-    // that AppContext can pick up if it is wired to do so, or alternatively
-    // we rely on the URL query param ?presenterMode=1 pattern.
-    localStorage.setItem('presenterMode', 'true');
-  });
-  // Navigate to the route; the SPA will mount with localStorage already set
-  await page.goto(route);
+async function activatePresenterMode(page: Page) {
+  const toggleBtn = page.getByRole('button', { name: 'Presenter mode' });
+  await toggleBtn.waitFor({ state: 'visible', timeout: 5_000 });
+  await toggleBtn.click();
+
+  // Assert the button now shows "Presenter ON" — confirming state is active
+  await expect(page.getByRole('button', { name: 'Presenter mode' }))
+    .toContainText('Presenter ON', { timeout: 3_000 });
 }
 
 async function screenshot(page: Page, name: string) {
@@ -66,19 +61,6 @@ async function screenshot(page: Page, name: string) {
 // ---------------------------------------------------------------------------
 
 test.describe('Presenter Mode — screen contracts (E2E)', () => {
-  // Because the app uses React state (not localStorage) for presenterMode,
-  // we activate it via the TopBar toggle button after page load.
-  // This is more realistic than localStorage injection.
-
-  async function activatePresenterMode(page: Page) {
-    // Click the presenter mode toggle in the TopBar
-    const toggleBtn = page.getByRole('button', { name: /presenter mode/i });
-    if (await toggleBtn.isVisible()) {
-      await toggleBtn.click();
-      // Wait a moment for state to propagate
-      await page.waitForTimeout(300);
-    }
-  }
 
   test('Dashboard (/) — Demo Sequence card visible in presenter mode', async ({ page }) => {
     await page.goto('/');
@@ -111,14 +93,14 @@ test.describe('Presenter Mode — screen contracts (E2E)', () => {
     // Click Run Simulation
     await page.getByRole('button', { name: /Run Simulation/i }).click();
 
-    // Wait for results
+    // Wait for results to render
     await expect(page.getByText(/MODELED PROXY/i).first()).toBeVisible({ timeout: 15_000 });
     await expect(page.getByText(/Run Hash/i)).toBeVisible();
 
     await screenshot(page, '03-simulator-presenter');
   });
 
-  test('Methods (/methods) — License not confirmed badge visible', async ({ page }) => {
+  test('Methods (/methods) — Presenter cue and license badge visible', async ({ page }) => {
     await page.goto('/');
     await activatePresenterMode(page);
     await page.goto('/methods');
@@ -131,12 +113,12 @@ test.describe('Presenter Mode — screen contracts (E2E)', () => {
   });
 
   test('Compare (/compare) — modeled proxies text visible', async ({ page }) => {
-    // Run a simulation first so Compare has data
+    // Run a simulation first so Compare has saved run data
     await page.goto('/');
     await activatePresenterMode(page);
     await page.goto('/simulator');
     await page.getByRole('button', { name: /Run Simulation/i }).click();
-    await page.waitForTimeout(1000);
+    await expect(page.getByText(/Run Hash/i)).toBeVisible({ timeout: 15_000 });
 
     await page.goto('/compare');
     await expect(page.getByText(/modeled proxies/i).first()).toBeVisible({ timeout: 10_000 });
@@ -145,12 +127,12 @@ test.describe('Presenter Mode — screen contracts (E2E)', () => {
   });
 
   test('ExportReport (/export) — Download HTML button visible', async ({ page }) => {
-    // Need at least one simulation run
+    // Run a simulation first so Export has a run to select
     await page.goto('/');
     await activatePresenterMode(page);
     await page.goto('/simulator');
     await page.getByRole('button', { name: /Run Simulation/i }).click();
-    await page.waitForTimeout(1000);
+    await expect(page.getByText(/Run Hash/i)).toBeVisible({ timeout: 15_000 });
 
     await page.goto('/export');
     await expect(page.getByText(/Download HTML/i)).toBeVisible({ timeout: 10_000 });

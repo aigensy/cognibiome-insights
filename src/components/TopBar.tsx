@@ -54,6 +54,7 @@ export function TopBar() {
           className="h-7 text-xs gap-1"
           onClick={() => setPresenterMode(!presenterMode)}
           title={presenterMode ? 'Exit presenter mode' : 'Enter presenter mode'}
+          aria-label="Presenter mode"
         >
           <Presentation className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">{presenterMode ? 'Presenter ON' : 'Presenter'}</span>
