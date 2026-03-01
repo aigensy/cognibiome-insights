@@ -103,14 +103,27 @@ function deriveColumns(items: Record<string, unknown>[]): string[] {
   return ordered;
 }
 
-/** Render a value for display in a table cell. */
+/** Render a value for display in a table cell or plain text context. */
 function cellValue(v: unknown): string {
   if (v === undefined || v === null) return '';
   if (typeof v === 'boolean') return v ? 'yes' : 'no';
   if (typeof v === 'string' || typeof v === 'number') return String(v);
-  if (Array.isArray(v)) return v.join(', ');
+  if (Array.isArray(v)) {
+    // Join primitive arrays; for object arrays emit compact JSON per element
+    return v.map(item =>
+      item === null || item === undefined ? ''
+        : typeof item === 'object' ? JSON.stringify(item)
+        : String(item)
+    ).join(', ');
+  }
   return JSON.stringify(v);
 }
+
+/** Long-text column keys where full wrapping is preferred over truncation. */
+const WRAP_COLS = new Set([
+  'statement', 'rationale', 'acceptance_criteria', 'notes', 'description',
+  'snippet', 'text', 'title', 'goal', 'summary', 'details', 'note',
+]);
 
 /** Table rendered from an array of objects, with "Show more" expand. */
 function ObjArrayTable({ items }: { items: Record<string, unknown>[] }) {
@@ -121,9 +134,9 @@ function ObjArrayTable({ items }: { items: Record<string, unknown>[] }) {
 
   return (
     <div className="space-y-1">
-      <div className="overflow-auto max-h-48 rounded border border-border" data-testid="obj-array-table">
-        <table className="text-xs border-collapse w-full">
-          <thead className="sticky top-0">
+      <div className="overflow-auto max-h-[60vh] rounded border border-border" data-testid="obj-array-table">
+        <table className="text-xs border-collapse" style={{ minWidth: '100%', tableLayout: 'auto' }}>
+          <thead className="sticky top-0 z-10">
             <tr>
               {cols.map(c => (
                 <th key={c} className="border border-border px-2 py-1 text-left bg-muted/80 font-medium whitespace-nowrap">
@@ -134,12 +147,24 @@ function ObjArrayTable({ items }: { items: Record<string, unknown>[] }) {
           </thead>
           <tbody>
             {visible.map((row, ri) => (
-              <tr key={ri} className="hover:bg-muted/20">
-                {cols.map(c => (
-                  <td key={c} className="border border-border px-2 py-1 font-mono max-w-[200px] truncate" title={cellValue(row[c])}>
-                    {cellValue(row[c])}
-                  </td>
-                ))}
+              <tr key={ri} className="hover:bg-muted/20 align-top">
+                {cols.map(c => {
+                  const val = cellValue(row[c]);
+                  const isWrap = WRAP_COLS.has(c);
+                  return (
+                    <td
+                      key={c}
+                      className={`border border-border px-2 py-1 font-mono ${
+                        isWrap
+                          ? 'whitespace-pre-wrap break-words max-w-[320px]'
+                          : 'whitespace-nowrap'
+                      }`}
+                      title={isWrap ? undefined : val}
+                    >
+                      {val}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

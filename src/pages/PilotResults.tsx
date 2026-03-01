@@ -306,6 +306,15 @@ export default function PilotResults() {
                 { x: xMax, y: reg.intercept + reg.slope * xMax },
               ];
 
+              const yValues = data.map(d => d.y as number);
+              const yMin = Math.min(...yValues);
+              const yMax = Math.max(...yValues);
+              const yPad = (yMax - yMin) * 0.12 || 1;
+              const yDomain: [number, number] = [
+                Math.max(0, Math.floor(yMin - yPad)),
+                Math.ceil(yMax + yPad),
+              ];
+
               return (
                 <Card key={field}>
                   <CardHeader className="pb-1">
@@ -313,10 +322,10 @@ export default function PilotResults() {
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={200}>
-                      <ComposedChart data={data} margin={{ top: 5, right: 5, bottom: 20, left: 5 }}>
+                      <ComposedChart data={data} margin={{ top: 10, right: 10, bottom: 20, left: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 33%, 18%)" />
                         <XAxis dataKey="x" type="number" tick={{ fontSize: 10 }} label={{ value: 'Diet Score', position: 'bottom', fontSize: 10 }} />
-                        <YAxis dataKey="y" type="number" tick={{ fontSize: 10 }} label={{ value: label, angle: -90, position: 'insideLeft', fontSize: 10 }} />
+                        <YAxis dataKey="y" type="number" tick={{ fontSize: 10 }} label={{ value: label, angle: -90, position: 'insideLeft', fontSize: 10 }} domain={yDomain} />
                         <Tooltip contentStyle={{ fontSize: 11, background: 'hsl(222, 47%, 8%)', border: '1px solid hsl(217, 33%, 18%)' }} />
                         <Scatter data={data} fill={color} r={3} />
                         {showRegression && (
