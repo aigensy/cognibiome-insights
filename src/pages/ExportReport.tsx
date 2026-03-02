@@ -13,8 +13,8 @@ import { computeSummaryStats, computeCorrelations } from '@/lib/statistics';
 import type { PilotRecord } from '@/lib/pilotParser';
 
 const LEAKAGE_ITEMS = [
-  { label: 'Pilot dataset is validation-only', desc: 'Not used for training or tuning.' },
-  { label: 'No peeking during tuning', desc: 'Model artifacts frozen before pilot validation.' },
+  { label: 'Pilot dataset is benchmark-only (results-only)', desc: 'Association charts only. Never used to fit or tune simulator demo parameters.' },
+  { label: 'Demo coefficients are placeholders', desc: 'Not fit/tuned to pilot results — directional demo parameters only.' },
   { label: 'Fit-only-on-train', desc: 'Preprocessing fitted on training data only (conceptual).' },
   { label: 'Duplicate/near-duplicate awareness', desc: 'Pilot records are unique de-identified entries.' },
 ];
@@ -51,7 +51,7 @@ export function generateHTML(run: SimulationResult, opts: GenerateOptions): stri
 
     pilotSection = `
 <h2>Pilot Dataset Summary (n=${pilotRecords.length})</h2>
-<p class="warn">REAL DATA — de-identified teen pilot. No synthetic points. Validation-only.</p>
+<p class="warn">REAL DATA — de-identified teen pilot. No synthetic points. Benchmark-only (association charts; no microbiome/metabolomics measured in pilot).</p>
 <h3>Summary Statistics</h3>
 <table>
   <tr><th>Metric</th><th>n</th><th>Mean</th><th>Median</th><th>SD</th><th>Min</th><th>Max</th></tr>

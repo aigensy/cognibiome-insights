@@ -240,7 +240,7 @@
   },
   "constraints": [
     {
-      "constraint": "Pilot dataset must be validation-only and not used for training.",
+      "constraint": "Pilot dataset must be benchmark-only (association charts) and never used to fit or tune simulator parameters.",
       "evidence": [
         {
           "source_id": "Project Plan.pdf",
@@ -339,7 +339,7 @@
       "statement": "Include a Methods & Rigor section with explicit non-causality language, leakage guardrails, and non-diagnostic disclaimer.",
       "priority": "P0",
       "rationale": "Prevents overclaiming and addresses judge questions.",
-      "acceptance_signal": "Rigor page includes: validation-only pilot, leakage definition, disclaimer.",
+      "acceptance_signal": "Rigor page includes: benchmark-only pilot statement, leakage definition, disclaimer.",
       "trace_target": "SRS-REQ-014..SRS-REQ-016"
     },
     {
@@ -379,7 +379,7 @@
       "statement": "Provide a clear explanation of data sources per stage (public datasets for training/reference; pilot dataset for validation only).",
       "priority": "P1",
       "rationale": "Avoids judge confusion about paired/unpaired training.",
-      "acceptance_signal": "Data Sources panel lists datasets per stage and labels training vs reference vs validation.",
+      "acceptance_signal": "Data Sources panel lists datasets per stage and labels training vs reference vs benchmark-only.",
       "trace_target": "SRS-REQ-025..SRS-REQ-026"
     },
     {

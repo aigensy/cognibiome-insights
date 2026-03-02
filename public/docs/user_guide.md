@@ -319,8 +319,8 @@ In Presenter Mode, a **"Presenter cue"** badge appears on the card header as a r
 
 | Check | Meaning |
 |---|---|
-| Pilot dataset is validation-only | Not used for training or tuning the model |
-| No peeking during tuning | Model artifacts were frozen before pilot validation |
+| Pilot dataset is benchmark-only (results-only) | Association charts only; never used to fit or tune simulator demo parameters |
+| Demo coefficients are placeholders | Not fit/tuned to pilot results — directional demo parameters only |
 | Fit-only-on-train | Preprocessing fitted on training data only (conceptual) |
 | Duplicate/near-duplicate awareness | Pilot records are unique de-identified entries |
 
@@ -332,7 +332,7 @@ In Presenter Mode, a **"Presenter cue"** badge appears on the card header as a r
 |---|---|---|
 | **D→X** | Diet inputs → Microbiome outputs | **UNPAIRED** — frozen demo coefficients; NHANES used as UI reference context only |
 | **X→M** | Microbiome → Metabolite proxies | **UNPAIRED** — frozen demo coefficients; MiMeDB used for reference context |
-| **M→Y** | Metabolite proxies → Cognitive outputs | **UNPAIRED** — frozen demo coefficients; pilot dataset is validation-only |
+| **M→Y** | Metabolite proxies → Cognitive outputs | **UNPAIRED** — frozen demo coefficients; pilot dataset is benchmark-only (no metabolomics measured in pilot) |
 | **Validation** | Diet Score ↔ Cognitive metrics | **PAIRED** — teen pilot n=66 has both diet scores and cognitive measurements |
 
 > **Key distinction:** "Paired" means inputs and outputs were measured in the same cohort — required for valid supervised training. "Unpaired" means reference data only. All simulator stages in v0.1 are unpaired.

@@ -83,7 +83,7 @@ All three lanes are operating simultaneously, which is why this axis has such br
 
 ## Module 3: The Data Problem & The "Proxy" Solution (6:00–9:00)
 
-If this biology is known, why don't we have an app that perfectly predicts your test scores based on your breakfast?
+If this biology is known, why don't we have an app that perfectly explains your test scores based on your breakfast?
 
 Because of **The Measurement Problem**. To demonstrate this rigorously, a scientist would need to take a large group of teenagers and simultaneously measure:
 

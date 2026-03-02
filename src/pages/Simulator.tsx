@@ -261,7 +261,7 @@ export default function Simulator() {
                   {!presenterMode && (
                     <>
                       <p className="text-[10px] text-muted-foreground mt-1">{DISCLAIMERS.demoParams}</p>
-                      <p className="text-[10px] text-muted-foreground">Frozen before pilot validation.</p>
+                      <p className="text-[10px] text-muted-foreground">Not fit/tuned to pilot results (demo coefficients).</p>
                     </>
                   )}
                 </CardContent>

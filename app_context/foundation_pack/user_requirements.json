@@ -30,7 +30,7 @@
     }
   ],
   "business_idea": {
-    "summary": "Judge-ready Gut–Brain Simulator web app that demonstrates a computational pipeline from diet to predicted microbiome changes to metabolite proxies to cognitive performance signals, and validates with a de-identified teen pilot dataset (n=66).",
+    "summary": "Judge-ready Gut–Brain Simulator web app that demonstrates a computational pipeline: diet inputs → MODELED microbiome proxies → MODELED metabolite proxies → MODELED cognitive proxy outputs; benchmarked against de-identified teen pilot association charts (n=66); never used for training or tuning.",
     "evidence": [
       {
         "source_id": "Project Plan.pdf",
@@ -55,7 +55,7 @@
     ]
   },
   "goal": {
-    "statement": "Make it easy for judges to understand and trust the project’s mechanistic simulation and pilot validation within a short live demo, with reproducible exports.",
+    "statement": "Make it easy for judges to understand and trust the project’s mechanistic simulation and pilot association benchmarking within a short live demo, with reproducible exports.",
     "evidence": [
       {
         "source_id": "prompt_to_create_gut_brd_srs.txt",
@@ -73,7 +73,7 @@
     "role": "High school student presenter (Yana) demonstrating to STEM Showcase judges.",
     "context": "Live demo during science fair judging; needs a stable, low-friction walkthrough.",
     "constraints": [
-      "No new human subjects; pilot dataset is de-identified and validation-only.",
+      "No new human subjects; pilot dataset is de-identified and benchmark-only (association charts only; no microbiome/metabolomics measured).",
       "Avoid medical/diagnostic claims."
     ],
     "evidence": [
@@ -96,7 +96,7 @@
   },
   "problem_statement": {
     "current_state": "Most gut–brain studies (and student projects) are judged as correlational; it is hard to communicate intermediate biological mechanisms and ML rigor quickly during judging.",
-    "desired_state": "A transparent simulator dashboard that shows the multi-stage pipeline, real pilot validation charts, and explicit leakage/limitation guardrails.",
+    "desired_state": "A transparent simulator dashboard that shows the multi-stage pipeline, real pilot association charts, and explicit leakage/limitation guardrails.",
     "evidence": [
       {
         "source_id": "Project Plan.pdf",
@@ -267,7 +267,7 @@
       "priority": "MUST",
       "rationale": "Prevents overclaiming and addresses judge concerns.",
       "acceptance_criteria": [
-        "Methods & Rigor includes: 'validation-only pilot dataset' statement, leakage definition, and 'not medical advice / not diagnostic' disclaimer.",
+        "Methods & Rigor includes: 'benchmark-only pilot dataset' statement, leakage definition, and 'not medical advice / not diagnostic' disclaimer.",
         "The text avoids 'proves' language and uses 'simulates' / 'hypothesis generator' framing."
       ],
       "notes": "see ASM-005."
@@ -291,7 +291,7 @@
       "acceptance_criteria": [
         "App can load a bundled read-only pilot dataset and shows row count = 66.",
         "App supports upload-at-runtime to replace/remove pilot dataset for non-demo deployments.",
-        "Pilot dataset is labeled 'validation-only' and is never used for simulator training."
+        "Pilot dataset is labeled 'benchmark-only (association charts)' and is never used to fit or tune simulator parameters."
       ],
       "notes": "Resolved by OQ-005; ASM-006 edited with demo/public-deploy caveat."
     },

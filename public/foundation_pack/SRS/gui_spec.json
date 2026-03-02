@@ -143,7 +143,7 @@
       "data_dependencies": [
         "static content"
       ],
-      "acceptance_notes": "Must explicitly state pilot validation-only and non-diagnostic disclaimer (UR-004)."
+      "acceptance_notes": "Must explicitly state pilot is benchmark-only (association charts; no microbiome/metabolomics measured) and non-diagnostic disclaimer (UR-004)."
     },
     {
       "id": "SCR-006",

@@ -520,7 +520,7 @@
     {
       "id": "SRS-REQ-025",
       "type": "functional",
-      "statement": "Provide a Data Sources panel listing which datasets are used per stage and whether they are training, reference, or validation-only.",
+      "statement": "Provide a Data Sources panel listing which datasets are used per stage and whether they are training, reference, or benchmark-only.",
       "priority": "SHOULD",
       "rationale": "Prevents judge confusion about dataset pairing.",
       "depends_on": [

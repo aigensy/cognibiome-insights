@@ -166,7 +166,7 @@
         }
       ],
       "status": "answered",
-      "resolution": "Support both: bundle a read-only pilot dataset for reliable offline demo AND allow upload-at-runtime to replace/remove the dataset for any public deployment. Pilot dataset remains validation-only (not used for training)."
+      "resolution": "Support both: bundle a read-only pilot dataset for reliable offline demo AND allow upload-at-runtime to replace/remove the dataset for any public deployment. Pilot dataset remains benchmark-only (association charts; not used to fit or tune simulator parameters)."
     },
     {
       "id": "OQ-006",
@@ -193,7 +193,7 @@
         }
       ],
       "status": "answered",
-      "resolution": "Define MVP outputs/units: Diet inputs: fiber (g/day), added sugar (g/day), saturated fat (g/day), omega-3 proxy/PUFA (g/day), optional calories. Microbiome outputs: Bifidobacterium (0–1 or %), Lactobacillus (0–1 or %), Firmicutes:Bacteroidetes ratio (unitless). Metabolites: acetate/propionate/butyrate (standardized z-score or low/medium/high bins), plus 5-HTP precursor index (standardized). Cognition: modeled predicted Stroop, memory recall, language accuracy, logical reasoning, and overall composite (same scale as pilot or percentile), all labeled MODELED/proxy; pilot charts show actual scores from CSV."
+      "resolution": "Define MVP outputs/units: Diet inputs: fiber (g/day), added sugar (g/day), saturated fat (g/day), omega-3 proxy/PUFA (g/day), optional calories. Microbiome outputs: Bifidobacterium (0–1 or %), Lactobacillus (0–1 or %), Firmicutes:Bacteroidetes ratio (unitless). Metabolites: acetate/propionate/butyrate (standardized z-score or low/medium/high bins), plus 5-HTP precursor index (standardized). Cognition: modeled/simulated Stroop, memory recall, language accuracy, logical reasoning, and overall composite (same scale as pilot or percentile), all labeled MODELED/proxy; pilot charts show actual scores from CSV."
     },
     {
       "id": "OQ-007",

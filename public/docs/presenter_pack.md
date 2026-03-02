@@ -136,7 +136,7 @@ Presenter Mode is a "demo simplifier." When **ON**:
 **Script:**
 
 1. "Now we simulate the **mechanistic chain**: Diet → Microbiome proxies → Metabolite proxies → Cognitive domain outputs."
-2. Increase **Fiber** to high, decrease **Added Sugar**. "Changing diet inputs shifts the predicted microbiome composition, which shifts metabolite levels, which shifts the cognitive output estimates."
+2. Increase **Fiber** to high, decrease **Added Sugar**. "Changing diet inputs shifts the modeled microbiome proxy, which shifts the metabolite proxy layer, which shifts the cognitive output estimates."
 3. Click **Run Simulation**.
 4. Point to the **Run Hash**: "Every run generates a SHA-256 hash and records model versions — **same inputs always produce the same outputs**. Reproducibility, not a black box."
 
@@ -183,8 +183,8 @@ Four checkmarks confirm anti-overfitting protections:
 
 | Check | Meaning |
 |---|---|
-| Pilot dataset is validation-only | Not used for training or tuning |
-| No peeking during tuning | Artifacts frozen before pilot validation |
+| Pilot dataset is benchmark-only (results-only) | Association charts only; never used to fit or tune simulator demo parameters |
+| Demo coefficients are placeholders | Not fit/tuned to pilot results — directional demo parameters only |
 | Fit-only-on-train (conceptual) | Preprocessing fit on training data only in a future pipeline |
 | Duplicate/near-duplicate awareness | Pilot records are unique de-identified entries |
 

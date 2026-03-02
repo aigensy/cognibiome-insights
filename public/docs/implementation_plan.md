@@ -18,7 +18,7 @@
 9. **Pilot Results (SCR-002)** — Summary stats table, correlation table (Pearson r + approximate p-values), 5 scatter plots (diet_score vs each metric) with regression line toggle and quartile toggle. Prominent "REAL DATA (de-identified teen pilot, n=66) • computed live from CSV • no synthetic points" badge. Upload CSV option.
 10. **Simulator (SCR-003)** — 4 diet sliders (fiber_proxy, added_sugar_proxy, sat_fat_proxy, omega3_proxy) with derived diet_score_proxy. Run button → 3 output panels (Microbiome: Bifidobacterium/Lactobacillus/F:B ratio; Metabolites: acetate/propionate/butyrate/5-HTP index; Cognition: all 5 metrics). All labeled "MODELED / ESTIMATED (proxy)". Provenance panel with run_hash + model versions.
 11. **Export Report (SCR-004)** — Select stored run by run_hash. Generate downloadable HTML report with: run provenance, diet inputs, stage outputs (proxy-labeled), pilot summary chart/table, leakage checklist status, disclaimers. Print-to-PDF button via window.print().
-12. **Methods & Rigor (SCR-005)** — Three card sections: (A) Limitations & scientific wording (modeled proxies, non-causality, non-diagnostic), (B) Leakage guardrails checklist (validation-only pilot, no peeking, fit-only-on-train, duplicate awareness), (C) Data Sources table (Stage/Inputs/Outputs/Dataset types/Notes). Evidence panel with pathway cards from reference JSONs using cautious "supports plausibility" language.
+12. **Methods & Rigor (SCR-005)** — Three card sections: (A) Limitations & scientific wording (modeled proxies, non-causality, non-diagnostic), (B) Leakage guardrails checklist (benchmark-only pilot — association charts, no microbiome/metabolomics measured; demo coefficients not fit to pilot; fit-only-on-train; duplicate awareness), (C) Data Sources table (Stage/Inputs/Outputs/Dataset types/Notes). Evidence panel with pathway cards from reference JSONs using cautious "supports plausibility" language.
 13. **Compare Scenarios (SCR-006)** — Side-by-side Scenario A/B diet controls, comparison charts for all stage outputs, save/export comparison.
 14. **Help/Docs Viewer (SCR-007)** — Load `/foundation_pack/docs_index.json` (uses `items[]` key). List documents with category tabs (Foundation, Reference, Data). Render: JSON → pretty-print + derived table for requirements; CSV → table preview (first 100 rows); MD → rendered Markdown; TXT → preformatted text. Copy and Download actions per document. Fully offline, read-only.
 
@@ -38,7 +38,7 @@
 | Computation | Browser-only (Vite/React) | Python/FastAPI backend |
 | Model parameters | Frozen demo JSON artifacts (`/public/models/stage*.json`) | Trained artifacts exported from offline pipeline |
 | Training data | None — no training happens in this build | Paired public datasets where access exists |
-| Pilot dataset role | Validation-only analytics (n=66) | Continues as held-out validation |
+| Pilot dataset role | Benchmark-only analytics (n=66) — association charts; no microbiome/metabolomics measured in pilot; never used to fit demo parameters | Continues as held-out benchmark |
 | Deployment | Offline-first PWA | PWA frontend + API backend (hybrid) |
 
 ### Planned backend components (Phase 2+)

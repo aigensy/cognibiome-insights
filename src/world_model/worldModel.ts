@@ -81,7 +81,7 @@ export const DISCLAIMERS = {
   nonCausal: 'This simulator generates testable hypotheses. It does NOT prove causality or mechanism.',
   nonDiagnostic: 'Educational research prototype. NOT medical advice. NOT a diagnostic device.',
   modeledProxy: 'All microbiome and metabolite outputs are MODELED / ESTIMATED proxies — not measured biomarkers from pilot participants.',
-  pilotValidation: 'The teen pilot dataset (n=66) is de-identified and used for validation only, never for training.',
+  pilotValidation: 'The teen pilot dataset (n=66) is de-identified and used for association benchmarking only (results charts). It has no microbiome/metabolomics measurements and is never used to fit or tune simulator parameters.',
   demoParams: 'Demo parameters (directional), replaceable with trained model artifacts.',
 };
 

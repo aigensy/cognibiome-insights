@@ -19,7 +19,7 @@
   "template_kind": "artifact",
   "phase": "INCEPTION",
   "business_idea": {
-    "summary": "Judge-ready Gut–Brain Simulator web app that demonstrates a computational pipeline from diet to predicted microbiome changes to metabolite proxies to cognitive performance signals, and validates with a de-identified teen pilot dataset (n=66).",
+    "summary": "Judge-ready Gut–Brain Simulator web app that demonstrates a computational pipeline: diet inputs → MODELED microbiome proxies → MODELED metabolite proxies → MODELED cognitive proxy outputs; benchmarked against de-identified teen pilot association charts (n=66); never used for training or tuning.",
     "context": "Regeneron ISEF / Hudson County STEM Showcase computational biology project demo app.",
     "evidence": [
       {
@@ -35,7 +35,7 @@
     ]
   },
   "domain_summary": {
-    "summary": "Gut–brain axis research suggests diet can influence cognition through intermediate biological layers: microbiome composition and microbial metabolites (e.g., SCFAs). This project builds a computational simulator to model these layers and validate against a separate de-identified teen pilot dataset.",
+    "summary": "Gut–brain axis research suggests diet can influence cognition through intermediate biological layers: microbiome composition and microbial metabolites (e.g., SCFAs). This project builds a computational simulator to model these layers and benchmark against a separate de-identified teen pilot dataset (association charts only; no microbiome/metabolomics measured in pilot).",
     "cannot_confirm": false,
     "evidence": [
       {
@@ -91,7 +91,7 @@
     },
     {
       "term": "Pilot dataset (n=66)",
-      "definition": "De-identified teen dataset with diet quality score and cognitive test metrics used for validation only.",
+      "definition": "De-identified teen dataset with diet quality score and cognitive test metrics. Used for association benchmarking only (results charts). Never used to fit or tune simulator parameters. Has no microbiome or metabolomics measurements.",
       "evidence": [
         {
           "source_id": "Project Plan.pdf",
@@ -107,7 +107,7 @@
     },
     {
       "term": "Data leakage",
-      "definition": "Any training/tuning step that uses validation-only data (pilot dataset) or uses preprocessing fitted on full data before splitting.",
+      "definition": "Any training/tuning step that uses benchmark-only data (pilot dataset) or uses preprocessing fitted on full data before splitting.",
       "evidence": [
         {
           "source_id": "Project Plan.pdf",
@@ -137,7 +137,7 @@
       "segment": "Judges",
       "needs": [
         "Transparent explanation of methodology",
-        "Real validation results",
+        "Real pilot association results",
         "No overclaiming"
       ],
       "evidence": [

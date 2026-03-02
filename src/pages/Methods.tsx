@@ -9,8 +9,8 @@ import { DISCLAIMERS } from '@/world_model/worldModel';
 import { useAppState } from '@/contexts/AppContext';
 
 const leakageItems = [
-  { label: 'Pilot dataset is validation-only', desc: 'Not used for training or tuning.', ok: true },
-  { label: 'No peeking during tuning', desc: 'Model artifacts frozen before pilot validation.', ok: true },
+  { label: 'Pilot dataset is benchmark-only (results-only)', desc: 'Association charts only. Never used to fit or tune simulator demo parameters.', ok: true },
+  { label: 'Demo coefficients are placeholders', desc: 'Not fit/tuned to pilot results — directional demo parameters only.', ok: true },
   { label: 'Fit-only-on-train', desc: 'Preprocessing fitted on training data only (conceptual).', ok: true },
   { label: 'Duplicate/near-duplicate awareness', desc: 'Pilot records are unique de-identified entries.', ok: true },
 ];
@@ -35,10 +35,10 @@ const dataSources = [
     inputs: 'Metabolite proxies',
     outputs: 'Stroop, Language, Memory, Logical, Overall',
     datasets: 'Current v0.1 (UNPAIRED): frozen demo coefficients. Future (PAIRED): requires a properly paired cohort with cognitive + metabolomics data.',
-    notes: 'Pilot dataset (n=66) is validation-only — never used for training.',
+    notes: 'Pilot dataset (n=66) is benchmark-only — never used to fit or tune demo parameters.',
   },
   {
-    stage: 'Validation',
+    stage: 'Pilot benchmark',
     inputs: 'Diet Score',
     outputs: 'Cognitive metrics (Diet Score ↔ Cognitive metrics only)',
     datasets: 'Teen pilot (n=66, de-identified) — PAIRED for Diet Score ↔ Cognitive metrics only. No paired microbiome or metabolomics in pilot.',

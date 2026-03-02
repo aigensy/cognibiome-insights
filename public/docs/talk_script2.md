@@ -97,7 +97,7 @@ Here is the short demo flow:
 
 * On the **Dashboard**, I explain what is measured vs modeled and the purpose of the tool.
 * On **Pilot Results**, I show the real correlation results from the n=66 dataset.
-* On the **Simulator**, I adjust diet inputs, and the app shows predicted directional shifts in microbiome proxies, metabolite proxies, and a cognitive proxy score.
+* On the **Simulator**, I adjust diet inputs, and the app shows modeled/simulated directional proxy shifts in microbiome proxies, metabolite proxies, and a cognitive proxy score.
 * On **Compare**, I can compare two diet scenarios side-by-side.
 * On **Export**, I generate a reproducible report with the run hash and settings.
 * In **Methods & Rigor**, I explain limitations, confounders, and why this is a hypothesis generator rather than a clinical predictor.
@@ -119,7 +119,7 @@ Again, the correct interpretation is:
 
 There are limitations:
 
-* This is **predictive and explanatory**, not causal proof.
+* This is **illustrative and explanatory (proxy-based)**, not causal proof.
 * Microbiome composition is highly individualized.
 * Confounders like sleep, stress, and socioeconomic factors can influence cognition.
 

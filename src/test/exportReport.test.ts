@@ -133,8 +133,8 @@ describe('generateHTML (TST-005)', () => {
 
     it('includes individual checklist items', () => {
       const html = generateHTML(MOCK_RUN, { includePilotSummary: false, includeLeakageChecklist: true, pilotRecords: [] });
-      expect(html).toContain('Pilot dataset is validation-only');
-      expect(html).toContain('No peeking during tuning');
+      expect(html).toContain('Pilot dataset is benchmark-only');
+      expect(html).toContain('Demo coefficients are placeholders');
     });
   });
 

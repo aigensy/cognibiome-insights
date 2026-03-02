@@ -69,7 +69,7 @@
   "answers": [
     {
       "question_id": "Q00",
-      "value": "A judge-ready Gut–Brain Simulator web app for the project “Modeling Diet-Driven Microbiome and Neurotransmitter Pathways Influencing Cognitive Performance”. Users adjust diet inputs and see simulated microbiome shifts, metabolite proxies, and cognitive performance signals, plus real pilot (n=66) validation plots and 1-page export reports.",
+      "value": "A judge-ready Gut–Brain Simulator web app for the project “Modeling Diet-Driven Microbiome and Neurotransmitter Pathways Influencing Cognitive Performance”. Users adjust diet inputs and see simulated microbiome shifts, metabolite proxies, and cognitive performance signals, plus real pilot (n=66) association charts and 1-page export reports.",
       "evidence": [
         {
           "source_id": "Project Plan.pdf",
@@ -130,7 +130,7 @@
     },
     {
       "question_id": "Q03",
-      "value": "Communicating the mechanistic pathway and scientific rigor is hard with static slides. A live simulator + real pilot validation charts reduce judge skepticism and make the project easier to understand quickly.",
+      "value": "Communicating the mechanistic pathway and scientific rigor is hard with static slides. A live simulator + real pilot association charts reduce judge skepticism and make the project easier to understand quickly.",
       "evidence": [
         {
           "source_id": "Project Plan.pdf",
@@ -161,7 +161,7 @@
       "question_id": "Q05",
       "value": [
         "Pilot dataset viewer: load the n=66 de-identified teen dataset CSV and generate charts/tables.",
-        "Simulator: diet inputs → predicted microbiome → predicted metabolite proxies → predicted cognition outputs.",
+        "Simulator: diet inputs → MODELED microbiome proxies → MODELED metabolite proxies → MODELED cognitive proxy outputs.",
         "Methods & Rigor: leakage guardrails + limitations + disclaimers.",
         "Export: generate a 1-page report (PDF/HTML) for a run."
       ],
@@ -213,7 +213,7 @@
     {
       "question_id": "Q07",
       "value": [
-        "Must remain consistent with a computational project using public de-identified datasets and a separate de-identified teen pilot validation dataset (not used for training).",
+        "Must remain consistent with a computational project using public de-identified datasets and a separate de-identified teen pilot benchmark dataset (association charts only; not used to fit or tune simulator parameters).",
         "Must be ready for live STEM Showcase judging and avoid language implying causality/proof.",
         "Must keep data de-identified."
       ],
