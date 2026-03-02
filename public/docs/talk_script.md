@@ -1,8 +1,8 @@
-# CogniBiome Insights — Comprehensive Study Guide & Presentation Script
+# CogniBiome Insights — Talking Story
 
-> **Format:** 20-Minute Educational Lecture & Study Material
-> **Audience:** General public, students, and judges (no biology/coding background required)
-> **Style:** Enthusiastic, analogy-driven, accessible science communication
+**Created by:** Yana Evteeva | **Version:** 2026-03-01
+**Audience:** General public, students, and science-fair judges (no biology or coding background required)
+
 > **Disclaimer:** Educational hypothesis generator; not medical advice; not a diagnostic device.
 
 ---

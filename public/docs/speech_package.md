@@ -28,7 +28,7 @@ My question: if diet is linked to attention and memory, what biological pathway 
 **(0:12) The real data**
 
 In 2025, I collected a de-identified pilot dataset from 66 high-school students.
-Each student completed a diet survey and four standardized cognitive tests.
+Each student completed a diet survey and four well-known cognitive tasks/tests.
 
 When I computed the correlations, overall cognitive score versus diet score showed:
 Pearson r equal to 0.367, with an approximate p-value of 0.003.
@@ -106,7 +106,7 @@ pathway through the gut–brain axis could explain that relationship?
 ### METHODS (0:20–1:00)
 
 I collected a de-identified pilot dataset from 66 high-school students: one composite diet score
-and four standardized cognitive assessments — Stroop, memory recall, language fluency, and logical
+and four well-known cognitive tasks/tests — Stroop, memory recall, language fluency, and logical
 reasoning.
 
 The Pilot Results screen in the app loads this CSV live, computes summary statistics, Pearson

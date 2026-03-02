@@ -25,6 +25,8 @@ interface DocItem {
 }
 
 // Items visible in presenter mode (full judge flow: Pilot → Simulator → Methods → Export)
+// Public Datasets is intentionally excluded — it contains engineering/roadmap context
+// that may confuse judges during a live demo.
 const PRESENTER_VISIBLE = new Set(['/', '/pilot', '/simulator', '/compare', '/methods', '/export']);
 
 // Items that are on the primary "judge path" shown prominently in presenter mode

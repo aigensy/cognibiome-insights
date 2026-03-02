@@ -564,15 +564,15 @@ export default function PublicDatasets() {
         </>
       )}
 
-      {/* SHAP / Explainability Gap */}
+      {/* Explainability Gap */}
       <Card className="border-amber-700/30">
         <CardHeader className="pb-2">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <CardTitle className="text-base leading-snug">
-              SHAP / Explainability Analysis
+              Feature Importance / Explainability Analysis
             </CardTitle>
             <Badge variant="outline" className="text-amber-400 border-amber-700/40 gap-1">
-              <AlertTriangle className="h-3 w-3" /> Not implemented in MVP
+              <AlertTriangle className="h-3 w-3" /> Not included in this build
             </Badge>
           </div>
         </CardHeader>
@@ -582,8 +582,7 @@ export default function PublicDatasets() {
               What the Project Plan specifies
             </span>
             <p className="mt-0.5 leading-relaxed">
-              The Project Plan lists SHAP (SHapley Additive exPlanations) for explainable-AI analysis —
-              per-feature importance scores at each model stage.
+              The Project Plan includes explainable-AI analysis — per-feature importance scores at each model stage.
             </p>
           </div>
           <div>
@@ -591,8 +590,9 @@ export default function PublicDatasets() {
               Current status
             </span>
             <p className="mt-0.5 leading-relaxed text-muted-foreground">
-              <strong>Not implemented in MVP.</strong> The Simulator uses pre-trained coefficient arrays
-              that produce numeric outputs but do not expose per-feature SHAP values. No SHAP library is bundled.
+              <strong>Not included in this offline demo build.</strong> The Simulator uses frozen demo
+              coefficients (directional) to produce deterministic proxy outputs. These coefficients are
+              not trained in-app and are not trained on NHANES in this build.
             </p>
           </div>
           <div>
@@ -600,20 +600,20 @@ export default function PublicDatasets() {
               Where it would appear if implemented
             </span>
             <ul className="mt-0.5 list-disc list-inside space-y-0.5">
-              <li><strong>Simulator page:</strong> Feature Importance panel per stage (SHAP bar charts).</li>
-              <li><strong>Export Report:</strong> SHAP summary table in the downloadable HTML report.</li>
-              <li><strong>Methods & Rigor:</strong> SHAP methodology + interpretation guardrails.</li>
+              <li><strong>Simulator page:</strong> Feature Importance panel per stage.</li>
+              <li><strong>Export Report:</strong> Feature importance summary in the downloadable HTML report.</li>
+              <li><strong>Methods & Rigor:</strong> Methodology + interpretation guardrails.</li>
             </ul>
           </div>
           <div>
             <span className="font-semibold text-sky-400 uppercase tracking-wide text-[10px]">
-              Planned path (offline training notebooks only)
+              Planned path (offline training pipeline only)
             </span>
             <p className="mt-0.5 leading-relaxed">
-              SHAP analysis is planned for offline Jupyter notebooks. The training notebook would:
-              (1) fit the model, (2) run <code>shap.Explainer</code>, (3) export per-feature mean |SHAP|
-              values as a small JSON artifact (e.g. <code>public/models/shap_stage1.json</code>).
-              The frontend would render these pre-computed values — no runtime SHAP computation, consistent
+              Feature importance analysis is planned for an offline training pipeline. The pipeline would
+              fit stage models on paired datasets, compute per-feature importance values, and export them
+              as small JSON artifacts (e.g. <code>public/models/importance_stage1.json</code>).
+              The frontend would render these pre-computed values — no runtime computation, consistent
               with the offline-first guardrail.
             </p>
           </div>
