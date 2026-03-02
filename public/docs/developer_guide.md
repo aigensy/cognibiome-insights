@@ -54,7 +54,7 @@ Presenter Mode is a special UI state designed for live demonstrations to judges 
 
 Click the **"Presenter"** button in the top navigation bar. It will change to **"Presenter ON"** and a **"PRESENTER MODE"** badge will appear in the sidebar header.
 
-![Presenter Mode Toggle](../../e2e/screenshots/01_Dashboard_Overview.png)
+![Presenter Mode Toggle](screenshots/app/01_Dashboard_Overview.png)
 
 ### What changes in Presenter Mode
 
@@ -95,7 +95,7 @@ This badge is intentional and transparent — the application never hides the fa
 
 The Dashboard is the entry point and orientation screen. It provides a high-level status overview and navigation to all major sections.
 
-![Dashboard Overview](../../e2e/screenshots/01_Dashboard_Overview.png)
+![Dashboard Overview](screenshots/app/01_Dashboard_Overview.png)
 
 ### Status badges
 
@@ -107,7 +107,7 @@ Three small badges appear at the top of the page:
 
 ### Judge Path card (Presenter Mode only)
 
-![Judge Path Card](../../e2e/screenshots/01_Dashboard_JudgePath.png)
+![Judge Path Card](screenshots/app/01_Dashboard_JudgePath.png)
 
 When Presenter Mode is active, a highlighted card appears listing the recommended judge walkthrough sequence:
 
@@ -118,13 +118,13 @@ When Presenter Mode is active, a highlighted card appears listing the recommende
 
 ### Navigation tiles
 
-![Navigation Tiles](../../e2e/screenshots/01_Dashboard_Tiles.png)
+![Navigation Tiles](screenshots/app/01_Dashboard_Tiles.png)
 
 Five clickable cards provide quick navigation to: Pilot Results, Simulator, Export Report, Methods & Rigor, and Compare Scenarios.
 
 ### Disclaimer card
 
-![Disclaimer](../../e2e/screenshots/01_Dashboard_Disclaimer.png)
+![Disclaimer](screenshots/app/01_Dashboard_Disclaimer.png)
 
 A persistent amber warning card displays the two core disclaimers:
 
@@ -137,11 +137,11 @@ A persistent amber warning card displays the two core disclaimers:
 
 The Pilot Results screen presents the actual experimental data collected from 66 de-identified teenage participants. This is the only screen in the application showing **real measured data**.
 
-![Pilot Results Overview](../../e2e/screenshots/02_Pilot_Overview.png)
+![Pilot Results Overview](screenshots/app/02_Pilot_Overview.png)
 
 ### REAL DATA badge and page header
 
-![Data Badge](../../e2e/screenshots/02_Pilot_DataBadge.png)
+![Data Badge](screenshots/app/02_Pilot_DataBadge.png)
 
 The green **REAL DATA** badge directly beneath the page title establishes the authenticity of this data at a glance. It specifies:
 - The cohort: de-identified teen pilot
@@ -151,7 +151,7 @@ The green **REAL DATA** badge directly beneath the page title establishes the au
 
 ### Dataset Metadata card
 
-![Metadata Card](../../e2e/screenshots/02_Pilot_MetadataCard.png)
+![Metadata Card](screenshots/app/02_Pilot_MetadataCard.png)
 
 A compact metadata panel shows four data-provenance fields:
 
@@ -164,7 +164,7 @@ A compact metadata panel shows four data-provenance fields:
 
 ### Summary Statistics table
 
-![Summary Statistics](../../e2e/screenshots/02_Pilot_SummaryStats.png)
+![Summary Statistics](screenshots/app/02_Pilot_SummaryStats.png)
 
 A table showing descriptive statistics for each measured variable across all participants:
 
@@ -179,7 +179,7 @@ A table showing descriptive statistics for each measured variable across all par
 
 ### Correlations table
 
-![Correlations](../../e2e/screenshots/02_Pilot_Correlations.png)
+![Correlations](screenshots/app/02_Pilot_Correlations.png)
 
 The correlations table quantifies the relationship between Diet Score and each cognitive metric:
 
@@ -196,7 +196,7 @@ In **Presenter Mode**, three rows are highlighted with a "Mention in speech" bad
 
 ### Scatter plots
 
-![Scatter Plots](../../e2e/screenshots/02_Pilot_ScatterPlots.png)
+![Scatter Plots](screenshots/app/02_Pilot_ScatterPlots.png)
 
 Six scatter plots (one per cognitive metric) show Diet Score on the x-axis against each cognitive outcome on the y-axis. A regression line is shown by default and can be toggled off. A quartile overlay can also be enabled.
 
@@ -206,11 +206,11 @@ Six scatter plots (one per cognitive metric) show Diet Score on the x-axis again
 
 The Simulator screen runs the three-stage deterministic pipeline: D→X (Diet → Microbiome), X→M (Microbiome → Metabolites), M→Y (Metabolites → Cognition).
 
-![Simulator Controls](../../e2e/screenshots/03_Simulator_Controls.png)
+![Simulator Controls](screenshots/app/03_Simulator_Controls.png)
 
 ### Diet Input Controls (D)
 
-![Sliders](../../e2e/screenshots/03_Simulator_Sliders.png)
+![Sliders](screenshots/app/03_Simulator_Sliders.png)
 
 Four sliders control the dietary input parameters:
 
@@ -231,7 +231,7 @@ Click **"Run Simulation"** to execute the pipeline. The computation is synchrono
 
 ### Simulator Results
 
-![Simulator Results](../../e2e/screenshots/03_Simulator_Results.png)
+![Simulator Results](screenshots/app/03_Simulator_Results.png)
 
 Results are displayed in three output cards on the right side of the screen, each labeled with **MODELED PROXY**:
 
@@ -258,7 +258,7 @@ Estimated scores for Stroop Test, Language Test, Memory Test, Logical Reasoning,
 
 ### Run Hash and audit trail
 
-![Run Hash](../../e2e/screenshots/03_Simulator_RunHash.png)
+![Run Hash](screenshots/app/03_Simulator_RunHash.png)
 
 Every completed run is assigned a **Run Hash** — a short hex identifier derived from the input parameters and result values. This ensures reproducibility: the same inputs will produce the same hash. The hash appears in:
 - The on-screen result display
@@ -271,11 +271,11 @@ Every completed run is assigned a **Run Hash** — a short hex identifier derive
 
 The Methods & Rigor screen documents the scientific methodology, limitations, data sources, and reference evidence used in the application.
 
-![Methods Overview](../../e2e/screenshots/04_Methods_Overview.png)
+![Methods Overview](screenshots/app/04_Methods_Overview.png)
 
 ### Limitations & Scientific Wording
 
-![Presenter Cue](../../e2e/screenshots/04_Methods_PresenterCue.png)
+![Presenter Cue](screenshots/app/04_Methods_PresenterCue.png)
 
 This card — highlighted with a prominent ring in Presenter Mode — contains the three canonical disclaimers:
 
@@ -287,7 +287,7 @@ In Presenter Mode, a **"Presenter cue"** badge appears on the card header as a r
 
 ### Leakage Guardrails
 
-![Leakage Guardrails](../../e2e/screenshots/04_Methods_LeakageGuardrails.png)
+![Leakage Guardrails](screenshots/app/04_Methods_LeakageGuardrails.png)
 
 Four green checkmarks confirm the anti-overfitting protections applied:
 
@@ -300,7 +300,7 @@ Four green checkmarks confirm the anti-overfitting protections applied:
 
 ### Data Sources (Paired vs Unpaired)
 
-![Data Sources](../../e2e/screenshots/04_Methods_DataSources.png)
+![Data Sources](screenshots/app/04_Methods_DataSources.png)
 
 This table is one of the most scientifically important sections. It defines the current status of each pipeline stage:
 
@@ -315,7 +315,7 @@ This table is one of the most scientifically important sections. It defines the 
 
 ### MiMeDB Evidence
 
-![MiMeDB Panel](../../e2e/screenshots/04_Methods_MiMeDB.png)
+![MiMeDB Panel](screenshots/app/04_Methods_MiMeDB.png)
 
 The lower section of Methods & Rigor displays a searchable reference table sourced from the **Microbial Metabolome Database (MiMeDB)**. It contains three tabs:
 
@@ -344,7 +344,7 @@ The search box filters across all three tabs simultaneously.
 
 The Compare Scenarios screen performs a side-by-side comparison of two previously saved simulation runs.
 
-![Compare Overview](../../e2e/screenshots/05_Compare_Overview.png)
+![Compare Overview](screenshots/app/05_Compare_Overview.png)
 
 ### Prerequisites
 
@@ -352,13 +352,13 @@ At least two simulation runs must have been saved in the current session. If no 
 
 ### Run selectors
 
-![Compare Selectors](../../e2e/screenshots/05_Compare_Selectors.png)
+![Compare Selectors](screenshots/app/05_Compare_Selectors.png)
 
 Two dropdown menus (Run A and Run B) allow you to select any two saved runs by their hash identifier and timestamp. A **Swap** button reverses the A/B assignment.
 
 ### Comparison tables
 
-![Compare Table](../../e2e/screenshots/05_Compare_Table.png)
+![Compare Table](screenshots/app/05_Compare_Table.png)
 
 Three comparison tables are displayed, one per pipeline stage:
 
@@ -379,11 +379,11 @@ Delta values are color-coded: green for positive changes, red for negative chang
 
 The Export Report screen generates a downloadable single-page HTML report summarizing a selected simulation run, optionally including pilot summary statistics.
 
-![Export Overview](../../e2e/screenshots/06_Export_Overview.png)
+![Export Overview](screenshots/app/06_Export_Overview.png)
 
 ### Selecting a run
 
-![Run Selector](../../e2e/screenshots/06_Export_RunSelector.png)
+![Run Selector](screenshots/app/06_Export_RunSelector.png)
 
 A dropdown lists all saved simulation runs by hash and timestamp. Select the run you want to export.
 
@@ -398,7 +398,7 @@ Two toggles control what is included in the report:
 
 ### Download controls
 
-![Download Controls](../../e2e/screenshots/06_Export_DownloadControls.png)
+![Download Controls](screenshots/app/06_Export_DownloadControls.png)
 
 The **"Download HTML"** button generates a self-contained HTML file and triggers a browser download. The report includes:
 
@@ -415,11 +415,11 @@ The exported file is offline-readable and formatted for printing or sharing with
 
 The Help/Docs screen (accessible via the **"Docs"** item in the sidebar) is an offline documentation viewer.
 
-![Help Docs](../../e2e/screenshots/07_Help_PresenterGuide.png)
+![Help Docs](screenshots/app/07_Help_PresenterGuide.png)
 
 ### Sidebar document list
 
-![Help Sidebar](../../e2e/screenshots/07_Help_Sidebar.png)
+![Help Sidebar](screenshots/app/07_Help_Sidebar.png)
 
 In the sidebar, the "Docs" item expands to show all available documents organized into sections:
 
@@ -431,7 +431,7 @@ In **Presenter Mode**, only the User Docs section is shown (without the section 
 
 ### Document viewer
 
-![Doc Content](../../e2e/screenshots/07_Help_DocContent.png)
+![Doc Content](screenshots/app/07_Help_DocContent.png)
 
 Clicking any document title opens it in the main content area. The viewer supports:
 
@@ -461,9 +461,10 @@ The breadcrumb at the top of the content area shows `Category › Document Title
 
 ---
 
-*This guide was generated by Cursor AI from the application's React source code (`src/pages/`, `src/world_model/worldModel.ts`, `src/components/AppSidebar.tsx`) and Playwright E2E screenshots. Screenshots are stored at `e2e/screenshots/` and generated by running:*
+---
 
-```bash
-npm run build
-npx playwright test e2e/presenterMode.spec.ts
-```
+## Internal Developer Notes
+
+*This guide was generated from the current source code and captured screenshots.*
+*Screenshots were captured via the Playwright E2E suite (`e2e/presenterMode.spec.ts`) and are stored under `public/docs/screenshots/app/` for in-app rendering.*
+*To regenerate screenshots: build the app (`npm run build`) then run the Playwright spec.*

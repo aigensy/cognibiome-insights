@@ -36,7 +36,24 @@ MiMeDB (Human Microbial Metabolome Database) is a database linking metabolites t
 - **Homepage:** https://mimedb.org/
 - **Accessed:** 2026-03-01
 
-**Important note on license:** We include only short educational notes and citations referencing MiMeDB; no copyrighted text is redistributed. The microbe–metabolite associations in `mimedb.json` were compiled from peer-reviewed literature rather than downloaded from the MiMeDB CSV exports (Cloudflare security prevented programmatic access). Whether those literature-derived records fall under a CC BY‑NC 4.0 restriction cannot be confirmed from the MiMeDB website alone — **I cannot confirm this** without direct access to the MiMeDB Compliance page or an official data export. The `mimedb.json` file therefore marks each link with `"source_in_mimedb_csv": false` and labels it "cannot confirm from parsed MiMeDB CSV" in the UI evidence cards.
+**How the snapshot was built:**
+The `mimedb.json` snapshot is built offline from locally-obtained MiMeDB v2 CSV exports
+(`local/mimedb_metabolites_v2.csv` and `local/mimedb_microbes_v2.csv`) using the build script
+`scripts/build-mimedb.ts`. The metabolite and microbe list records are extracted directly from
+these CSV files.
+
+**Why microbe↔metabolite links are literature-derived:**
+The MiMeDB v2 CSV exports do not include a microbe↔metabolite join table — the
+`microbe_relations` column contains a count only (no microbe IDs). Therefore, all entries in
+the `microbe_metabolite_links` array are derived from peer-reviewed literature for the target
+metabolites used in the CogniBiome D→X→M→Y pipeline. Every such link carries
+`"source_in_mimedb_csv": false` and is labeled accordingly in the app.
+
+**License:**
+MiMeDB's official license terms were not confirmed at the time of this build. The snapshot is
+used here solely as educational reference context. No copyrighted text or database content is
+redistributed beyond the minimal metabolite/microbe reference records needed for the evidence
+cards. Consult https://mimedb.org/ for current terms before any further redistribution.
 
 ---
 

@@ -9,6 +9,10 @@ This pack consolidates everything needed for a live judging session into one doc
 the 2-minute walkthrough script, Methods & Rigor presenter cues, speech scripts, Q&A prep,
 and ISEF display guidance.
 
+> **Canonical presenter resource.** The earlier standalone files (`presenter_guide.md`,
+> `methods_rigor_presenter_mode.md`, `speech_package.md`) have been archived to
+> `public/docs/_archive/`. This Presenter Pack supersedes all of them.
+
 ---
 
 ## Part 1 — Before Judges Arrive: Setup Checklist

@@ -68,17 +68,20 @@ reference context only.
 
 ## Data Source Summary
 
-| Source | License | Included |
-|---|---|---|
-| USDA FoodData Central | CC0 (public domain) | Yes — `usda_fdc.json` |
-| Reactome | CC0 (data) | Yes — `reactome.json` |
-| WikiPathways | CC0 waiver | Yes — `wikipathways.json` |
-| MiMeDB | Unconfirmed (literature-derived records only) | Yes — `mimedb.json` |
-| NHANES DR1TOT_L | NCHS Data User Agreement | Yes — `nhanes_nutrient_reference.csv` |
-| HMP OTU table | Redistribution unclear | No |
-| American Gut (Qiita) | Requires login | No |
-| MetaboLights | Dataset-specific | No |
-| Metabolomics Workbench | Non-commercial only | No |
+The table below distinguishes between **metadata-only reference index snapshots** (bundled) and
+**full raw datasets** (not bundled). No participant-level or raw sequence/assay data is included.
+
+| Source | What is bundled | License | File |
+|---|---|---|---|
+| USDA FoodData Central | Selected food/nutrient records (CC0 snapshot) | CC0 public domain | `usda_fdc.json` |
+| Reactome | Selected pathway cards (IDs + descriptions) | CC0 data / CC BY 4.0 illustrations | `reactome.json` |
+| WikiPathways | Selected pathway records (IDs + descriptions) | CC0 waiver | `wikipathways.json` |
+| MiMeDB | Metabolite + microbe list records from v2 CSV; microbe↔metabolite links are literature-derived | Unconfirmed — educational reference only | `mimedb.json` |
+| NHANES DR1TOT_L | Codebook-style variable ranges only (no participant rows) | NCHS Data User Agreement | `nhanes_nutrient_reference.csv` |
+| HMP / iHMP | **Metadata-only index snapshot** (resource URLs + study IDs; no OTU table, no sequence data) | Redistribution of full data unclear | `hmp_reference.json` |
+| American Gut (Qiita / ENA) | **Metadata-only index snapshot** (accession IDs + entry points; no sequences, no participant metadata) | Requires login for full data | `american_gut_reference.json` |
+| MetaboLights | **Metadata-only index snapshot** (study IDs + titles; no assay data) | Dataset-specific per study | `metabolights_reference.json` |
+| Metabolomics Workbench | **Metadata-only index snapshot** (study IDs + contexts; no assay data) | Non-commercial only for full data | `metabolomics_workbench_reference.json` |
 
 ## Citation for This Repository
 

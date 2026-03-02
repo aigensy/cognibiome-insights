@@ -85,7 +85,7 @@ All three lanes are operating simultaneously, which is why this axis has such br
 
 If this biology is known, why don't we have an app that perfectly predicts your test scores based on your breakfast?
 
-Because of **The Measurement Problem**. To prove this perfectly, a scientist would need to take a large group of teenagers and simultaneously measure:
+Because of **The Measurement Problem**. To demonstrate this rigorously, a scientist would need to take a large group of teenagers and simultaneously measure:
 
 1. Everything they eat
 2. A DNA sequence of their gut microbiome
@@ -153,7 +153,7 @@ In modern science, if your work cannot be reproduced by someone else, it is not 
 
 ### The Run Hash — The Digital Receipt
 
-To prove the app is deterministic, every simulation generates a **SHA-256 Run Hash** — a unique cryptographic fingerprint. If a judge runs a scenario and gets hash `8e5f1b2c…`, another student anywhere in the world can input the same values and get the exact same hash, proving the results are identical.
+To confirm the app is deterministic, every simulation generates a **SHA-256 Run Hash** — a unique cryptographic fingerprint. If a judge runs a scenario and gets hash `8e5f1b2c…`, another student anywhere in the world can input the same values and get the exact same hash, confirming the results are identical.
 
 ### Offline-First & Reference Snapshots
 

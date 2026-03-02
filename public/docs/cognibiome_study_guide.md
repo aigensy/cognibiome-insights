@@ -282,3 +282,18 @@ No. This build uses frozen, deterministic artifacts so the demo works offline an
 1) Same inputs produce same outputs.  
 2) A modeled stand-in for an unmeasured variable.  
 3) It is a digital fingerprint of the run inputs + model version.
+
+---
+
+## Image Credits
+
+All images in this guide and in associated CogniBiome documentation are student-created originals
+or screenshots of the student's own application. No copyrighted third-party images are reproduced.
+
+| Image | Credit |
+|---|---|
+| Gut–brain axis concept illustrations (Modules 2–3) | Created by Yana Evteeva (student-created original) |
+| Trifold board visuals (scatter plots, bar chart, pipeline diagram) | Created by Yana Evteeva (student-created original; data from de-identified pilot dataset n=66) |
+| Application screenshots | Screenshots of CogniBiome Insights (student project) |
+
+For full image-by-image credits, see [Image Credits](image_credits.md).
