@@ -650,6 +650,15 @@ export default function HelpDocs() {
     }
 
     if (mt.includes('markdown')) {
+      // Base directory of the document, used to resolve relative image paths.
+      // e.g. selected.path = "/docs/trifold/TRIFOLD_DESIGN.md" → docBase = "/docs/trifold/"
+      const docBase = selected ? selected.path.replace(/\/[^/]+$/, '/') : '/';
+      const resolveImgSrc = (src: string | undefined) => {
+        if (!src) return src;
+        if (src.startsWith('http') || src.startsWith('/') || src.startsWith('data:')) return src;
+        return docBase + src;
+      };
+
       return (
         <div className="max-h-[60vh] overflow-auto text-[12px] leading-5" data-testid="markdown-view">
           <ReactMarkdown
@@ -692,7 +701,7 @@ export default function HelpDocs() {
               img: ({ src, alt }) => (
                 <span className="block my-3">
                   <img
-                    src={src}
+                    src={resolveImgSrc(src)}
                     alt={alt ?? ''}
                     className="max-w-full rounded border border-border shadow-sm"
                     style={{ maxHeight: '480px', objectFit: 'contain' }}
