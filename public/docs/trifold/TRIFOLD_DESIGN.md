@@ -135,16 +135,4 @@ Science Teachers: Tenacity efforts. Scientist. Acknowledgements. Rodney, Blossom
 
 ---
 
-## Print Checklist
-
-- [ ] Visual 1 — Scatter plots (Diet Score vs Overall / Language / Logical)
-- [ ] Visual 2 — Bar chart (Pearson r across five metrics)
-- [ ] Visual 3 — Computational pipeline (D→X→M→Y, MEASURED vs MODELED)
-- [ ] Visual 4 — Reproducibility box (run hash + same inputs → same outputs)
-- [ ] Visual 5 — Fiber-to-Cognition pathway schematic
-- [ ] Top banner with project title, student name, safety statement
-- [ ] Each printed figure includes a credit line ("Created by student" or source reference)
-
----
-
 *All images in `trifold/images/` are generated visuals for the science fair physical display board. Correlation values shown in charts reflect the actual pilot dataset (n=66). The bar chart and scatter plots show values from the pilot analysis; any discrepancy with the app's live-computed values should defer to the app as the ground truth.*
