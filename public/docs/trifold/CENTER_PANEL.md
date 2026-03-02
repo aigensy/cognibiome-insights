@@ -1,4 +1,10 @@
-# Materials
+# Center Panel — Methodology & Key Results
+
+*Content for the center panel of the science fair trifold board. Student: Yana Evteeva, Dr. Ronald E. McNair Academic High School.*
+
+---
+
+## Materials
 
 **Data & software (this build is computational):**
 
@@ -9,7 +15,7 @@
 
 ---
 
-# Procedure (condensed, numbered)
+## Procedure (condensed, numbered)
 
 1. **Load pilot dataset (n=66)** and validate integrity:
    overall_score = stroop + language + memory + logical (row-wise check).
@@ -25,7 +31,7 @@
 
 ---
 
-# Results (real pilot dataset: n=66)
+## Results (real pilot dataset: n=66)
 
 **Diet score range:** 10–26 (mean 16.52)
 
@@ -44,3 +50,5 @@
 | Memory test | 0.071 | 1.0000 | 66 |
 
 **Objective summary:** In this sample, diet score shows the strongest positive association with **overall**, **language**, and **logical** scores.
+
+> *Table 1. Pearson r correlation coefficients from pilot dataset (n=66), computed live by CogniBiome Insights app. Created by Yana Evteeva.*

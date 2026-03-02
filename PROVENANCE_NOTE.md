@@ -32,16 +32,35 @@ Both manifests exclude themselves from hashing (marked as `(self)`). Regenerate 
 npm run manifest:all
 ```
 
-## MiMeDB Links — Labeled Unconfirmed
+## MiMeDB Snapshot — Build Process and Provenance
 
-The `public/reference/mimedb.json` file contains microbe–metabolite associations compiled from
-peer-reviewed literature. These records were **not** derived from an official MiMeDB CSV export
-(Cloudflare security blocked programmatic access). Each link carries `"source_in_mimedb_csv": false`
-and is labeled "cannot confirm from parsed MiMeDB CSV" in the UI evidence cards.
+The `public/reference/mimedb.json` file is built by running `npm run build:mimedb` offline.
+The build script (`scripts/build-mimedb.ts`) reads two locally-obtained CSV files:
 
-Whether MiMeDB itself is licensed under CC BY-NC 4.0 has not been independently verified by
-direct access to the MiMeDB Compliance page. Do not assert this license applies to our
-literature-derived records without confirming it.
+- `local/mimedb_metabolites_v2.csv` — MiMeDB v2 metabolite export
+- `local/mimedb_microbes_v2.csv` — MiMeDB v2 microbe export
+
+These files are **not committed** to the repository (they must be obtained directly from MiMeDB
+before running the build script).
+
+**Why microbe↔metabolite links are literature-derived:**
+The MiMeDB CSV exports provide metabolite and microbe lists, but the `microbe_relations` column
+in the metabolites export contains only a **count** — it does not provide individual microbe IDs
+or a join table. No reliable microbe↔metabolite join table is present in the v2 CSV exports.
+Therefore, the `microbe_metabolite_links` entries in `mimedb.json` are derived from
+peer-reviewed literature for the target metabolites, and every link carries
+`"source_in_mimedb_csv": false`.
+
+**What `source_in_mimedb_csv: false` means:**
+This flag applies exclusively to the `microbe_metabolite_links` array. It does NOT mean that
+metabolite or microbe list records came from outside the CSV — those records are extracted
+directly from the MiMeDB CSV exports.
+
+**Licensing:**
+MiMeDB's license terms have not been independently confirmed from the repo. Consult the
+official MiMeDB website (https://mimedb.org/) before redistributing any derived content.
+The `mimedb.json` file therefore makes no license assertion and is provided for educational
+reference context only.
 
 ## Data Source Summary
 

@@ -80,7 +80,7 @@ export function AppSidebar() {
   const selectedDocId = searchParams.get('doc');
 
   const visibleDocs = presenterMode
-    ? docs.filter(d => d.media_type === 'text/markdown')
+    ? docs.filter(d => d.category === 'User Docs')
     : docs;
 
   const docsByCategory = CATEGORY_ORDER.reduce<Record<string, DocItem[]>>((acc, cat) => {

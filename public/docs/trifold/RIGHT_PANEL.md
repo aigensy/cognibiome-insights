@@ -1,4 +1,10 @@
-# Analysis (mechanistic interpretation; no overclaiming)
+# Right Panel — Discussion & Reproducibility
+
+*Content for the right panel of the science fair trifold board. Student: Yana Evteeva, Dr. Ronald E. McNair Academic High School.*
+
+---
+
+## Analysis (mechanistic interpretation; no overclaiming)
 
 **What the pilot data shows (measured):**
 
@@ -22,7 +28,7 @@
 
 ---
 
-# Conclusion (evidence-based)
+## Conclusion (evidence-based)
 
 - In a de-identified teen pilot (n=66), higher diet scores correlate moderately with higher **overall cognitive score** and show similar positive correlations for **language** and **logical reasoning**.
 - CogniBiome demonstrates a judge-ready, offline-first framework that **separates measured evidence (pilot correlations)** from **modeled proxy mechanisms (simulator layers)**.
@@ -30,7 +36,7 @@
 
 ---
 
-# Limitations (realistic)
+## Limitations (realistic)
 
 1. Pilot sample size (n=66) and observational design: correlation only; confounding likely (sleep, stress, workload, etc.).
 2. Diet score is survey-derived (measurement noise / recall bias).
@@ -40,7 +46,7 @@
 
 ---
 
-# Future Directions (expansion plan)
+## Future Directions (expansion plan)
 
 - Replace demo artifacts with **trained stage artifacts** built offline from **paired** public cohorts where access allows (stage-wise training).
 - Add a backend training pipeline (outside the judging/demo environment) + clear model cards and dataset provenance.
@@ -49,7 +55,7 @@
 
 ---
 
-# Suggested Visuals (what to print)
+## Suggested Visuals (what to print)
 
 1. Scatter plots: Diet Score vs Overall / Language / Logical (with regression line).
 2. Bar chart: Pearson r across the five cognitive metrics.
@@ -59,6 +65,12 @@
 
 ---
 
-# Graphic credit reminders (for compliance)
+## Graphic Credit Reminders (for compliance)
 
 - Every figure/diagram must have a small credit line ("Created by student" or "Image from …") and a reference list.
+
+## References
+
+- Sonnenburg, J. L. & Bäckhed, F. Diet–microbiota interactions as moderators of human metabolism. *Nature*, 535, 56–64 (2016).
+- Cryan, J. F. et al. The microbiota–gut–brain axis. *Physiological Reviews*, 99(4), 1877–2013 (2019).
+- MiMeDB: Wishart, D. S. et al. MiMeDB: the Human Microbial Metabolome Database. *Nucleic Acids Research*, 51(D1), D611–D620 (2023). https://mimedb.org/

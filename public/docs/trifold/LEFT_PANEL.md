@@ -1,4 +1,10 @@
-# Abstract (≈180 words)
+# Left Panel — Problem & Objectives
+
+*Content for the left panel of the science fair trifold board. Student: Yana Evteeva, Dr. Ronald E. McNair Academic High School.*
+
+---
+
+## Abstract
 
 Diet quality is frequently associated with cognitive performance, but testing a full mechanism in humans is difficult because it would require measuring diet, microbiome composition, metabolites, and cognition in the same individuals. This project addresses that gap with a transparent, judge-ready approach: **(1) analyze a de-identified teen pilot dataset (n=66) for correlation signals**, and **(2) implement an offline-first, deterministic simulator that makes the proposed biological pathway explicit**.
 
@@ -8,19 +14,19 @@ This work is presented as an **educational hypothesis generator**. It does not d
 
 ---
 
-# Research Question (1 sentence)
+## Research Question
 
 How can diet-associated cognition signals be explored using an explicit, reproducible diet→microbiome→metabolite→cognition pathway model while clearly separating real measurements from modeled proxy layers?
 
 ---
 
-# Hypothesis (2–3 sentences)
+## Hypothesis
 
 Teens with higher diet quality scores will show higher cognitive performance, especially in domains sensitive to attention and reasoning. A biologically plausible explanation is that higher-fiber/omega-3 dietary patterns can shift gut microbial metabolism toward short-chain fatty acid (SCFA) production and toward neuroactive precursor pathways, which may influence inflammation and signaling relevant to cognition. This project tests correlation in the pilot dataset and uses a deterministic simulator to represent the proposed mechanism transparently (not to claim causality).
 
 ---
 
-# Background Research
+## Background Research
 
 - The **gut–brain axis** links gut and brain through immune, endocrine, neural (including vagal), and metabolic signaling.
 - Gut microbes can produce **SCFAs** (acetate, propionate, butyrate) from dietary fiber, which are plausible mediators via inflammation and barrier-related signaling.

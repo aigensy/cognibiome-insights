@@ -6,7 +6,7 @@
 
 ---
 
-## 0) One-sentence disclaimer (say this at any time if needed)
+## One-sentence disclaimer (say this at any point if needed)
 
 > "This version is an **educational hypothesis generator**, not a medical device."
 

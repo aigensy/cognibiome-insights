@@ -25,7 +25,7 @@ const REQUIRED_DOCS: { id: string; file: string }[] = [
   { id: 'DOC-019', file: 'public/docs/user_guide.md' },
   { id: 'DOC-020', file: 'public/reference/public_datasets_manifest.json' },
   { id: 'DOC-014', file: 'public/pilot/pilot_dataset_n66.csv' },
-  { id: 'DOC-026', file: 'public/docs/presenter_guide.md' },
+  { id: 'DOC-041', file: 'public/docs/presenter_pack.md' },
 ];
 
 function diskPath(docPath: string): string {

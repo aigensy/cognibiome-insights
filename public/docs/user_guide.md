@@ -1,494 +1,398 @@
-# CogniBiome — User Guide (2026 judge-ready demo build)
+# CogniBiome Insights — User Guide
 
-**Generated (UTC):** 2026-03-01T06:15:04Z  
-**App type:** offline-first PWA, deterministic simulator / hypothesis generator (not diagnostic, not causal proof)
+**Version:** 2.0 — March 2026
+**Audience:** Science fair judges, educators, reviewers, and new users
 
----
-
-## 0. What this guide covers (and what it does not)
-
-This guide documents the **current** CogniBiome codebase (the Vite/React app in this repo):
-- the **frontend stack** and runtime behavior
-- the **data boundary** rules (pilot validation-only; modeled proxies)
-- the **file tree** and where each major feature lives
-- every **screen** and every **interactive control** (buttons, toggles, uploads)
-- every **document** listed in the in-app **Help / Docs** viewer
-
-It does **not** claim that model artifacts were trained inside the app. The simulator uses **frozen JSON artifacts** (demo placeholders in this build).
+> **Important disclaimer:**
+> CogniBiome Insights is an **educational research prototype**. It is NOT medical advice and NOT a diagnostic device. The simulator generates testable hypotheses — it does not prove causality or mechanism.
 
 ---
 
-## 1. 2-minute judge demo path (recommended)
+## Table of Contents
 
-> **Before you start:** click the **Presenter** button in the top-right corner so it reads **Presenter ON**.
-> This trims the sidebar to only the four judge-path screens and hides all developer controls,
-> giving judges a clean, distraction-free walkthrough.
-
-For the full presenter script, see **Help → Docs → Presenter Guide (DOC-026)**.
-
-1) **Pilot Results**  
-   Show the “REAL DATA” badge and the live scatter plots (diet score vs cognitive metrics).
-
-2) **Methods & Rigor**  
-   Show the “non-causal / non-diagnostic / proxy outputs” disclaimers and the data-source transparency table.
-
-3) **Simulator**  
-   Change a diet slider (e.g., increase Fiber, decrease Added Sugar), run the simulation, and show:
-   - Microbiome proxies (modeled)
-   - Metabolite proxies (modeled)
-   - Cognitive outputs (modeled) + Run Hash
-
-4) **Export Report**  
-   Generate and download the HTML report for the run.
+1. [Overview & Application Architecture](#1-overview--application-architecture)
+2. [Presenter Mode](#2-presenter-mode)
+3. [Dashboard](#3-dashboard)
+4. [Pilot Results](#4-pilot-results)
+5. [Simulator](#5-simulator)
+6. [Methods & Rigor](#6-methods--rigor)
+7. [Compare Scenarios](#7-compare-scenarios)
+8. [Export Report](#8-export-report)
+9. [Help / Docs](#9-help--docs)
 
 ---
 
-## 2. Scientific framing guardrails (must match project packet)
+## 1. Overview & Application Architecture
 
-This app is a **computational modeling + visualization tool**:
-- **It generates testable hypotheses. It does not prove causality.**
-- **It is not medical advice and not a diagnostic device.**
-- The teen pilot dataset (n=66) is **de-identified** and **validation-only** (never used for training).
-- Microbiome and metabolite values shown in the app are **MODELED / ESTIMATED proxies**, not measured teen biomarkers.
+CogniBiome Insights models the pathway from diet to cognitive performance through two complementary systems:
 
-### Measured vs Modeled — explicit summary
+**Real data (Pilot Results):** A de-identified cohort of 66 teenagers with measured diet scores and cognitive test results. Statistical correlations are computed live from the CSV — nothing is pre-computed or synthetic.
+
+**Modeled pipeline (Simulator):** A deterministic three-stage pipeline that estimates how dietary inputs propagate through the microbiome and metabolite layers to produce cognitive outcome proxies. All intermediate outputs are clearly labeled as **MODELED PROXY** — they are not biomarker measurements.
+
+### The Three-Stage Pipeline
+
+```
+D → X → M → Y
+```
+
+| Stage | Full name | Inputs | Outputs |
+|---|---|---|---|
+| D→X | Diet → Microbiome | Fiber, Added Sugar, Saturated Fat, Omega-3 | Bifidobacterium, Lactobacillus, F:B Ratio |
+| X→M | Microbiome → Metabolites | Microbiome proxies | Acetate, Propionate, Butyrate, 5-HTP Index |
+| M→Y | Metabolites → Cognition | Metabolite proxies | Stroop, Language, Memory, Logical Reasoning, Overall Score |
+
+> **Current build (v0.1):** All three stages use **frozen demo coefficients (UNPAIRED)**. They are directional placeholders — not trained on any paired cohort. Future phases target training on paired multi-omics datasets (ZOE PREDICT, iHMP/IBDMDB).
+
+### Measured vs Modeled — at a glance
 
 | What you see in the app | Is it measured or modeled? |
 |---|---|
-| Pilot Results scatter plots, correlations, summary stats | **Measured** — computed live from the real `pilot_dataset_n66.csv` |
-| Simulator microbiome outputs | **Modeled proxy** — frozen demo coefficients, not measured biomarkers |
-| Simulator metabolite outputs | **Modeled proxy** — frozen demo coefficients, not measured biomarkers |
-| Simulator cognitive domain outputs | **Modeled proxy** — frozen demo coefficients, not measured biomarkers |
-| NHANES reference ranges panel | **UI reference context only** — no participant data; does not affect model math |
-
-These guardrails align with the project plan’s pipeline framing (diet → microbiome → metabolite → cognition) and its statement that the pilot dataset is for validation only.  
+| Pilot Results scatter plots, correlations, summary stats | **Measured** — computed live from the real pilot CSV |
+| Simulator microbiome outputs | **Modeled proxy** — frozen demo coefficients |
+| Simulator metabolite outputs | **Modeled proxy** — frozen demo coefficients |
+| Simulator cognitive domain outputs | **Modeled proxy** — frozen demo coefficients |
+| NHANES reference ranges panel | **UI reference context only** — does not affect model math |
 
 ---
 
-## 3. Tech stack (frontend + “backend”)
+## 2. Presenter Mode
 
-### 3.1 Frontend
-- **React 18 + TypeScript** (Vite build)
-- **React Router** for routes
-- **Tailwind CSS** + **shadcn/ui** (Radix UI primitives)
-- **Recharts** for plots
-- **vite-plugin-pwa** for offline caching (Workbox)
+Presenter Mode is a special UI state designed for live demonstrations to judges and reviewers. It simplifies the interface to focus attention on the most scientifically critical elements.
 
-### 3.2 Backend (none in v0.1)
-There is **no server** and no database in this build.
+### How to activate
 
-All persistence is browser-local:
-- simulation runs are stored in **localStorage**
-- pilot CSV is loaded from `/public/pilot/…` or via local upload (Admin mode)
+Click the **"Presenter"** button in the top navigation bar. It changes to **"Presenter ON"** and a **"PRESENTER MODE"** badge appears under the version badge in the sidebar header.
 
-No external APIs are called at runtime (offline-first requirement).
+![Dashboard Overview](../../e2e/screenshots/01_Dashboard_Overview.png)
 
----
+### What changes in Presenter Mode
 
-## 4. Data & artifacts used at runtime
-
-### 4.1 Pilot dataset (real, validation-only)
-- File: `/public/pilot/pilot_dataset_n66.csv`
-- Loaded by: `src/lib/pilotParser.ts`
-- Used by screens:
-  - **Pilot Results** (stats + correlations + scatter charts)
-  - **Export Report** (optional pilot stats/correlations section)
-
-**Integrity rules enforced**
-- Required numeric fields: `diet_score`, `stroop_test`, `language_test`, `memory_test`, `logical_test`, `overall_score`
-- Drops `Unnamed:` columns
-- Detects duplicated Diet Score columns and blocks stats if values differ
-- Checks that `overall_score ≈ sum(stroop + language + memory + logical)` per row (±0.15)
-
-### 4.2 Simulator model artifacts (demo placeholders in this build)
-- Files:
-  - `/public/models/stage1.json` (Diet → Microbiome proxy)
-  - `/public/models/stage2.json` (Microbiome proxy → Metabolite proxy)
-  - `/public/models/stage3.json` (Metabolite proxy → Cognition outputs)
-- Loaded by: `src/lib/simulator.ts`
-- Properties:
-  - deterministic linear coefficients + output clamping ranges
-  - metadata includes `is_demo: true`
-
-**Important:** These artifacts are **directional demo parameters**, not trained results. Replace them later with trained artifacts exported offline.
-
-### 4.3 Offline reference snapshots (UI evidence only)
-Stored under `/public/reference/…` and used for:
-- NHANES nutrient-range context panels (Simulator + Public Datasets)
-- MiMeDB snapshot table (Methods & Rigor)
-- Reference evidence cards and licensing transparency (Docs viewer)
-
----
-
-## 5. Repository structure (annotated)
-
-### 5.1 Top-level
-- `public/` — runtime assets served by the app (docs, datasets, model artifacts)
-- `src/` — React application source
-- `app_context/` — audit copy of the foundation pack and reference packs (what was uploaded/used)
-- `scripts/` — helper scripts (bundle extraction, MiMeDB build, Cyrillic check)
-- `.lovable/plan.md` — implementation roadmap used when building this repo
-
-### 5.2 Key source files
-- `src/App.tsx` — router + app shell
-- `src/contexts/AppContext.tsx` — global state:
-  - Presenter mode
-  - Admin mode (`?admin=true`)
-  - Loaded pilot dataset
-  - Last simulation run
-  - Simulator inputs + Reset behavior
-
-**Core engines**
-- `src/lib/pilotParser.ts` — strict CSV ingestion + integrity checks
-- `src/lib/statistics.ts` — summary stats + Pearson r + approximate p-values
-- `src/lib/simulator.ts` — deterministic D→X→M→Y pipeline + run hash + localStorage persistence
-- `src/world_model/worldModel.ts` — “world model” labels, units, slider ranges, disclaimers, and a deterministic `dietScoreProxy`
-
-**Screens**
-- `src/pages/Dashboard.tsx`
-- `src/pages/PilotResults.tsx`
-- `src/pages/Simulator.tsx`
-- `src/pages/Compare.tsx`
-- `src/pages/ExportReport.tsx`
-- `src/pages/Methods.tsx`
-- `src/pages/PublicDatasets.tsx`
-- `src/pages/HelpDocs.tsx`
-
----
-
-## 6. Global UI controls (appear on every screen)
-
-### 6.1 Sidebar navigation
-Routes:
-- Dashboard (`/`)
-- Pilot Results (`/pilot`)
-- Simulator (`/simulator`)
-- Compare Scenarios (`/compare`)
-- Export Report (`/export`)
-- Methods & Rigor (`/methods`)
-- Public Datasets (`/datasets`)
-
-### 6.2 Top bar controls
-
-#### Presenter Mode
-Toggle the **Presenter** button (top-right) to switch between modes.
-
-| State | Label shown | What changes |
+| UI element | Normal mode | Presenter Mode |
 |---|---|---|
-| OFF (default) | "Presenter" | All screens visible; Reset and Admin badge visible |
-| ON | **"Presenter ON"** | Sidebar trimmed to 4 judge-path screens; Docs hidden; Reset hidden; Admin badge hidden; sidebar group label changes to "Judge Path"; "PRESENTER MODE" badge shown under version badge |
+| Sidebar navigation | All 7 screens visible | Judge-path screens only (Dashboard, Pilot, Simulator, Compare, Methods, Export) |
+| Docs sidebar | All categories | User Docs only, no section headers, compact list |
+| Dashboard | Standard layout | Adds "Demo Sequence — Judge Path" card with ordered steps |
+| Pilot Results | All correlations equal weight | Key metrics highlighted with "Mention in speech" badge |
+| Simulator inputs | Sliders + NHANES reference panel | Sliders only; reference panel and descriptions hidden |
+| Methods & Rigor | Standard layout | Limitations card highlighted with ring; "Presenter cue" badge shown |
+| Reset button | Visible | Hidden (to keep judge path clean) |
 
-The four screens kept visible in Presenter ON mode are: **Dashboard**, **Pilot Results**, **Simulator**, **Compare Scenarios**.
+### The REAL DATA badge
 
-Toggling Presenter ON does **not** delete data — all saved runs and the loaded pilot dataset are preserved. Toggle it off at any time to restore the full view.
+Appears in **Pilot Results**. It confirms the data shown is genuine:
 
-Details and the full demo talk track are in **Presenter Guide (DOC-026)**.
+```
+REAL DATA (de-identified teen pilot, n=66) • computed live from CSV • no synthetic points
+```
 
-- **Reset Demo State** (hidden in Presenter Mode)
-  - clears saved runs from localStorage
-  - resets simulator sliders to defaults
-  - clears loaded pilot dataset (it will reload automatically)
-- **Offline indicator**
-  - shows OFFLINE when the browser reports no network
+### The MODELED PROXY badge
 
-### 6.3 Admin mode (URL flag)
-Enable Admin mode by opening the app with:
-- `?admin=true`
-
-Admin mode currently enables:
-- Pilot CSV upload control in Pilot Results
-
-Admin mode does **not** enable model-artifact uploads in this build.
+Appears next to every simulator output section header (Microbiome, Metabolites, Cognition). It communicates clearly that these values are **model estimates**, not measurements taken from participants.
 
 ---
 
-## 7. Screen-by-screen reference (purpose + controls)
+## 3. Dashboard
 
-## 7.1 Dashboard (`/`)
-**Purpose:** fastest entry point for judges, showing “what to click next”.
+The Dashboard is the entry point and orientation screen. It provides a high-level status overview and navigation to all major sections.
 
-**Main UI blocks**
-- project title line
-- badges (app version, pilot dataset loaded status, saved run count)
-- navigation tiles
+![Dashboard Overview](../../e2e/screenshots/01_Dashboard_Overview.png)
 
-**Controls**
-- click any tile to navigate to that screen
+### Status badges
 
----
+Three badges appear at the top of the page:
 
-## 7.2 Pilot Results (`/pilot`)
-**Purpose:** show real pilot (n=66) results transparently and reproducibly.
+- **Demo Param Set v0** — current simulator uses v0 frozen demo coefficients
+- **Pilot: n=66** — bundled pilot dataset is loaded
+- **Runs: N** — number of simulation runs saved in the current session
 
-**What it computes (live from CSV)**
-- summary statistics (mean, median, SD, min, max, n)
-- Pearson correlations: diet_score vs each cognitive metric
-- scatter plots for each metric vs diet_score
+### Judge Path card (Presenter Mode only)
 
-> **Note:** p-values shown in the Correlations table are **approximate as displayed in-app**
-> (Abramowitz & Stegun formula; not corrected for multiple comparisons). Interpret as descriptive
-> signals, not confirmatory statistics.
+![Judge Path Card](../../e2e/screenshots/01_Dashboard_JudgePath.png)
 
-**Badges**
-- “REAL DATA (de-identified teen pilot, n=66) • computed live • no synthetic points”
-- dataset source (bundled vs upload)
-- dataset SHA-256 (if computed)
+When Presenter Mode is active, a highlighted card lists the recommended judge walkthrough sequence:
 
-**Controls**
-- **Regression line** (switch)
-  - ON: draws a fitted line per plot (least-squares)
-  - OFF: scatter-only
-- **Show quartiles** (switch)
-  - Present in UI state, but **not implemented yet** (no quartile overlays are rendered in v0.1)
-- **Upload CSV** (Admin mode only)
-  - accepts a local `.csv`
-  - re-parses dataset; replaces in-memory dataset for this session
+1. Pilot Results — real n=66 data, correlations
+2. Simulator — deterministic diet-to-cognition pipeline
+3. Methods & Rigor — disclaimers, data-source table
+4. Export Report — auditable run artifact
 
-**Special dialog: duplicated Diet Score columns**
-If the uploaded CSV contains multiple Diet Score columns with different values, a dialog appears:
-- dropdown to select the correct Diet Score column
-- **Confirm Selection** button to re-parse with that mapping
+### Navigation tiles
+
+![Navigation Tiles](../../e2e/screenshots/01_Dashboard_Tiles.png)
+
+Five clickable cards provide quick navigation to: Pilot Results, Simulator, Export Report, Methods & Rigor, and Compare Scenarios.
+
+### Disclaimer card
+
+![Disclaimer](../../e2e/screenshots/01_Dashboard_Disclaimer.png)
+
+A persistent amber warning card displays the two core disclaimers:
+
+- *"This simulator generates testable hypotheses. It does NOT prove causality or mechanism."*
+- *"Educational research prototype. NOT medical advice. NOT a diagnostic device."*
 
 ---
 
-## 7.3 Simulator (`/simulator`)
-**Purpose:** run a deterministic diet→microbiome→metabolites→cognition simulation.
+## 4. Pilot Results
 
-**Diet inputs (sliders)**
-- Fiber Intake (g/day proxy)
-- Added Sugar (g/day proxy)
-- Saturated Fat (g/day proxy)
-- Omega-3 / PUFA (g/day proxy)
+The Pilot Results screen presents the actual experimental data from 66 de-identified teenage participants. This is the only screen showing **real measured data**.
 
-**Computed output**
-- `dietScoreProxy` — deterministic composite computed in `src/world_model/worldModel.ts`
+![Pilot Results Overview](../../e2e/screenshots/02_Pilot_Overview.png)
 
-**Buttons**
-- **Run Simulation**
-  - loads the 3 stage artifacts from `/public/models/…`
-  - computes outputs (D→X→M→Y)
-  - computes `runHash = sha256(JSON.stringify({normalized_inputs, model_versions}))`
-  - saves run to localStorage
-  - updates “last run” state for the dashboard/export screens
+### REAL DATA badge and page header
 
-**Panels**
-- Microbiome proxy outputs (modeled)
-- Metabolite proxy outputs (modeled)
-- Cognitive outputs (modeled)
-- Provenance panel
-  - full Run Hash (for reproducibility): a SHA-256 digest of `{normalized_inputs, model_versions}`.
-    The same slider values with the same artifact versions always produce the identical hash —
-    making every run independently verifiable and auditable.
-  - demo-params disclaimer (hidden in Presenter mode)
+![Data Badge](../../e2e/screenshots/02_Pilot_DataBadge.png)
 
-**NHANES reference ranges panel**
-- collapsible panel showing min/max reference ranges from the shipped NHANES nutrient snapshot CSV
-- this panel is UI context only; it does not change model math
+The green **REAL DATA** badge establishes the authenticity of this data at a glance. It specifies the cohort, sample size, computation method (live from CSV), and data hygiene (no synthetic points).
 
-**Failure modes**
-- if model artifact fetch fails (missing file, invalid JSON), the app shows a “Simulation failed” toast with the error string.
+### Dataset Metadata card
 
----
+![Metadata Card](../../e2e/screenshots/02_Pilot_MetadataCard.png)
 
-## 7.4 Compare Scenarios (`/compare`)
-**Purpose:** compare two saved simulation runs side-by-side.
+| Field | Meaning |
+|---|---|
+| **Rows** | Number of participant records loaded |
+| **Source** | `bundled` (CSV ships with the app) |
+| **Loaded At** | Timestamp of when the dataset was parsed |
+| **SHA-256** | First 16 characters of the file hash for integrity verification |
 
-**Precondition:** at least 2 runs saved (create them in Simulator first).
+### Summary Statistics table
 
-**Controls**
-- select **Scenario A** run (dropdown)
-- select **Scenario B** run (dropdown)
-- swap A/B
-- table shows:
-  - A value, B value
-  - absolute delta
-  - percent delta
+![Summary Statistics](../../e2e/screenshots/02_Pilot_SummaryStats.png)
+
+Descriptive statistics for each measured variable: Diet Score, Stroop Test, Language Test, Memory Test, Logical Reasoning, Overall Score. Columns: n, Mean, Median, SD, Min, Max.
+
+### Correlations table
+
+![Correlations](../../e2e/screenshots/02_Pilot_Correlations.png)
+
+| Column | Description |
+|---|---|
+| **Metric** | Cognitive test name |
+| **Pearson r** | Pearson correlation coefficient (−1 to +1) |
+| **p-value (approx)** | Approximate two-tailed p-value (Abramowitz & Stegun formula) |
+| **n** | Pairwise sample size |
+
+In **Presenter Mode**, three rows are highlighted with a "Mention in speech" badge: Overall Score (r ≈ 0.37), Language Test, and Logical Reasoning.
+
+> **Interpretation note:** p-values are approximate and not corrected for multiple comparisons. The sample size (n=66) is a pilot — not powered for definitive conclusions.
+
+### Scatter plots
+
+![Scatter Plots](../../e2e/screenshots/02_Pilot_ScatterPlots.png)
+
+Six scatter plots (one per cognitive metric) show Diet Score on the x-axis against each cognitive outcome on the y-axis. A regression line can be toggled on or off.
 
 ---
 
-## 7.5 Export Report (`/export`)
-**Purpose:** generate a single-page HTML report for a selected run.
+## 5. Simulator
 
-**Controls**
-- **Select run** (dropdown)
-- toggles:
-  - include pilot summary (stats + correlations)
-  - include leakage checklist
-- buttons:
-  - **Generate** (renders an HTML preview)
-  - **Download HTML**
-  - **Print** (uses browser print dialog)
+The Simulator runs the three-stage deterministic pipeline: D→X (Diet → Microbiome), X→M (Microbiome → Metabolites), M→Y (Metabolites → Cognition).
 
-**Export contents**
-- run provenance (run hash, model versions)
-- inputs, modeled outputs
-- disclaimers (non-causal, non-diagnostic, modeled-proxy)
-- optional pilot summary section (real dataset)
-- optional leakage checklist
+![Simulator Controls](../../e2e/screenshots/03_Simulator_Controls.png)
 
----
+### Diet Input Controls (D)
 
-## 7.6 Methods & Rigor (`/methods`)
-**Purpose:** proactively answer judge questions about validity, leakage, and limitations.
+![Sliders](../../e2e/screenshots/03_Simulator_Sliders.png)
 
-**Sections**
-- “What this is / what it is not” disclaimers
-- leakage guardrails checklist (UI version of the rules)
-- data source table (by stage: D→X, X→M, M→Y, validation)
-- MiMeDB snapshot explorer (searchable)
+| Input | Range | Default | Biological meaning |
+|---|---|---|---|
+| **Fiber Intake** | 0–50 g/day | 25 g/day | Dietary fiber from whole grains, legumes, vegetables, fruits |
+| **Added Sugar** | 0–100 g/day | 30 g/day | Added sugars from processed foods and beverages |
+| **Saturated Fat** | 0–50 g/day | 15 g/day | Saturated fatty acids from animal and processed food sources |
+| **Omega-3 / PUFA** | 0–10 g/day | 2 g/day | Omega-3 polyunsaturated fatty acid intake (EPA/DHA proxy) |
 
-**MiMeDB snapshot controls**
-- search input (filters metabolites/microbes/links)
-- tab switch: Metabolites / Microbes / Links
-- table view of the selected tab
+A **Derived Diet Score (proxy)** is computed in real time: higher fiber and omega-3 increase the score; higher sugar and saturated fat decrease it. Bounded between 0 and 30.
 
-**MiMeDB snapshot — provenance and rebuild**
-- **Runtime file:** `/reference/mimedb.json` (served from `public/reference/mimedb.json`)
-- **How it is created:** run `npm run build:mimedb` offline. The script `scripts/build-mimedb.ts` reads two local input files and writes identical output to both `public/reference/mimedb.json` and `app_context/reference/mimedb.json`.
-- **Required local inputs (not committed; obtain from MiMeDB):**
-  - `local/mimedb_metabolites_v2.csv`
-  - `local/mimedb_microbes_v2.csv`
-- **Provenance guardrail:** the `microbe_metabolite_links` array entries are literature-derived, not extractable from the MiMeDB CSV exports (those exports do not include a join table). Every link carries `source_in_mimedb_csv: false` and the note "cannot confirm from parsed MiMeDB CSV". The UI labels this section accordingly. No link will ever show `source_in_mimedb_csv: true` unless the official CSV exports gain a join table and the script is updated.
-- **License/terms:** I cannot confirm the exact MiMeDB license from this repo. See the official MiMeDB website: https://mimedb.org/ (not accessed at runtime).
+In normal mode, a collapsible NHANES Reference Ranges panel provides context from the 2021–2022 NHANES codebook. This is UI context only — it does not affect any model computation.
 
----
+### Running the Simulation
 
-## 7.7 Public Datasets (`/datasets`)
-**Purpose:** show status of the public datasets listed in the project plan, without inventing what is included.
+Click **"Run Simulation"** to execute the pipeline. The computation is synchronous and deterministic — the same inputs always produce the same outputs.
 
-**Source of truth**
-- `/public/reference/public_datasets_manifest.json`
+### Simulator Results
 
-**Controls**
-- search input (filters datasets)
-- per-dataset “View” opens dataset details
-- download/preview actions when the manifest marks a file as included
+![Simulator Results](../../e2e/screenshots/03_Simulator_Results.png)
 
-This screen is meant to clearly separate:
-- datasets actually included as local snapshots
-- datasets planned but not included (with reasons)
+Results appear in three output cards, each labeled **MODELED PROXY**:
 
-**Bundling rule (how "Bundled = Yes" works)**
-- The status table is driven entirely by `/public/reference/public_datasets_manifest.json` — no runtime API calls are made.
-- "Bundled = Yes" means: the manifest entry has `included: true` AND the referenced file exists on disk under `/public/<file>`.
-- To add a new snapshot: place the file under `/public/reference/…`, set `included: true`, then update `row_count` and `sha256` in the manifest.
-- For datasets that are too large or have usage constraints, CogniBiome bundles a **metadata-only snapshot** (study IDs, titles, and official entry-point URLs) so the app remains offline-first and judge-reviewable without redistributing restricted data.
+**Microbiome (X):**
+
+| Output | Biological meaning |
+|---|---|
+| **Bifidobacterium** | Relative abundance proxy — beneficial genus associated with fiber fermentation and SCFA production |
+| **Lactobacillus** | Relative abundance proxy — probiotic genus associated with gut barrier integrity |
+| **Firmicutes:Bacteroidetes Ratio** | Community-level compositional proxy; higher ratios associated with Western-style diets |
+
+**Metabolites (M):**
+
+| Output | Biological meaning |
+|---|---|
+| **Acetate** | Standardized score proxy for short-chain fatty acid produced by fiber fermentation |
+| **Propionate** | Standardized score proxy for SCFA involved in gluconeogenesis and satiety signaling |
+| **Butyrate** | Standardized score proxy for SCFA critical for colonocyte energy and anti-inflammatory effects |
+| **5-HTP Precursor Index** | Proxy for serotonin precursor availability via tryptophan metabolism — **not** serotonin in the brain |
+
+**Cognitive Outcomes (Y):** Estimated scores for Stroop Test, Language Test, Memory Test, Logical Reasoning, and Overall Score.
+
+### Run Hash and audit trail
+
+![Run Hash](../../e2e/screenshots/03_Simulator_RunHash.png)
+
+Every completed run is assigned a **Run Hash** — a short hex identifier derived from the input parameters and result values. This ensures reproducibility: the same inputs will produce the same hash. The hash appears in:
+
+- The on-screen result display
+- The toast notification after run completion
+- The Export Report and Compare Scenarios screens
 
 ---
 
-## 7.8 Help / Docs (`/help`)
-**Purpose:** show all packaged docs and reference snapshots inside the app, offline.
+## 6. Methods & Rigor
 
-**How it works**
-- loads the doc list from `/public/foundation_pack/docs_index.json`
-- fetches each document on demand and renders:
-  - JSON (pretty print + optional table rendering for arrays)
-  - CSV (table preview)
-  - Markdown
-  - Plain text
+The Methods & Rigor screen documents the scientific methodology, limitations, data sources, and reference evidence used in the application.
 
-**Controls**
-- tabs by category (Foundation / Reference / Data)
-- search box (filters doc list)
-- per-document actions:
-  - **View** (human-friendly JSON when possible)
-  - **Raw** (raw source)
-  - **Copy** to clipboard
-  - **Download**
+![Methods Overview](../../e2e/screenshots/04_Methods_Overview.png)
 
-**PDF handling**
-The docs viewer does not render PDFs directly. Any PDF you want to show inside the app must be converted to JSON (or Markdown).  
-This repo ships:
-- Project Plan (PDF → JSON)
-- Project Abstract (PDF → JSON)
+### Limitations & Scientific Wording
 
----
+![Presenter Cue](../../e2e/screenshots/04_Methods_PresenterCue.png)
 
-## 8. Docs inventory (everything shown in Help / Docs)
+This card — highlighted with a prominent ring in Presenter Mode — contains the three canonical disclaimers:
 
-| Doc ID | Title | Path | Type | Category | Used by | What it is |
-|---|---|---|---|---|---|---|
-| DOC-001 | User Requirements (UR) | `/foundation_pack/user_requirements.json` | JSON | Foundation | Help / Docs viewer | Primary user-level scope and acceptance criteria. |
-| DOC-002 | BRD | `/foundation_pack/BRD/brd.json` | JSON | Foundation | Help / Docs viewer | Business requirements and success metrics. |
-| DOC-003 | SRS Requirements (Traceable) | `/foundation_pack/SRS/traceable_requirements.json` | JSON | Foundation | Help / Docs viewer | Functional and non-functional requirements with traceability. |
-| DOC-004 | GUI Spec | `/foundation_pack/SRS/gui_spec.json` | JSON | Foundation | Help / Docs viewer | Screens and flows for judge walkthrough. |
-| DOC-005 | Database Schema | `/foundation_pack/SRS/database_schema.json` | JSON | Foundation | Help / Docs viewer | Entities and relationships. |
-| DOC-006 | Data Contracts | `/foundation_pack/SRS/data_contracts.json` | JSON | Foundation | Help / Docs viewer | Ingestion and internal data shapes. |
-| DOC-007 | NFR Budgets | `/foundation_pack/SRS/nfr_budgets.json` | JSON | Foundation | Help / Docs viewer | Performance budgets for demo reliability. |
-| DOC-008 | Test Plan & CI | `/foundation_pack/SRS/test_plan_and_ci.json` | JSON | Foundation | Help / Docs viewer | Test cases and CI commands. |
-| DOC-009 | Agentic Prompt Gates | `/foundation_pack/SRS/agentic_prompt_gates.json` | JSON | Foundation | Help / Docs viewer | Prompt-level guardrails for automation. |
-| DOC-010 | Technical Requirements (TRD) | `/foundation_pack/SRS/trd.json` | JSON | Foundation | Help / Docs viewer | Implementation guidance and constraints. |
-| DOC-011 | Assumptions | `/foundation_pack/assumptions.json` | JSON | Foundation | Help / Docs viewer | Assumptions to revisit and validate. |
-| DOC-012 | Open Questions | `/foundation_pack/open_questions.json` | JSON | Foundation | Help / Docs viewer | Unknowns and blockers tracking. |
-| DOC-013 | Questionnaire Answers | `/foundation_pack/user_questionnaire_answers.json` | JSON | Foundation | Help / Docs viewer | Answered questionnaire to ground requirements. |
-| DOC-014 | Pilot Dataset (n=66) | `/pilot/pilot_dataset_n66.csv` | CSV | Data | Pilot Results, Export Report | De-identified pilot dataset used for dashboard validation. |
-| DOC-015 | External Datasets Overview | `/docs/external_datasets_overview.md` | MD | User Docs | Help / Docs viewer | Reference datasets, bundling details, data build notes, and licensing for all external sources. |
-| DOC-017 | References & Licenses | `/reference/REFERENCES_AND_LICENSES.md` | MD | User Docs | Help / Docs viewer | Licenses and attribution notes for reference snapshots. |
-| DOC-019 | User Guide | `/docs/user_guide.md` | MD | User Docs | Help / Docs viewer | Judge walkthrough + full UI reference. |
-| DOC-020 | Public Datasets Manifest | `/reference/public_datasets_manifest.json` | JSON | Data | Public Datasets, Help / Docs viewer | Manifest of bundled reference snapshots with provenance and sha256. |
-| DOC-021 | NHANES Nutrient Reference (2021–2022) | `/reference/nhanes_nutrient_reference.csv` | CSV | Data | Simulator (NHANES ranges), Public Datasets | Nutrient variable codebook ranges from NHANES DR1TOT_L (2021–2022). No participant-level data. |
-| DOC-023 | Implementation Plan | `/docs/implementation_plan.md` | MD | User Docs | Help / Docs viewer | Lovable implementation plan used as build roadmap (Phase 1–3). |
-| DOC-024 | Project Plan (PDF → JSON) | `/docs/project_plan_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Plan.pdf, stored as JSON for offline Docs viewer. |
-| DOC-025 | Project Abstract (PDF → JSON) | `/docs/project_abstract_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Abstract.pdf, stored as JSON for offline Docs viewer. |
-| DOC-026 | Presenter Guide (Presenter Mode) | `/docs/presenter_guide.md` | MD | User Docs | Help / Docs viewer | Presenter-mode demo script + control-by-control explanation. |
-| DOC-032 | Presentation Addendum | `/docs/presentation_addendum.md` | MD | User Docs | Help / Docs viewer | Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. |
+1. *"All microbiome and metabolite outputs are MODELED / ESTIMATED proxies — not measured biomarkers from pilot participants."*
+2. *"This simulator generates testable hypotheses. It does NOT prove causality or mechanism."*
+3. *"Educational research prototype. NOT medical advice. NOT a diagnostic device."*
+
+In Presenter Mode, a **"Presenter cue"** badge appears on the card header as a reminder to verbally acknowledge these limitations.
+
+### Leakage Guardrails
+
+![Leakage Guardrails](../../e2e/screenshots/04_Methods_LeakageGuardrails.png)
+
+| Check | Meaning |
+|---|---|
+| Pilot dataset is validation-only | Not used for training or tuning the model |
+| No peeking during tuning | Model artifacts were frozen before pilot validation |
+| Fit-only-on-train | Preprocessing fitted on training data only (conceptual) |
+| Duplicate/near-duplicate awareness | Pilot records are unique de-identified entries |
+
+### Data Sources (Paired vs Unpaired)
+
+![Data Sources](../../e2e/screenshots/04_Methods_DataSources.png)
+
+| Stage | Definition | Current status |
+|---|---|---|
+| **D→X** | Diet inputs → Microbiome outputs | **UNPAIRED** — frozen demo coefficients; NHANES used as UI reference context only |
+| **X→M** | Microbiome → Metabolite proxies | **UNPAIRED** — frozen demo coefficients; MiMeDB used for reference context |
+| **M→Y** | Metabolite proxies → Cognitive outputs | **UNPAIRED** — frozen demo coefficients; pilot dataset is validation-only |
+| **Validation** | Diet Score ↔ Cognitive metrics | **PAIRED** — teen pilot n=66 has both diet scores and cognitive measurements |
+
+> **Key distinction:** "Paired" means inputs and outputs were measured in the same cohort — required for valid supervised training. "Unpaired" means reference data only. All simulator stages in v0.1 are unpaired.
+
+### MiMeDB Evidence
+
+![MiMeDB Panel](../../e2e/screenshots/04_Methods_MiMeDB.png)
+
+The lower section displays a searchable offline snapshot from **MiMeDB v2 CSV exports** (metabolites + microbes). Three tabs: Metabolites, Microbes, Links.
+
+The CSV exports do not include a microbe↔metabolite join table. Therefore, any link entries in the app are **literature-derived associations** and carry `source_in_mimedb_csv: false`. The UI labels them "unconfirmed" throughout. A "License not confirmed" badge is shown — no license assertion is made for MiMeDB content from within this repo.
 
 ---
 
-## 9. Project plan alignment (what is implemented vs next phase)
+## 7. Compare Scenarios
 
-### 9.1 Implemented in this build
-- Offline-first app shell (PWA cache)
-- Pilot dataset ingestion and validation-only analytics
-- Deterministic 3-stage simulator (with demo artifacts)
-- Export (HTML)
-- Methods & Rigor section (guardrails + data-source transparency)
-- Public dataset status screen (manifest-driven, offline)
-- Help / Docs viewer (offline document transparency)
+The Compare Scenarios screen performs a side-by-side comparison of two previously saved simulation runs.
 
-### 9.2 Not implemented yet (and why)
-These items are implied by the project plan’s “train three supervised models on public datasets” method, but are **not** implemented inside the browser app:
+![Compare Overview](../../e2e/screenshots/05_Compare_Overview.png)
 
-1) **Full public dataset ingestion and preprocessing** (NHANES/HMP/American Gut/Metabolomics Workbench/MetaboLights)
-   - reason: raw omics datasets are large and require heavy preprocessing not suitable for a judge-demo browser runtime
+### Prerequisites
 
-2) **Offline training pipeline**
-   - reason: training belongs in a separate reproducible Python workflow (outside the web app)
+At least two simulation runs must have been saved in the current session. If none exist, the screen shows an empty state with instructions to run the Simulator first.
 
-3) **Model artifact export from trained models**
-   - planned: export trained models into compact JSON artifacts and replace `/public/models/stage*.json`
+### Run selectors
 
-4) **Quartile overlays in Pilot Results**
-   - UI toggle exists, but chart overlays are not rendered yet
+![Compare Selectors](../../e2e/screenshots/05_Compare_Selectors.png)
 
-### 9.3 How next phase should be done (practical plan)
-- Implement a **Python training + export pipeline** that produces:
-  - `stage1.json`, `stage2.json`, `stage3.json` (or ONNX + small runtime)
-  - a `MODEL_CARD.md` describing training datasets, pairing logic, and validation
-- Keep the web app runtime simple:
-  - only loads frozen artifacts
-  - never trains in the browser
-- Expand the `/public/reference/…` pack with small, properly licensed snapshots that support UI evidence cards.
+Two dropdown menus (Run A and Run B) allow selecting any two saved runs by their hash and timestamp. A **Swap** button reverses the A/B assignment.
+
+### Comparison tables
+
+![Compare Table](../../e2e/screenshots/05_Compare_Table.png)
+
+Three comparison tables, one per pipeline stage: Diet Inputs, Microbiome + Metabolites (MODELED PROXIES), Cognitive Outcomes (MODELED PROXIES).
+
+Delta values are color-coded: green for positive changes, red for negative, grey for no change.
 
 ---
 
-## 10. Local development
+## 8. Export Report
 
-### 10.1 Prerequisites
-- Node.js (LTS recommended)
-- npm (or bun)
+The Export Report screen generates a downloadable single-page HTML report summarizing a selected simulation run.
 
-### 10.2 Commands
-- `npm install`
-- `npm run dev` (local dev server)
-- `npm run test` (Vitest)
-- `npm run build` (production build)
+![Export Overview](../../e2e/screenshots/06_Export_Overview.png)
+
+### Selecting a run
+
+![Run Selector](../../e2e/screenshots/06_Export_RunSelector.png)
+
+A dropdown lists all saved simulation runs by hash and timestamp.
+
+### Report options
+
+| Option | Description |
+|---|---|
+| **Include pilot summary** | Appends pilot dataset summary statistics and correlations |
+| **Include leakage checklist** | Appends the four leakage guardrail items as a formal methods audit |
+
+### Download controls
+
+![Download Controls](../../e2e/screenshots/06_Export_DownloadControls.png)
+
+The **"Download HTML"** button generates a self-contained HTML file and triggers a browser download. The report includes run metadata, all three MODELED PROXY output sections, and the three canonical disclaimers.
 
 ---
 
-## 11. Known limitations (explicit)
+## 9. Help / Docs
 
-- Simulator artifacts are **demo placeholders** in this repo (not trained models).
-- MiMeDB snapshot is a **curated subset** and includes limitations recorded in its metadata.
-- Pilot quartile overlays are not implemented.
-- No PDF rendering directly; PDFs must be converted to JSON/MD for the Docs viewer.
+The Help/Docs screen (sidebar: **Docs**) is an offline documentation viewer.
+
+![Help Docs](../../e2e/screenshots/07_Help_PresenterGuide.png)
+
+### Sidebar document list
+
+![Help Sidebar](../../e2e/screenshots/07_Help_Sidebar.png)
+
+Documents are organized into sections:
+
+- **User Docs** — user-facing guides including this document and the Presenter Pack
+- **Trifold Board** — science fair display board content
+- **Foundation** — project abstract, plan, requirements, BRD, SRS, and technical specs
+- **Data** — pilot dataset CSV, NHANES reference, and external reference snapshots
+
+In **Presenter Mode**, only the User Docs section is shown (without the section header) as a compact flat list.
+
+### Document viewer
+
+![Doc Content](../../e2e/screenshots/07_Help_DocContent.png)
+
+Clicking any document title opens it in the main content area. The viewer supports Markdown (with rendered tables and code blocks), JSON, CSV, and plain text.
+
+External links in Markdown documents are rendered as non-navigable styled spans to ensure the app remains fully offline — no live web requests are triggered.
+
+The **Copy** and **Download** buttons allow copying the raw document text or downloading the file.
+
+---
+
+## Appendix: UI Conventions
+
+| Element | Description |
+|---|---|
+| **REAL DATA** badge (green) | Data shown is from actual measurements — Pilot Results only |
+| **MODELED PROXY** badge (grey) | Value is a model estimate, not a measurement — Simulator outputs |
+| **Presenter cue** badge (primary) | In Presenter Mode, marks sections to verbally highlight during the demo |
+| **Mention in speech** badge (primary) | In Presenter Mode on Pilot Results, marks the top correlations to emphasize |
+| **Run Hash** | Short hex identifier for each simulation run — ensures reproducibility |
+| **Derived Diet Score (proxy)** | Real-time composite of the four diet sliders — computed by the app, not the model |
+| **UNPAIRED** | Pipeline stage uses reference coefficients, not trained on paired cohort data |
+| **PAIRED** | Dataset has both inputs and outputs measured in the same cohort |
