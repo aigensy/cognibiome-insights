@@ -3,6 +3,7 @@
   "generated_utc": "2026-03-02T00:00:00Z",
   "items": [
     {"id":"DOC-041","title":"Presenter Pack","path":"/docs/presenter_pack.md","category":"User Docs","media_type":"text/markdown","description":"All-in-one judge presentation resource: 2-min walkthrough script, Methods & Rigor presenter cues, full speech scripts, Q&A prep, and ISEF display guidance."},
+    {"id":"DOC-043","title":"Full Presentation Script (20 min)","path":"/docs/long_presentation.md","category":"User Docs","media_type":"text/markdown","description":"Comprehensive 20-minute educational lecture script with Module 2 biology illustrations: microbiome, metabolites, and gut-brain axis."},
     {"id":"DOC-019","title":"User Guide","path":"/docs/user_guide.md","category":"User Docs","media_type":"text/markdown","description":"Judge-facing app walkthrough with screenshots: all screens, Presenter Mode, badges, and UI conventions."},
     {"id":"DOC-032","title":"Presentation Addendum","path":"/docs/presentation_addendum.md","category":"User Docs","media_type":"text/markdown","description":"Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. Does not modify the approved abstract."},
     {"id":"DOC-017","title":"References & Licenses","path":"/reference/REFERENCES_AND_LICENSES.md","category":"User Docs","media_type":"text/markdown","description":"Licenses and attribution notes for all offline reference snapshots used in CogniBiome."},
