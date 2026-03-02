@@ -669,9 +669,18 @@ export default function HelpDocs() {
               td: ({ children }) => (
                 <td className="border border-border px-2 py-1 align-top break-words">{children}</td>
               ),
-              h1: ({ children }) => <h1 className="text-base font-semibold mt-2 mb-1">{children}</h1>,
-              h2: ({ children }) => <h2 className="text-sm font-semibold mt-2 mb-1">{children}</h2>,
-              h3: ({ children }) => <h3 className="text-xs font-semibold mt-2 mb-1">{children}</h3>,
+              h1: ({ children }) => {
+                const id = String(children).toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                return <h1 id={id} className="text-base font-semibold mt-2 mb-1 scroll-mt-4">{children}</h1>;
+              },
+              h2: ({ children }) => {
+                const id = String(children).toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                return <h2 id={id} className="text-sm font-semibold mt-2 mb-1 scroll-mt-4">{children}</h2>;
+              },
+              h3: ({ children }) => {
+                const id = String(children).toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                return <h3 id={id} className="text-xs font-semibold mt-2 mb-1 scroll-mt-4">{children}</h3>;
+              },
               p: ({ children }) => <p className="mb-1.5 text-[12px] leading-5">{children}</p>,
               li: ({ children }) => <li className="text-[12px] leading-5">{children}</li>,
               code: ({ children }) => (
@@ -693,22 +702,48 @@ export default function HelpDocs() {
                   )}
                 </span>
               ),
-              // External links are rendered as non-clickable plain text with a URL label.
-              // This prevents accidental browser navigation during live demos.
-              a: ({ href, children }) => (
-                <span
-                  className="inline-flex flex-wrap items-baseline gap-x-1"
-                  data-testid="safe-link"
-                  data-href={href}
-                >
-                  <span className="text-primary">{children}</span>
-                  {href && (
-                    <span className="text-[10px] font-mono text-muted-foreground break-all">
-                      [{href}]
-                    </span>
-                  )}
-                </span>
-              ),
+              // Anchor links (#section) scroll within the doc viewer.
+              // External links are rendered as non-clickable plain text to prevent
+              // accidental browser navigation during live demos.
+              a: ({ href, children }) => {
+                if (href?.startsWith('#')) {
+                  return (
+                    <a
+                      href={href}
+                      className="text-primary underline underline-offset-2 cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const id = href.slice(1);
+                        const target = document.getElementById(id);
+                        if (!target) return;
+                        // Scroll within the nearest overflow-auto ancestor (the markdown viewer div)
+                        const scrollParent = target.closest('[data-testid="markdown-view"]') as HTMLElement | null;
+                        if (scrollParent) {
+                          scrollParent.scrollTo({ top: target.offsetTop - 8, behavior: 'smooth' });
+                        } else {
+                          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }}
+                    >
+                      {children}
+                    </a>
+                  );
+                }
+                return (
+                  <span
+                    className="inline-flex flex-wrap items-baseline gap-x-1"
+                    data-testid="safe-link"
+                    data-href={href}
+                  >
+                    <span className="text-primary">{children}</span>
+                    {href && (
+                      <span className="text-[10px] font-mono text-muted-foreground break-all">
+                        [{href}]
+                      </span>
+                    )}
+                  </span>
+                );
+              },
             }}
           >
             {content}
