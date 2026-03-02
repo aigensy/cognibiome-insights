@@ -46,7 +46,7 @@ function docIcon(mediaType: string) {
   return FileText;
 }
 
-const CATEGORY_ORDER = ['User Docs', 'Foundation', 'Data'];
+const CATEGORY_ORDER = ['User Docs', 'Trifold Board', 'Foundation', 'Data'];
 
 export function AppSidebar() {
   const { state } = useSidebar();
