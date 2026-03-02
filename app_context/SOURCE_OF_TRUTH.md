@@ -4,10 +4,10 @@
 
 | File / folder | Source of truth | How updated |
 |---|---|---|
-| `public/docs/cognibiome_user_guide.md` | Manually maintained user guide (updated.md from incoming zip) | Replace file manually from `to_add/` or the updated .md |
+| `public/docs/user_guide.md` | Manually maintained user guide (updated.md from incoming zip) | Replace file manually from `to_add/` or the updated .md |
 | `public/reference/nhanes_nutrient_reference.csv` | Incoming snapshot zip (`reference_snapshots*.zip`) | Copy from `to_add/`, verify sha256 matches `public_datasets_manifest.json` |
 | `public/reference/public_datasets_manifest.json` | Incoming snapshot zip | Copy from `to_add/`, never let `extract:bundle` overwrite |
-| `public/reference/public_datasets_README.md` | Incoming snapshot zip | Copy from `to_add/` |
+| `public/docs/external_datasets_overview.md` | This repo | Consolidated external datasets doc (replaces external_sources_overview.md, public_datasets_README.md, README_data_build.md) |
 | `public/external_sources_for_Gut_overview.txt` | This repo (English) | Edit in-repo; do NOT restore from old bundle containing Russian text |
 | `public/foundation_pack/docs_index.json` | This repo | Manually edited; guarded by `extract:bundle` safe-mode |
 

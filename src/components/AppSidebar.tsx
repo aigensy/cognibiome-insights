@@ -46,7 +46,7 @@ function docIcon(mediaType: string) {
   return FileText;
 }
 
-const CATEGORY_ORDER = ['User Docs', 'Foundation', 'Data', 'Reference'];
+const CATEGORY_ORDER = ['User Docs', 'Foundation', 'Data'];
 
 export function AppSidebar() {
   const { state } = useSidebar();
@@ -174,12 +174,12 @@ export function AppSidebar() {
 
                     {!collapsed && (
                       <CollapsibleContent>
-                        <SidebarMenuSub className="ml-0 pl-2 border-l border-border/50 space-y-3 mt-1">
+                        <SidebarMenuSub className="ml-0 pl-2 border-l border-border/50 mt-1">
                           {CATEGORY_ORDER.map(cat => {
                             const catDocs = docsByCategory[cat] ?? [];
                             if (catDocs.length === 0) return null;
                             return (
-                              <div key={cat}>
+                              <div key={cat} className={presenterMode ? '' : 'space-y-0.5 mb-2'}>
                                 {!presenterMode && (
                                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground px-2 py-1">
                                     {cat}

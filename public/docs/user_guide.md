@@ -422,19 +422,16 @@ This repo ships:
 | DOC-012 | Open Questions | `/foundation_pack/open_questions.json` | JSON | Foundation | Help / Docs viewer | Unknowns and blockers tracking. |
 | DOC-013 | Questionnaire Answers | `/foundation_pack/user_questionnaire_answers.json` | JSON | Foundation | Help / Docs viewer | Answered questionnaire to ground requirements. |
 | DOC-014 | Pilot Dataset (n=66) | `/pilot/pilot_dataset_n66.csv` | CSV | Data | Pilot Results, Export Report | De-identified pilot dataset used for dashboard validation. |
-| DOC-015 | External Sources Overview | `/external_sources_for_Gut_overview.txt` | TXT | Reference | Help / Docs viewer | Source list used for evidence and background. |
-| DOC-016 | Reference Data Build Notes | `/reference/README_data_build.md` | MD | Reference | Help / Docs viewer | How reference snapshots were prepared. |
-| DOC-017 | References & Licenses | `/reference/REFERENCES_AND_LICENSES.md` | MD | Reference | Help / Docs viewer | Licenses and attribution notes for reference snapshots. |
-| DOC-018 | Upload Manifest (SHA256) | `/UPLOAD_FILES_MANIFEST.md` | MD | Reference | Help / Docs viewer | Integrity list of uploaded artifacts with hashes. |
-| DOC-019 | CogniBiome App User Guide | `/docs/cognibiome_user_guide.md` | MD | Foundation | Help / Docs viewer | Judge walkthrough + full UI reference. |
+| DOC-015 | External Datasets Overview | `/docs/external_datasets_overview.md` | MD | User Docs | Help / Docs viewer | Reference datasets, bundling details, data build notes, and licensing for all external sources. |
+| DOC-017 | References & Licenses | `/reference/REFERENCES_AND_LICENSES.md` | MD | User Docs | Help / Docs viewer | Licenses and attribution notes for reference snapshots. |
+| DOC-019 | User Guide | `/docs/user_guide.md` | MD | User Docs | Help / Docs viewer | Judge walkthrough + full UI reference. |
 | DOC-020 | Public Datasets Manifest | `/reference/public_datasets_manifest.json` | JSON | Data | Public Datasets, Help / Docs viewer | Manifest of bundled reference snapshots with provenance and sha256. |
 | DOC-021 | NHANES Nutrient Reference (2021–2022) | `/reference/nhanes_nutrient_reference.csv` | CSV | Data | Simulator (NHANES ranges), Public Datasets | Nutrient variable codebook ranges from NHANES DR1TOT_L (2021–2022). No participant-level data. |
-| DOC-022 | Public Datasets README | `/reference/public_datasets_README.md` | MD | Data | Public Datasets, Help / Docs viewer | Provenance notes for all reference snapshots included or attempted. |
-| DOC-023 | Implementation Plan (Lovable) | `/docs/implementation_plan.md` | MD | Foundation | Help / Docs viewer | Lovable implementation plan used as build roadmap (Phase 1–3). |
+| DOC-023 | Implementation Plan | `/docs/implementation_plan.md` | MD | User Docs | Help / Docs viewer | Lovable implementation plan used as build roadmap (Phase 1–3). |
 | DOC-024 | Project Plan (PDF → JSON) | `/docs/project_plan_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Plan.pdf, stored as JSON for offline Docs viewer. |
 | DOC-025 | Project Abstract (PDF → JSON) | `/docs/project_abstract_pdf.json` | JSON | Foundation | Help / Docs viewer | Extracted text from Project Abstract.pdf, stored as JSON for offline Docs viewer. |
-| DOC-026 | Presenter Guide (Presenter Mode) | `/docs/presenter_guide.md` | MD | Foundation | Help / Docs viewer | Presenter-mode demo script + control-by-control explanation. |
-| DOC-032 | Presentation Addendum (What we learned + Roadmap) | `/docs/presentation_addendum.md` | MD | Foundation | Help / Docs viewer | Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. |
+| DOC-026 | Presenter Guide (Presenter Mode) | `/docs/presenter_guide.md` | MD | User Docs | Help / Docs viewer | Presenter-mode demo script + control-by-control explanation. |
+| DOC-032 | Presentation Addendum | `/docs/presentation_addendum.md` | MD | User Docs | Help / Docs viewer | Companion to the approved abstract; limitations, lessons learned, and dataset-reality roadmap. |
 
 ---
 

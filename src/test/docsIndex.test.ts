@@ -22,14 +22,14 @@ type DocsIndex = {
 const REQUIRED_DOCS: { id: string; file: string }[] = [
   { id: 'DOC-004', file: 'public/foundation_pack/SRS/gui_spec.json' },
   { id: 'DOC-001', file: 'public/foundation_pack/user_requirements.json' },
-  { id: 'DOC-019', file: 'public/docs/cognibiome_user_guide.md' },
+  { id: 'DOC-019', file: 'public/docs/user_guide.md' },
   { id: 'DOC-020', file: 'public/reference/public_datasets_manifest.json' },
   { id: 'DOC-014', file: 'public/pilot/pilot_dataset_n66.csv' },
   { id: 'DOC-026', file: 'public/docs/presenter_guide.md' },
 ];
 
 function diskPath(docPath: string): string {
-  // docPath is like "/docs/cognibiome_user_guide.md" — served from /public root
+  // docPath is like "/docs/user_guide.md" — served from /public root
   return path.join(REPO_ROOT, 'public', docPath);
 }
 
