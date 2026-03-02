@@ -8,7 +8,23 @@
 
 ---
 
-## Project Positioning (for judges and students)
+## Table of Contents
+
+1. [Project Positioning](#project-positioning)
+2. [What This Version Does and Does Not Claim](#what-this-version-does-and-does-not-claim)
+3. [Overview & Application Architecture](#1-overview-application-architecture)
+4. [Presenter Mode](#2-presenter-mode)
+5. [Dashboard](#3-dashboard)
+6. [Pilot Results](#4-pilot-results)
+7. [Simulator](#5-simulator)
+8. [Methods & Rigor](#6-methods-rigor)
+9. [Compare Scenarios](#7-compare-scenarios)
+10. [Export Report](#8-export-report)
+11. [Help / Docs](#9-help-docs)
+
+---
+
+## Project Positioning
 
 **What CogniBiome Insights is:**
 CogniBiome Insights is an **educational simulator** demonstrating a rigorous, staged modeling
@@ -52,20 +68,6 @@ demonstrates that workflow.
 - Claim microbiome or metabolites were measured in the teen pilot
 - Claim final population-level effect sizes
 - Assert the simulator coefficients are trained on any real paired dataset in this build
-
----
-
-## Table of Contents
-
-1. [Overview & Application Architecture](#1-overview--application-architecture)
-2. [Presenter Mode](#2-presenter-mode)
-3. [Dashboard](#3-dashboard)
-4. [Pilot Results](#4-pilot-results)
-5. [Simulator](#5-simulator)
-6. [Methods & Rigor](#6-methods--rigor)
-7. [Compare Scenarios](#7-compare-scenarios)
-8. [Export Report](#8-export-report)
-9. [Help / Docs](#9-help--docs)
 
 ---
 

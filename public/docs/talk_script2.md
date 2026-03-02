@@ -1,5 +1,22 @@
 ## Yana’s Judge Presentation Script (CogniBiome Insights)
 
+## Table of Contents
+
+1. [Background: what is the gut–brain axis?](#1-background-what-is-the-gutbrain-axis)
+2. [The research gap](#2-the-research-gap)
+3. [My research question and hypothesis](#3-my-research-question-and-hypothesis)
+4. [The real human anchor dataset (what was measured)](#4-the-real-human-anchor-dataset-what-was-measured)
+5. [What I built: CogniBiome Insights (the mechanistic simulator)](#5-what-i-built-cognibiome-insights-the-mechanistic-simulator)
+6. [Why deterministic matters, and what offline-first means here](#6-why-deterministic-matters-and-what-offline-first-means-here)
+7. [What the judge sees in the demo (walkthrough)](#7-what-the-judge-sees-in-the-demo-walkthrough)
+8. [Results and interpretation (judge-safe)](#8-results-and-interpretation-judge-safe)
+9. [Limitations and future work](#9-limitations-and-future-work)
+10. [Closing](#10-closing)
+11. [Optional 20-second fallback](#optional-20-second-fallback-if-a-judge-interrupts)
+12. [Judge Q&A cheat sheet](#judge-qa-cheat-sheet-short-answers)
+
+---
+
 Good morning. My name is Yana Evteeva, and my project is titled **Modeling Diet-Driven Microbiome and Neurotransmitter Pathways Influencing Cognitive Performance**.
 
 This research asks a simple question that is surprisingly hard to answer:

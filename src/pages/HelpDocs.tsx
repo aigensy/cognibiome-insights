@@ -8,6 +8,27 @@ import { useToast } from '@/hooks/use-toast';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+/** Extract plain text from ReactMarkdown children (handles strings and nested arrays). */
+function extractText(children: React.ReactNode): string {
+  if (typeof children === 'string') return children;
+  if (typeof children === 'number') return String(children);
+  if (Array.isArray(children)) return children.map(extractText).join('');
+  if (children && typeof children === 'object' && 'props' in (children as object)) {
+    return extractText((children as React.ReactElement).props.children);
+  }
+  return '';
+}
+
+/** GitHub-compatible heading slug: lowercase, strip non-word chars except spaces/hyphens, collapse spaces to hyphens. */
+function slugify(children: React.ReactNode): string {
+  return extractText(children)
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 interface DocItem {
   id: string;
   title: string;
@@ -679,15 +700,15 @@ export default function HelpDocs() {
                 <td className="border border-border px-2 py-1 align-top break-words">{children}</td>
               ),
               h1: ({ children }) => {
-                const id = String(children).toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                const id = slugify(children);
                 return <h1 id={id} className="text-base font-semibold mt-2 mb-1 scroll-mt-4">{children}</h1>;
               },
               h2: ({ children }) => {
-                const id = String(children).toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                const id = slugify(children);
                 return <h2 id={id} className="text-sm font-semibold mt-2 mb-1 scroll-mt-4">{children}</h2>;
               },
               h3: ({ children }) => {
-                const id = String(children).toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+                const id = slugify(children);
                 return <h3 id={id} className="text-xs font-semibold mt-2 mb-1 scroll-mt-4">{children}</h3>;
               },
               p: ({ children }) => <p className="mb-1.5 text-[12px] leading-5">{children}</p>,

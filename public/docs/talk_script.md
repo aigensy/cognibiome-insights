@@ -7,6 +7,18 @@
 
 ---
 
+## Table of Contents
+
+1. [Module 1: The Hook — Food, Mood, and the Invisible Factory](#module-1-the-hook-food-mood-and-the-invisible-factory-000230)
+2. [Module 2: The Biology — The Gut–Brain Axis](#module-2-the-biology-the-gutbrain-axis-230600)
+3. [Module 3: The Data Problem & The "Proxy" Solution](#module-3-the-data-problem-the-proxy-solution-600900)
+4. [Module 4: The Real Evidence — The Pilot Dataset](#module-4-the-real-evidence-the-pilot-dataset-9001230)
+5. [Module 5: The Simulator — The D→X→M→Y Pipeline](#module-5-the-simulator-the-dxmy-pipeline-12301600)
+6. [Module 6: Trust, Rigor, and "Offline-First"](#module-6-trust-rigor-and-offline-first-16001830)
+7. [Module 7: Limitations and The Future](#module-7-limitations-and-the-future-18302000)
+
+---
+
 ## Module 1: The Hook — Food, Mood, and the Invisible Factory (0:00–2:30)
 
 Imagine your body is a car. We all know that if you put terrible gas in a car, the engine sputters. But humans are much more complicated than cars.

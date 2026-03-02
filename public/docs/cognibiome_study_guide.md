@@ -6,6 +6,22 @@
 
 ---
 
+
+## Table of Contents
+
+1. [Quick project summary](#quick-project-summary-one-page)
+2. [Part A — Biology foundations](#part-a-biology-foundations-no-prior-bio-required)
+3. [Part B — Data and statistics foundations](#part-b-data-and-statistics-foundations-no-prior-stats-required)
+4. [Part C — The pilot dataset](#part-c-the-pilot-dataset-what-is-real-in-this-project)
+5. [Part D — The simulator](#part-d-the-simulator-how-the-app-works-in-plain-language)
+6. [Part E — Reference databases](#part-e-reference-databases-what-they-are-what-they-are-not)
+7. [Part F — Judge questions](#part-f-judge-questions-short-safe-answers)
+8. [Glossary](#glossary-quick-reference)
+9. [Answers to quick checks](#answers-to-quick-checks)
+10. [Image Credits](#image-credits)
+
+---
+
 ## Quick project summary (one page)
 
 ### The big idea

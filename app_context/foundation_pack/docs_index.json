@@ -3,20 +3,20 @@
   "generated_utc": "2026-03-02T00:00:00Z",
   "items": [
     {
-      "id": "DOC-059",
-      "title": "Objective & Claims Policy",
-      "path": "/docs/objective_and_claims_policy.md",
-      "category": "User Docs",
-      "media_type": "text/markdown",
-      "description": "Canonical single-page reference: what the project is/is not, offline-first as a demo constraint, pilot dataset as benchmark-only, meaning of MODELED PROXY outputs, and explicit does/does-not claims list."
-    },
-    {
       "id": "DOC-060",
       "title": "README",
       "path": "/docs/README.md",
       "category": "User Docs",
       "media_type": "text/markdown",
       "description": "Project README: title, objectives, abstract, key findings, repo structure, and commands to clone and run locally."
+    },
+    {
+      "id": "DOC-059",
+      "title": "Objective & Claims Policy",
+      "path": "/docs/objective_and_claims_policy.md",
+      "category": "User Docs",
+      "media_type": "text/markdown",
+      "description": "Canonical single-page reference: what the project is/is not, offline-first as a demo constraint, pilot dataset as benchmark-only, meaning of MODELED PROXY outputs, and explicit does/does-not claims list."
     },
     {
       "id": "DOC-041",

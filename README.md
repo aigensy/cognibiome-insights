@@ -7,6 +7,28 @@
 
 ---
 
+## Table of Contents
+
+1. [Short description](#short-description)
+2. [Main objectives](#main-objectives)
+3. [Abstract](#abstract)
+4. [Research question](#research-question)
+5. [Hypothesis](#hypothesis)
+6. [Biological rationale](#biological-rationale)
+7. [Key findings (pilot dataset, n = 66)](#key-findings-pilot-dataset-n-66)
+8. [What is real vs modeled](#what-is-real-vs-modeled)
+9. [Reproducibility](#reproducibility)
+10. [Limitations](#limitations)
+11. [Future directions](#future-directions)
+12. [Get it from GitHub and run locally](#get-it-from-github-and-run-locally)
+13. [Repository structure](#repository-structure)
+14. [Tech stack](#tech-stack)
+15. [Scientific guardrails](#scientific-guardrails)
+16. [Lessons learned](#lessons-learned)
+17. [Roadmap (future work)](#roadmap-future-work-not-in-this-build)
+
+---
+
 ## Short description
 
 CogniBiome is a **student-built, offline-capable educational simulator** that demonstrates a
@@ -136,8 +158,7 @@ Every simulation run is:
 
 1. **Deterministic** — identical slider inputs always produce identical numeric outputs.
 2. **Versioned** — the run records the semantic versions of all three stage JSON artifacts.
-3. **Hashed** — a SHA-256 `runHash` is computed from
-   `sha256(JSON.stringify({normalized_inputs, model_versions}))` and stored in localStorage.
+3. **Hashed** — a SHA-256 `runHash` is computed from the serialized inputs and model versions and stored in localStorage.
 
 Model artifact files (frozen in this build):
 
@@ -208,7 +229,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open `http://localhost:5173` in your browser.
 
 ### Other useful commands
 
@@ -262,7 +283,6 @@ cognibiome-insights/
 │   │   ├── image_credits.md        ISEF-compliant image credit list
 │   │   ├── trifold/                Science-fair trifold board content
 │   │   │   ├── initial/            Original trifold panels (TOP_BANNER, LEFT/CENTER/RIGHT)
-│   │   │   ├── yana/               Yana's trifold variant (12 section files)
 │   │   │   └── final/              Final trifold variant (12 section files)
 │   │   ├── screenshots/app/        App screenshots for the user guide
 │   │   └── images/                 Embedded images for docs
