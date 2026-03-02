@@ -1,12 +1,19 @@
 # CogniBiome Insights
 
-**Offline-first deterministic simulator + pilot analytics for the gut–brain axis**
+**Deterministic simulator + pilot analytics for the gut–brain axis — educational hypothesis generator**
 
 > **Science-fair demo build (v0.1) — educational hypothesis generator, not a diagnostic or causal ML system.**
 
 ---
 
 ## What is this project?
+
+CogniBiome Insights is a **student research project and educational simulator** demonstrating a
+rigorous, staged modeling workflow for diet → gut biology → cognition problems. The primary
+contribution is the **reproducible D → X → M → Y framework** and documentation of how one would
+solve the full problem with larger paired datasets and sufficient compute. Diet–cognition
+association is used as a deliberately challenging case study — the pilot shows an association
+signal, but the general problem remains limited by data pairing, confounder control, and resources.
 
 CogniBiome Insights investigates whether a plausible computational pathway exists connecting
 diet → gut microbiome → metabolites → cognitive performance.
@@ -97,8 +104,9 @@ public/models/stage3.json   (Metabolite proxy → Cognitive outputs)
 | **Phase 2** | Replace frozen demo artifacts with trained `stage*.json` exports | Trained artifacts + MODEL_CARD.md |
 | **Phase 3 (future)** | Paired cognition cohort or research partnership | Institutional approval + IRB |
 
-The web app is designed to remain offline-first and accept swapped-in trained artifacts
-without code changes — only the JSON stage files need to be replaced.
+The web app is designed to accept swapped-in trained artifacts without code changes — only
+the JSON stage files need to be replaced. It runs offline during judging (a presentation
+reliability constraint), and this same architecture supports a future backend training phase.
 
 ---
 

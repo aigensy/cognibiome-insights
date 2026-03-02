@@ -2,7 +2,9 @@
 
 This document consolidates all external dataset information for the CogniBiome application: which external sources are used, how they are embedded offline, how bundled snapshots were prepared, and licensing notes.
 
-**Key principle:** the app works fully offline without any network dependencies. All external sources are used exclusively as pre-prepared reference snapshots bundled with the project. No pilot data is transmitted externally. Bundling is controlled by `/public/reference/public_datasets_manifest.json` (`included: true`).
+**Key principle:** All external sources in this build are used exclusively as **metadata-only reference snapshots** — background context for explanations and evidence cards. They are not training datasets. No pilot data is transmitted externally. The app makes no runtime network calls (a science-fair presentation reliability requirement). Bundling is controlled by `/public/reference/public_datasets_manifest.json` (`included: true`).
+
+In a future backend phase, properly licensed paired datasets (e.g., ZOE PREDICT for diet↔microbiome, iHMP/IBDMDB for microbiome↔metabolomics) would serve as actual training sources for the stage model artifacts.
 
 ---
 
@@ -123,7 +125,7 @@ The following datasets are identified in the project roadmap as targets for futu
 
 ## Data Build Notes
 
-This project is offline-first for judge review: the app must NOT call external APIs at runtime. External sources are packaged as small "reference snapshots" under `/public/reference/`.
+For science-fair judging, the app must NOT call external APIs at runtime (offline-first is a **presentation reliability constraint**, not a research objective). External sources are therefore packaged as small "reference snapshots" under `/public/reference/`. In a future backend phase, these same sources would serve as background context alongside properly licensed paired training datasets.
 
 To refresh them, use one of:
 1. Manual download + filtering (Excel / pandas)

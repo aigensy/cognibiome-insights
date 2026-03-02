@@ -178,6 +178,6 @@ A good scientist knows the limits of their tools.
 
 CogniBiome Insights takes one of the most complex frontiers in human biology — the gut–brain axis — and makes it explorable and transparent.
 
-By keeping real measured data separate from modeled biological proxies, and wrapping everything in a strictly reproducible, offline-first simulator, this project demonstrates that we can investigate massive biological hypotheses honestly, rigorously, and accessibly.
+By keeping real measured data separate from modeled biological proxies, and wrapping everything in a strictly reproducible, deterministic simulator, this project demonstrates that we can investigate complex multi-layer biological hypotheses honestly, rigorously, and accessibly — and that many similar problems become tractable in principle with sufficient paired data and proper workflow.
 
 Thank you.

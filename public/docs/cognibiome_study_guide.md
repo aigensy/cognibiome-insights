@@ -213,14 +213,16 @@ A **training dataset** is paired measurements where inputs and outputs are measu
 
 This difference is one of the most important judge questions.
 
-### E2) What is included in the app (offline-first snapshots)
+### E2) What is included in the app (reference snapshots for demo)
 The app uses small offline “reference snapshots” for demo and explanation:
 - USDA FoodData Central (nutrients)
 - pathway references (Reactome/WikiPathways)
 - microbe ↔ metabolite evidence references (MiMeDB-style tables)
 
 Important wording:
-> “small curated offline snapshots”, not “full database dumps”.
+> “small curated offline reference snapshots”, not “full database dumps” and not “training datasets”.
+
+Note: the app works without internet during judging — this is a **presentation reliability constraint**, not a research objective. These snapshots are background context; they are not used to train the simulator.
 
 ---
 

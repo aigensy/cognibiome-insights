@@ -63,7 +63,7 @@ The major limitation of that pilot is that it did not measure biological interme
 
 ### 5) What I built: CogniBiome Insights (the mechanistic simulator)
 
-To address that limitation, I built **CogniBiome Insights**, an interactive, offline-first **deterministic simulator** that models the pathway in transparent stages.
+To address that limitation, I built **CogniBiome Insights**, an interactive **deterministic simulator** that models the pathway in transparent stages. It runs fully offline — a reliability requirement for science-fair judging — but the architecture is designed to accept trained model artifacts in a future phase.
 
 I describe it as a pipeline:
 
@@ -81,15 +81,15 @@ I describe it as a pipeline:
 
 This is important because many microbiome references are knowledge maps like “this microbe can produce this metabolite,” but they are not paired measurements in the same people. So I treat them as **reference evidence**, not as proof.
 
-### 6) Why deterministic and offline-first matters
+### 6) Why deterministic matters, and what offline-first means here
 
 My simulator is **deterministic**, meaning:
 
 **The same inputs produce the same outputs every time.**
 
-Each run generates a **run hash**, like a digital fingerprint, so results are reproducible and presentation-safe.
+Each run generates a **run hash**, like a digital fingerprint, so results are reproducible and auditable.
 
-Also, the app is **offline-first**: it works without internet during judging. It includes **small offline reference snapshots** to support explanations without relying on live websites.
+The app also works fully without internet during judging — **offline-first is a presentation reliability constraint**, not a research objective. It includes small offline reference snapshots to support explanations without relying on live websites. The same architecture is designed to accept trained model artifacts in a future backend phase.
 
 ### 7) What the judge sees in the demo (walkthrough)
 

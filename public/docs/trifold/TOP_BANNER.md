@@ -8,8 +8,8 @@
 
 ## What this is
 
-- Offline-first deterministic simulator + real pilot analytics (n=66 teen dataset).
-- Educational hypothesis generator.
+- Deterministic simulator + real pilot analytics (n=66 teen dataset). Runs offline during judging (presentation reliability requirement).
+- Educational hypothesis generator demonstrating a rigorous D → X → M → Y modeling workflow.
 
 ## What this is NOT
 

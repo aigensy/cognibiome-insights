@@ -42,7 +42,7 @@
 
 ### Abstract
 
-Diet quality is frequently associated with cognitive performance, but testing a full mechanism in humans is difficult because it would require measuring diet, microbiome composition, metabolites, and cognition in the same individuals. This project addresses that gap with a transparent, judge-ready approach: **(1) analyze a de-identified teen pilot dataset (n=66) for correlation signals**, and **(2) implement an offline-first, deterministic simulator that makes the proposed biological pathway explicit**.
+Diet quality is frequently associated with cognitive performance, but testing a full mechanism in humans is difficult because it would require measuring diet, microbiome composition, metabolites, and cognition in the same individuals. This project addresses that gap with a transparent, judge-ready approach: **(1) analyze a de-identified teen pilot dataset (n=66) for correlation signals**, and **(2) implement a deterministic simulator that makes the proposed biological pathway explicit and reproducible**. The simulator runs fully offline during judging (a presentation reliability requirement).
 
 In the pilot dataset (diet score + four cognitive tests), higher diet scores show moderate positive correlations with **overall score** and with **language** and **logical reasoning**. To explore a plausible mechanism (without overclaiming), CogniBiome implements a three-stage pipeline: **Diet inputs (D)** → **Modeled microbiome proxies (X)** → **Modeled metabolite proxies (M)** → **Modeled cognition outputs (Y)**. In the current build, the simulator uses **frozen, replaceable parameter artifacts** (no training occurs inside the app) and generates a **run hash** so outputs are reproducible.
 
@@ -70,7 +70,7 @@ Teens with higher diet quality scores will show higher cognitive performance, es
 ### Materials
 
 - De-identified teen pilot CSV (n=66): diet_score, stroop_test, language_test, memory_test, logical_test, overall_score
-- CogniBiome Insights offline-first web app (Pilot Results + deterministic Simulator + Export)
+- CogniBiome Insights web app (Pilot Results + deterministic Simulator + Export; runs offline during judging as a presentation reliability requirement)
 - Frozen simulator artifacts: stage1.json, stage2.json, stage3.json (replaceable demo parameters)
 - Optional offline reference snapshots for evidence cards (NHANES, MiMeDB subset, HMP)
 
@@ -154,7 +154,7 @@ Teens with higher diet quality scores will show higher cognitive performance, es
 ### Conclusion
 
 - In a de-identified teen pilot (n=66), higher diet scores correlate moderately with higher **overall cognitive score** and show similar positive correlations for **language** and **logical reasoning**.
-- CogniBiome demonstrates a judge-ready, offline-first framework that **separates measured evidence (pilot correlations)** from **modeled proxy mechanisms (simulator layers)**.
+- CogniBiome demonstrates a judge-ready, reproducible framework that **separates measured evidence (pilot correlations)** from **modeled proxy mechanisms (simulator layers)**. The app runs offline during judging as a presentation reliability constraint.
 - The system supports hypothesis generation but does **not** establish causality and does **not** make medical claims.
 
 ### Limitations

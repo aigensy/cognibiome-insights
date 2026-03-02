@@ -31,7 +31,7 @@
 ## Conclusion (evidence-based)
 
 - In a de-identified teen pilot (n=66), higher diet scores correlate moderately with higher **overall cognitive score** and show similar positive correlations for **language** and **logical reasoning**.
-- CogniBiome demonstrates a judge-ready, offline-first framework that **separates measured evidence (pilot correlations)** from **modeled proxy mechanisms (simulator layers)**.
+- CogniBiome demonstrates a judge-ready, reproducible framework that **separates measured evidence (pilot correlations)** from **modeled proxy mechanisms (simulator layers)**. The app runs offline during judging as a presentation reliability constraint.
 - The system supports hypothesis generation but does **not** establish causality and does **not** make medical claims.
 
 ---

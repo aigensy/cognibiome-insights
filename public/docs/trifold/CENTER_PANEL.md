@@ -9,7 +9,7 @@
 **Data & software (this build is computational):**
 
 - De-identified teen pilot CSV (n=66): diet_score, stroop_test, language_test, memory_test, logical_test, overall_score
-- CogniBiome Insights offline-first web app (Pilot Results + deterministic Simulator + Export)
+- CogniBiome Insights web app (Pilot Results + deterministic Simulator + Export; runs offline during judging as a presentation reliability requirement)
 - Frozen simulator artifacts: stage1.json, stage2.json, stage3.json (replaceable demo parameters)
 - Optional offline reference snapshots for "evidence cards" (USDA/FDC, Reactome, WikiPathways, MiMeDB subset)
 

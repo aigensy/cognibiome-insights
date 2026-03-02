@@ -15,6 +15,55 @@ and ISEF display guidance.
 
 ---
 
+## Project Positioning (for judges and students)
+
+**What CogniBiome Insights is:**
+CogniBiome Insights is an **educational simulator** demonstrating a rigorous, staged modeling
+workflow for diet → gut biology → cognition problems. The primary contribution is the
+**reproducible D → X → M → Y framework** and documentation of how one would solve the full
+problem with larger paired datasets and sufficient compute.
+
+**On "offline-first":**
+Offline-first is a **science-fair presentation constraint** — the app must work reliably without
+internet during judging. It is not a research objective. The same architecture would support a
+backend training pipeline in a future phase.
+
+**On the teen pilot (n=66):**
+The pilot provides **real measured association results** (diet score vs four cognitive tasks).
+It does not measure biological intermediates (no microbiome, no metabolomics). The association
+signal motivates the modeling framework but does not establish a mechanism.
+
+**On microbiome and metabolite layers:**
+These are **modeled proxies** built from frozen demo coefficients. They are used to teach
+mechanism and enable "what-if" scenario exploration — not to claim measured biological data.
+
+**On the research goal:**
+Diet–cognition association is used as a **deliberately challenging case study** to build and
+demonstrate a correct end-to-end scientific workflow. The general problem remains limited by
+data pairing, confounder control, and compute. Many similar multi-layer biology problems
+**become tractable in principle** with sufficient paired data and proper workflow — this project
+demonstrates that workflow.
+
+---
+
+## What This Version Does and Does Not Claim
+
+**DOES:**
+- Demonstrates deterministic simulation runs with SHA-256 run hash and reproducible exports
+- Teaches core concepts: correlation, confounding, proxy variables, mechanistic reasoning
+- Allows side-by-side scenario comparison for learning
+- Clearly labels all intermediate outputs as **MODELED PROXY**
+- Separates real measured pilot evidence from modeled proxy layers
+
+**DOES NOT:**
+- Prove causality between diet and cognition
+- Diagnose or predict individual health outcomes
+- Claim microbiome or metabolites were measured in the teen pilot
+- Claim final population-level effect sizes
+- Assert the simulator coefficients are trained on any real paired dataset in this build
+
+---
+
 ## Part 1 — Before Judges Arrive: Setup Checklist
 
 1. Open the app at `/`.
@@ -37,11 +86,11 @@ Presenter Mode is a "demo simplifier." When **ON**:
   Dashboard · Pilot Results · Simulator · Compare Scenarios · Methods & Rigor · Export Report
 - This Presenter Pack link remains accessible via the Docs section.
 - Foundation and Data doc categories are hidden to reduce noise.
-- The app remains **offline-first** — no runtime API calls are made in any mode.
+- The app makes **no runtime API calls** in any mode (offline-first presentation constraint).
 
 | Control | Where | What it does | What to say |
 |---|---|---|---|
-| **OFFLINE-FIRST** badge | top-left | confirms no network needed | "The demo works without Wi-Fi." |
+| **OFFLINE-FIRST** badge | top-left | confirms no network needed during judging | "The demo works without Wi-Fi — a presentation reliability requirement." |
 | **Presenter / Presenter ON** | top-right | toggles Presenter Mode | "This narrows the app to the judge path." |
 | **Reset** | top-right (Presenter OFF only) | clears runs + resets sliders | "Reset makes the next demo repeatable." |
 
@@ -54,7 +103,7 @@ Presenter Mode is a "demo simplifier." When **ON**:
 **Do:** Point to title + OFFLINE-FIRST badge.
 
 **Say:**
-- "This is the offline-first demo dashboard."
+- "This is the demo dashboard. The app works fully offline — a reliability requirement for science-fair judging."
 - "Pilot dataset is loaded (n=66). Simulation runs are stored locally in the browser."
 
 **Do:** Click **Pilot Results** in the sidebar.

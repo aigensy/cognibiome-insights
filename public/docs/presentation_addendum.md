@@ -133,6 +133,8 @@ where mechanistic explanation is harder), with SHAP for feature importance valid
 
 ## One-sentence summary
 
-CogniBiome Insights is a transparent, reproducible, offline-first tool that shows real pilot
+CogniBiome Insights is a transparent, reproducible educational simulator that shows real pilot
 evidence and makes the diet–gut–brain hypothesis explorable — while being completely honest
 about what has and has not been trained, what data exists, and what the path forward requires.
+Offline-first operation is a presentation reliability constraint; the architecture is designed
+to accept trained model artifacts in a future backend phase.
