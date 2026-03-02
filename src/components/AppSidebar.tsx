@@ -48,7 +48,7 @@ function docIcon(mediaType: string) {
   return FileText;
 }
 
-const CATEGORY_ORDER = ['User Docs', 'Trifold Board', 'Foundation', 'Data'];
+const CATEGORY_ORDER = ['User Docs', 'Trifold (Final)', 'Trifold (Yana)', 'Trifold (Initial)', 'Foundation', 'Data'];
 
 export function AppSidebar() {
   const { state } = useSidebar();
@@ -81,8 +81,9 @@ export function AppSidebar() {
   const searchParams = new URLSearchParams(location.search);
   const selectedDocId = searchParams.get('doc');
 
+  // In Presenter Mode: show only User Docs + the final trifold variant (hide Initial/Yana drafts)
   const visibleDocs = presenterMode
-    ? docs.filter(d => d.category === 'User Docs')
+    ? docs.filter(d => d.category === 'User Docs' || d.category === 'Trifold (Final)')
     : docs;
 
   const docsByCategory = CATEGORY_ORDER.reduce<Record<string, DocItem[]>>((acc, cat) => {
