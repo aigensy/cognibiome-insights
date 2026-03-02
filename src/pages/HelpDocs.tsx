@@ -716,10 +716,16 @@ export default function HelpDocs() {
                         const id = href.slice(1);
                         const target = document.getElementById(id);
                         if (!target) return;
-                        // Scroll within the nearest overflow-auto ancestor (the markdown viewer div)
+                        // Scroll within the overflow-auto markdown viewer container.
+                        // getBoundingClientRect gives position relative to the viewport;
+                        // subtracting the container's top gives position relative to the container,
+                        // then add the container's current scrollTop to get the absolute scroll target.
                         const scrollParent = target.closest('[data-testid="markdown-view"]') as HTMLElement | null;
                         if (scrollParent) {
-                          scrollParent.scrollTo({ top: target.offsetTop - 8, behavior: 'smooth' });
+                          const containerRect = scrollParent.getBoundingClientRect();
+                          const targetRect = target.getBoundingClientRect();
+                          const scrollTarget = scrollParent.scrollTop + (targetRect.top - containerRect.top) - 8;
+                          scrollParent.scrollTo({ top: scrollTarget, behavior: 'smooth' });
                         } else {
                           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }
