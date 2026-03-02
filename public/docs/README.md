@@ -229,7 +229,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open `http://localhost:8080` in your browser (port is set to `8080` in `vite.config.ts`; if you change it there, use the matching port).
 
 ### Other useful commands
 
