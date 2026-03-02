@@ -11,6 +11,14 @@
       "description": "Canonical single-page reference: what the project is/is not, offline-first as a demo constraint, pilot dataset as benchmark-only, meaning of MODELED PROXY outputs, and explicit does/does-not claims list."
     },
     {
+      "id": "DOC-060",
+      "title": "README",
+      "path": "/docs/README.md",
+      "category": "User Docs",
+      "media_type": "text/markdown",
+      "description": "Project README: title, objectives, abstract, key findings, repo structure, and commands to clone and run locally."
+    },
+    {
       "id": "DOC-041",
       "title": "Presenter Pack",
       "path": "/docs/presenter_pack.md",
@@ -121,54 +129,6 @@
       "category": "Trifold (Initial)",
       "media_type": "text/markdown",
       "description": "Initial trifold right panel: analysis, conclusion, limitations, future directions, and suggested visuals."
-    },
-    {
-      "id": "DOC-047",
-      "title": "Yana — Abstract",
-      "path": "/docs/trifold/yana/01_abstract.md",
-      "category": "Trifold (Yana)",
-      "media_type": "text/markdown",
-      "description": "Yana's trifold abstract: two-part framework, pilot correlation results, deterministic simulator, and primary contribution."
-    },
-    {
-      "id": "DOC-048",
-      "title": "Yana — Research Question & Hypothesis",
-      "path": "/docs/trifold/yana/02_research_question.md",
-      "category": "Trifold (Yana)",
-      "media_type": "text/markdown",
-      "description": "Yana's trifold research question and hypothesis with biological rationale."
-    },
-    {
-      "id": "DOC-049",
-      "title": "Yana — Biological Rationale",
-      "path": "/docs/trifold/yana/04_biological_rationale.md",
-      "category": "Trifold (Yana)",
-      "media_type": "text/markdown",
-      "description": "Yana's trifold biological rationale: gut–brain axis, SCFAs, tryptophan signaling, and methodological gap."
-    },
-    {
-      "id": "DOC-050",
-      "title": "Yana — Modeling Framework & Procedure",
-      "path": "/docs/trifold/yana/05_modeling_framework.md",
-      "category": "Trifold (Yana)",
-      "media_type": "text/markdown",
-      "description": "Yana's trifold modeling framework: D→X→M→Y pipeline, measured vs modeled labeling, and reproducibility."
-    },
-    {
-      "id": "DOC-051",
-      "title": "Yana — Findings, Conclusion & Limitations",
-      "path": "/docs/trifold/yana/08_key_findings.md",
-      "category": "Trifold (Yana)",
-      "media_type": "text/markdown",
-      "description": "Yana's trifold key findings (r values), conclusion with interpretation boundaries, and limitations."
-    },
-    {
-      "id": "DOC-052",
-      "title": "Yana — Future Directions",
-      "path": "/docs/trifold/yana/11_future_directions.md",
-      "category": "Trifold (Yana)",
-      "media_type": "text/markdown",
-      "description": "Yana's trifold future directions: paired datasets, trained artifacts, confounder modeling, and generalization."
     },
     {
       "id": "DOC-053",

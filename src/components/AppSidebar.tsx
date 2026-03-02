@@ -48,7 +48,7 @@ function docIcon(mediaType: string) {
   return FileText;
 }
 
-const CATEGORY_ORDER = ['User Docs', 'Trifold (Final)', 'Trifold (Yana)', 'Trifold (Initial)', 'Foundation', 'Data'];
+const CATEGORY_ORDER = ['User Docs', 'Trifold (Final)', 'Trifold (Initial)', 'Foundation', 'Data'];
 
 export function AppSidebar() {
   const { state } = useSidebar();
