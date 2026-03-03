@@ -447,6 +447,44 @@ Exhibitions serve as independent validation of rigor and quality. The app is not
   - X→M: requires paired microbiome+metabolomics
   - M→Y: hardest; likely not openly available for teens
 
+#### Safety note (important)
+
+These commands are intended to be run manually in a terminal. Cursor should not auto-run downloads or installs.
+
+#### Step 0 — Create training folders
+
+```bash
+cd /path/to/cognibiome-insights
+mkdir -p training/data
+```
+
+#### Step 1 — Download smoke-test public data (for pipeline plumbing)
+
+Use the provided script:
+
+```bash
+bash scripts/phase2_download_smoketest_data.sh
+```
+
+If scripts are not executable: `chmod +x scripts/*.sh`
+
+Direct commands (for transparency):
+
+```bash
+cd /path/to/cognibiome-insights
+mkdir -p training/data
+curl -L -o training/data/HMP2_taxonomy.tsv "https://raw.githubusercontent.com/biobakery/Maaslin2/refs/heads/master/inst/extdata/HMP2_taxonomy.tsv"
+curl -L -o training/data/HMP2_metadata.tsv "https://raw.githubusercontent.com/biobakery/Maaslin2/refs/heads/master/inst/extdata/HMP2_metadata.tsv"
+```
+
+**Common mistake:** If `training/data` does not exist, `curl -o HMP2_*.tsv` (without the full output path) will save files to the current directory. Create the folder first or use the full output path.
+
+#### Step 2 — Create Python venv + install deps
+
+```bash
+bash scripts/phase2_setup_python_env.sh
+```
+
 ### Phase 3 — External validation / partnerships (future)
 
 - **What would be required:** paired cohort, institutional approvals, research partnership

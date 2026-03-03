@@ -78,3 +78,8 @@ Thumbs.db
 !public/docs/**/*.webp
 !public/docs/**/*.gif
 !public/docs/**/*.pdf
+
+# Phase 2 training data (downloaded / reproducible via scripts)
+training/data/
+training/outputs/
+training/.venv/

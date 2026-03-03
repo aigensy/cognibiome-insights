@@ -31,3 +31,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Phase 2 training data (downloaded / reproducible via scripts)
+training/data/
+training/outputs/
+training/.venv/
