@@ -839,7 +839,7 @@ export default function HelpDocs() {
             </CardTitle>
             {selected && (
               <Badge variant="outline" className="text-[10px]" data-testid="help-doc-id">
-                Doc: {selected.id}
+                {selected.id} · {selected.path.split('/').pop() ?? selected.id}
               </Badge>
             )}
           </div>
