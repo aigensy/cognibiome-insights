@@ -423,12 +423,41 @@ Exhibitions serve as independent validation of rigor and quality. The app is not
 
 ## Roadmap (future work — not in this build)
 
-| Phase | Description | Dependency |
+| Phase | Description | Key Dependencies |
 |---|---|---|
-| **Phase 2 (future)** | Python/FastAPI backend + offline training pipeline | Paired datasets with access approval |
-| **Phase 2** | Stage-wise model training (scikit-learn / XGBoost): D→X, X→M, M→Y | D→X: ZOE PREDICT (if access granted); X→M: iHMP/IBDMDB |
-| **Phase 2** | Replace frozen demo artifacts with trained `stage*.json` exports | Trained artifacts + MODEL_CARD.md |
-| **Phase 3 (future)** | Paired cognition cohort or research partnership | Institutional approval + IRB |
+| Phase 1 (current, v0.1) | Deterministic offline-first simulator + pilot analytics (validation-only) + documentation/CI stabilization | None (already in repo) |
+| Phase 2 (future) | Offline training pipeline + export versioned stage artifacts (replace demo params) + MODEL_CARD | Paired datasets where access exists; compute environment |
+| Phase 3 (future) | Strong validation / extension using paired cognition cohort (metabolomics + cognition) via partnership/approval | Institutional approvals + data access |
+
+### Phase 1 — Stabilize and make the current build judge-proof (v0.1)
+
+- **Docs:** "What is real vs modeled", "Measured vs modeled" language prominent
+- **Reproducibility:** run hash + model version badges documented
+- **CI:** lint/test/build green
+- **Presenter flow:** Dashboard → Pilot Results → Simulator → Export works offline after first load
+- **Explicit note:** offline-first is a demo reliability constraint (not a scientific objective)
+
+### Phase 2 — Replace demo parameters with trained, versioned artifacts (future)
+
+- Offline Python training pipeline (stage-wise where paired data exists)
+- Export artifacts: `stage1.json`, `stage2.json`, `stage3.json` + `MODEL_CARD.md`
+- Validation approach: pilot dataset remains validation-only
+- **Dataset reality notes:**
+  - D→X: requires paired diet+microbiome
+  - X→M: requires paired microbiome+metabolomics
+  - M→Y: hardest; likely not openly available for teens
+
+### Phase 3 — External validation / partnerships (future)
+
+- **What would be required:** paired cohort, institutional approvals, research partnership
+- **What success would look like:** stronger validation, broader generalization, tighter uncertainty bounds
+
+### Links to detailed plans
+
+- [implementation_plan.md](implementation_plan.md) — engineering plan
+- [presentation_addendum.md](presentation_addendum.md) — dataset reality checks
+
+---
 
 The web app is designed to accept swapped-in trained artifacts without code changes — only
 the JSON stage files need to be replaced. The offline-first PWA architecture supports
