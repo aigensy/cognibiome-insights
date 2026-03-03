@@ -426,7 +426,7 @@ And a bare URL reference: see https://example.com for details.
 And [NHANES data](https://wwwn.cdc.gov/nchs/) for nutrient reference.
 `;
 
-describe('HelpDocs — external links rendered as safe (non-navigable) text', () => {
+describe('HelpDocs — external links rendered as clickable anchors', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.stubGlobal('fetch', vi.fn(async (url: string) => {
@@ -440,7 +440,7 @@ describe('HelpDocs — external links rendered as safe (non-navigable) text', ()
     }));
   });
 
-  it('renders markdown with links without any <a> href that would navigate', async () => {
+  it('renders markdown with external links as clickable anchors', async () => {
     const { default: HelpDocs } = await import('@/pages/HelpDocs');
     render(
       <MemoryRouter initialEntries={['/help?doc=LINK001']}>
@@ -455,29 +455,12 @@ describe('HelpDocs — external links rendered as safe (non-navigable) text', ()
     // The link text should be visible as text
     expect(screen.getByText('MiMeDB')).toBeInTheDocument();
 
-    // No <a> element with an href should exist inside the markdown view
+    // External links should be live anchors (clickable)
     const markdownView = screen.getByTestId('markdown-view');
     const anchors = markdownView.querySelectorAll('a[href]');
-    expect(anchors).toHaveLength(0);
-  });
-
-  it('renders safe-link spans with data-href attribute instead of live anchors', async () => {
-    const { default: HelpDocs } = await import('@/pages/HelpDocs');
-    render(
-      <MemoryRouter initialEntries={['/help?doc=LINK001']}>
-        <HelpDocs />
-      </MemoryRouter>
-    );
-
-    await waitFor(() => {
-      expect(screen.getByTestId('markdown-view')).toBeInTheDocument();
-    });
-
-    // safe-link spans should carry the URL as a data attribute
-    const safeLinks = screen.getAllByTestId('safe-link');
-    expect(safeLinks.length).toBeGreaterThan(0);
-
-    const hrefs = safeLinks.map(el => el.getAttribute('data-href'));
-    expect(hrefs.some(h => h?.includes('mimedb.org'))).toBe(true);
+    expect(anchors.length).toBeGreaterThan(0);
+    const mimedbAnchor = Array.from(anchors).find(a => a.getAttribute('href')?.includes('mimedb.org'));
+    expect(mimedbAnchor).toBeTruthy();
+    expect(mimedbAnchor?.getAttribute('target')).toBe('_blank');
   });
 });

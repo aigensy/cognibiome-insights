@@ -655,7 +655,7 @@ describe('HelpDocs (/help?doc=DOC-026) — presenter mode screen contract', () =
     expect(screen.getByText(/not a medical device/i)).toBeInTheDocument();
   });
 
-  it('renders external links as non-navigable safe-link spans (no live <a> hrefs)', async () => {
+  it('renders external links as clickable anchors opening in new tab', async () => {
     const guideWithLinks = PRESENTER_GUIDE_CONTENT + '\n\nSee [MiMeDB](https://mimedb.org/) for reference.\n';
     vi.stubGlobal('fetch', vi.fn(async (url: string) => {
       if (url.includes('docs_index.json')) {
@@ -681,13 +681,12 @@ describe('HelpDocs (/help?doc=DOC-026) — presenter mode screen contract', () =
     // Link text visible
     expect(screen.getByText('MiMeDB')).toBeInTheDocument();
 
-    // No live anchor tags inside markdown view
+    // External links are live anchors with target="_blank"
     const view = screen.getByTestId('markdown-view');
-    expect(view.querySelectorAll('a[href]')).toHaveLength(0);
-
-    // Safe-link span carries the URL
-    const safeLinks = screen.getAllByTestId('safe-link');
-    expect(safeLinks.length).toBeGreaterThan(0);
-    expect(safeLinks.some(el => el.getAttribute('data-href')?.includes('mimedb.org'))).toBe(true);
+    const anchors = view.querySelectorAll('a[href]');
+    expect(anchors.length).toBeGreaterThan(0);
+    const mimedbAnchor = Array.from(anchors).find(a => a.getAttribute('href')?.includes('mimedb.org'));
+    expect(mimedbAnchor).toBeTruthy();
+    expect(mimedbAnchor?.getAttribute('target')).toBe('_blank');
   });
 });

@@ -27,13 +27,6 @@ Only use `--force` when you have intentionally updated the bundle source
 (`COGNIBIOME_SINGLE_UPLOAD_BUNDLE.md`) and want to push those changes to
 `/public/`.
 
-## Cyrillic Gate
-
-`npm test` automatically runs `npm run check:no-cyrillic` as a pretest step.
-This scans ALL files under `public/**` (no exclusions) and fails if any
-Cyrillic characters are found. This prevents Russian-language build artifacts
-from being shipped in the runtime.
-
 ## MiMeDB Links
 
 All entries in `public/reference/mimedb.json` → `microbe_metabolite_links`

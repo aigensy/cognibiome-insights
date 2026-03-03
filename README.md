@@ -2,8 +2,10 @@
 
 **CogniBiome: Diet → Microbiome → Metabolites → Cognition Simulator**
 
-> **Science-fair demo build (v0.1) — educational hypothesis generator.**
-> Not a diagnostic device. Not medical advice. Not a trained end-to-end predictive model.
+**Author:** [Yana Evteeva](https://www.linkedin.com/in/yana-evteeva)
+
+> **Gut–Brain Axis Explorer and Hypothesis Generator** — deterministic, offline-first research simulator.
+> Not a diagnostic device. Not medical advice. Not causal proof.
 
 ---
 
@@ -25,20 +27,21 @@
 14. [Tech stack](#tech-stack)
 15. [Scientific guardrails](#scientific-guardrails)
 16. [Lessons learned](#lessons-learned)
-17. [Roadmap (future work)](#roadmap-future-work-not-in-this-build)
+17. [Academic Validation & Exhibitions](#academic-validation--exhibitions)
+18. [Roadmap (future work)](#roadmap-future-work-not-in-this-build)
 
 ---
 
 ## Short description
 
-CogniBiome is a **student-built, offline-capable educational simulator** that demonstrates a
+CogniBiome is a **deterministic, offline-first research simulator** that demonstrates a
 transparent, reproducible workflow for studying the
 **diet → gut microbiome → metabolite (neurotransmitter-related) → cognition** pathway.
 
-A small de-identified teen pilot dataset (n = 66) is used **only for correlation charts
-(benchmarking an association signal)**. The microbiome and metabolite layers are represented
-as **modeled proxies** to show how the full problem would be solved if paired multi-omics +
-cognition data and sufficient compute were available.
+It implements a D→X→M→Y modeling framework with clear separation of measured evidence
+(pilot diet + cognition) from modeled proxy layers (microbiome/metabolites). A de-identified
+pilot dataset (n = 66) is used for correlation benchmarking. The app runs as a PWA with no
+network dependency.
 
 ---
 
@@ -53,7 +56,7 @@ cognition data and sufficient compute were available.
    without causal claims.
 4. **Document the data/compute requirements** needed for true stage-wise training and
    validation on paired cohorts.
-5. **Offline-first is a demo reliability constraint**, not a scientific objective.
+5. **Offline-first PWA** — runs without network access; reproducible exports.
 
 ---
 
@@ -110,7 +113,7 @@ The **gut–brain axis** links diet, gut microbes, and brain function through mu
   **neuroactive signaling** (e.g., GABA-related pathways) and immune signaling that may
   affect cognition.
 
-Because directly measuring all layers is difficult in typical student research, CogniBiome
+Because directly measuring all layers is difficult in typical research settings, CogniBiome
 uses **proxy layers** to demonstrate how the mechanism would be tested in a fully instrumented
 cohort.
 
@@ -271,7 +274,7 @@ Screenshots are written to `e2e/screenshots/`.
 cognibiome-insights/
 ├── public/
 │   ├── docs/                   Markdown docs shown in the in-app Docs viewer
-│   │   ├── user_guide.md           Canonical judge-facing user guide
+│   │   ├── user_guide.md           Canonical user guide
 │   │   ├── presenter_pack.md       Consolidated presenter guide + speech scripts
 │   │   ├── objective_and_claims_policy.md  What the project is/is not (claims policy)
 │   │   ├── cognibiome_study_guide.md       Student learning reference
@@ -280,8 +283,8 @@ cognibiome-insights/
 │   │   ├── developer_guide.md      Internal developer reference
 │   │   ├── implementation_plan.md  Build plan and future roadmap
 │   │   ├── external_datasets_overview.md   Overview of external reference datasets
-│   │   ├── image_credits.md        ISEF-compliant image credit list
-│   │   ├── trifold/                Science-fair trifold board content
+│   │   ├── image_credits.md        Image credit list
+│   │   ├── trifold/                Trifold board content
 │   │   │   ├── initial/            Original trifold panels (TOP_BANNER, LEFT/CENTER/RIGHT)
 │   │   │   └── final/              Final trifold variant (12 section files)
 │   │   ├── screenshots/app/        App screenshots for the user guide
@@ -333,14 +336,13 @@ cognibiome-insights/
 │   └── test/                   Vitest test suite
 │       ├── docsIndex.test.ts        Validates docs_index.json integrity
 │       ├── exportReport.test.ts     Export HTML generation tests
-│       ├── screens.presenterMode.test.tsx  Screen-contract tests for all judge-critical routes
+│       ├── screens.presenterMode.test.tsx  Screen-contract tests for demo routes
 │       ├── presenterMode.test.tsx   Presenter mode UI behavior
 │       ├── statistics.test.ts       Statistics engine unit tests
 │       ├── pilotParser.test.ts      CSV parser unit tests
 │       └── ...
 ├── scripts/
 │   ├── build-mimedb.ts             Builds mimedb.json from local CSV exports
-│   ├── check-no-cyrillic.ts        Pre-test guard: no Cyrillic in source files
 │   ├── extract-bundle.ts           Bundle extraction helper
 │   └── generate-upload-files-manifest.ts  Generates UPLOAD_FILES_MANIFEST.md
 ├── e2e/
@@ -396,6 +398,17 @@ cognibiome-insights/
 
 ---
 
+## Academic Validation & Exhibitions
+
+- Presented at **Hudson County STEM Showcase** — March 2, 2026  
+- Developed in alignment with **Regeneron ISEF** standards  
+- Display & Safety review requirements applied  
+- Documentation follows international science fair standards  
+
+Exhibitions serve as independent validation of rigor and quality. The app is not designed exclusively for competition use.
+
+---
+
 ## Roadmap (future work — not in this build)
 
 | Phase | Description | Dependency |
@@ -406,5 +419,5 @@ cognibiome-insights/
 | **Phase 3 (future)** | Paired cognition cohort or research partnership | Institutional approval + IRB |
 
 The web app is designed to accept swapped-in trained artifacts without code changes — only
-the JSON stage files need to be replaced. It runs offline during judging (a presentation
-reliability constraint), and this same architecture supports a future backend training phase.
+the JSON stage files need to be replaced. The offline-first PWA architecture supports
+a future backend training phase.

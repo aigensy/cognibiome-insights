@@ -233,10 +233,24 @@ function SmartValue({ value, compact = false }: { value: unknown; compact?: bool
     return <Badge variant="outline" className="text-[10px]">{value ? 'yes' : 'no'}</Badge>;
   }
 
-  // String — may be JSON-encoded nested value
+  // String — may be JSON-encoded nested value, or OQ/ASM reference ID
   if (typeof value === 'string') {
     const parsed = tryParseJson(value);
     if (parsed !== null) return <SmartValue value={parsed} compact={compact} />;
+    if (/^OQ-\d{3}$/.test(value)) {
+      return (
+        <a href="/help?doc=DOC-012" className="text-primary underline text-xs">
+          {value}
+        </a>
+      );
+    }
+    if (/^ASM-\d{3}$/.test(value)) {
+      return (
+        <a href="/help?doc=DOC-011" className="text-primary underline text-xs">
+          {value}
+        </a>
+      );
+    }
     if (!compact) return <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{value}</p>;
     return <ExpandableText text={value} />;
   }
@@ -417,8 +431,8 @@ const SECTION_LABELS: Record<string, string> = {
   key_points: 'Key Points',
   modules: 'Modules',
   assumptions: 'Assumptions',
-  questions: 'Open Questions',
-  open_questions: 'Open Questions',
+  questions: 'Answered Questions',
+  open_questions: 'Answered Questions',
   risks: 'Risks',
   non_goals: 'Non-Goals',
   data_sources: 'Data Sources',
@@ -733,8 +747,7 @@ export default function HelpDocs() {
                 </span>
               ),
               // Anchor links (#section) scroll within the doc viewer.
-              // External links are rendered as non-clickable plain text to prevent
-              // accidental browser navigation during live demos.
+              // External links open in new tab.
               a: ({ href, children }) => {
                 if (href?.startsWith('#')) {
                   return (
@@ -746,10 +759,6 @@ export default function HelpDocs() {
                         const id = href.slice(1);
                         const target = document.getElementById(id);
                         if (!target) return;
-                        // Scroll within the overflow-auto markdown viewer container.
-                        // getBoundingClientRect gives position relative to the viewport;
-                        // subtracting the container's top gives position relative to the container,
-                        // then add the container's current scrollTop to get the absolute scroll target.
                         const scrollParent = target.closest('[data-testid="markdown-view"]') as HTMLElement | null;
                         if (scrollParent) {
                           const containerRect = scrollParent.getBoundingClientRect();
@@ -766,18 +775,14 @@ export default function HelpDocs() {
                   );
                 }
                 return (
-                  <span
-                    className="inline-flex flex-wrap items-baseline gap-x-1"
-                    data-testid="safe-link"
-                    data-href={href}
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline underline-offset-2"
                   >
-                    <span className="text-primary">{children}</span>
-                    {href && (
-                      <span className="text-[10px] font-mono text-muted-foreground break-all">
-                        [{href}]
-                      </span>
-                    )}
-                  </span>
+                    {children}
+                  </a>
                 );
               },
             }}

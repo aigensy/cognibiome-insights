@@ -15,7 +15,7 @@ In a future backend phase, properly licensed paired datasets (e.g., ZOE PREDICT 
 | **USDA FoodData Central (FDC)** | **YES** | "Food/Nutrient Evidence" layer: explains why diet changes affect fiber / sugar / saturated fat at the nutrient level. CC0. | `reference/usda_fdc.json` (food list + nutrients) and nutrient → diet-component mapping. |
 | **Reactome** | **YES** | "Pathway cards": brief biological pathway cards (e.g. tryptophan/serotonin) with citations. CC0 data / CC BY 4.0 illustrations. | `reference/reactome.json` (selected pathways + descriptions + identifiers). |
 | **WikiPathways (JSON)** | **YES** | "Mechanism diagrams" layer: local JSON for key pathway diagrams. WikiPathways content under CC0 waiver. | `reference/wikipathways.json` with selected pathways; licensing notes in `reference/REFERENCES_AND_LICENSES.md`. |
-| **MiMeDB (Microbial Metabolome DB)** | **YES** | "Microbe ↔ metabolite evidence" layer: reference associations between microbes and metabolites. License/terms: see official MiMeDB terms at https://mimedb.org/. | `reference/mimedb.json` (relevant fields only) + `REFERENCES_AND_LICENSES.md`. |
+| **MiMeDB (Microbial Metabolome DB)** | **YES** | "Microbe ↔ metabolite evidence" layer: reference associations between microbes and metabolites. License/terms: see official MiMeDB terms at [mimedb.org](https://mimedb.org/). | `reference/mimedb.json` (relevant fields only) + `REFERENCES_AND_LICENSES.md`. |
 | **PubChem** | **NO** | Not used in v1: adds network dependency and is not critical for the demo. PubChem does not issue API keys. | Nothing prepared. |
 | **HMDB** | **NO** | Not used: higher licensing risk and volume; MiMeDB + Reactome cover the needed associations. | Nothing prepared. |
 
@@ -46,7 +46,7 @@ In a future backend phase, properly licensed paired datasets (e.g., ZOE PREDICT 
 
 - **UI:** "Evidence table" (search/filter) + educational context.
 - **Technically:** local JSON, pre-filtered to a small set of rows and fields (fast load). All links are marked `source_in_mimedb_csv: false` because the MiMeDB CSV exports do not include a join table; links are literature-derived and labeled "cannot confirm from parsed MiMeDB CSV" in the UI.
-- **License/terms:** cannot confirm from this repo; see official MiMeDB terms at https://mimedb.org/.
+- **License/terms:** cannot confirm from this repo; see official MiMeDB terms at [mimedb.org](https://mimedb.org/).
 
 ---
 
@@ -72,7 +72,7 @@ A small table of **variable names and observed ranges** transcribed from the NHA
 - Does **not** contain participant-level NHANES records.
 - Used in this build as **UI reference context only** (Simulator reference ranges panel). NHANES is **not** a training source for any model coefficient in this build.
 
-Primary source page: https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DR1TOT_L.htm
+Primary source page: [NHANES DR1TOT_L](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DR1TOT_L.htm)
 
 ### HMP — `hmp_reference.json`
 
@@ -90,7 +90,7 @@ A small **index of primary accessions and entry points** for the American Gut Pr
 - ENA project: PRJEB11419 (sequences + metadata)
 - Qiita study: 10317 (processed BIOM artifacts + metadata)
 
-Primary ENA page: https://www.ebi.ac.uk/ena/browser/view/PRJEB11419
+Primary ENA page: [ENA PRJEB11419](https://www.ebi.ac.uk/ena/browser/view/PRJEB11419)
 
 ### MetaboLights — `metabolights_reference.json`
 
@@ -114,7 +114,7 @@ The following datasets are identified in the project roadmap as targets for futu
 - Longitudinal paired multi-omics (stool metagenomics, metatranscriptomics, metabolomics).
 - Primary candidate for the X→M (microbiome → metabolites) training stage.
 - Population: Crohn's disease and ulcerative colitis patients; cross-population transfer to a healthy-teen context requires careful validation.
-- Access: https://hmpdacc.org/
+- Access: [hmpdacc.org](https://hmpdacc.org/)
 
 **ZOE PREDICT** — large-scale diet and microbiome cohort
 - Simultaneous dietary intake records, gut metagenomics, blood metabolomics, and glycemic response data.
