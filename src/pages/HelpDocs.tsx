@@ -817,7 +817,8 @@ export default function HelpDocs() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-4">
+    <div className="max-w-5xl mx-auto space-y-4" data-testid="help-docs-page">
+      {!loading && selected && <span data-testid="help-doc-loaded" className="sr-only" aria-hidden="true" />}
       <div>
         <h1 className="text-2xl font-bold">Help / Docs</h1>
         <p className="text-xs text-muted-foreground mt-1">
@@ -832,9 +833,16 @@ export default function HelpDocs() {
 
       <Card className="min-h-[500px]">
         <CardHeader className="pb-2 flex-row items-center justify-between flex-wrap gap-1">
-          <CardTitle className="text-sm">
-            {selected?.title ?? 'Document Viewer'}
-          </CardTitle>
+          <div className="flex items-center gap-1 flex-wrap">
+            <CardTitle className="text-sm" data-testid="help-doc-title">
+              {selected?.title ?? 'Document Viewer'}
+            </CardTitle>
+            {selected && (
+              <Badge variant="outline" className="text-[10px]" data-testid="help-doc-id">
+                Doc: {selected.id}
+              </Badge>
+            )}
+          </div>
           {selected && (
             <div className="flex gap-1 flex-wrap items-center">
               <Badge variant="outline" className="text-[10px] mr-1">{selected.category}</Badge>
@@ -881,7 +889,9 @@ export default function HelpDocs() {
             </div>
           )}
         </CardHeader>
-        <CardContent>{renderContent()}</CardContent>
+        <CardContent>
+          <div data-testid="help-doc-content">{renderContent()}</div>
+        </CardContent>
       </Card>
     </div>
   );

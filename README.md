@@ -4,6 +4,8 @@
 
 **Author:** [Yana Evteeva](https://www.linkedin.com/in/yana-evteeva)
 
+**Online:** [CogniBiome](https://cobi.lovable.app)
+
 > **Gut–Brain Axis Explorer and Hypothesis Generator** — deterministic, offline-first research simulator.
 > Not a diagnostic device. Not medical advice. Not causal proof.
 

@@ -31,7 +31,7 @@ A small table of **variable names and observed ranges** transcribed from the NHA
   NHANES is **not** a training source for any model coefficient in this build.
 
 Primary source page:
-- https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DR1TOT_L.htm
+- [NHANES DR1TOT_L](https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DR1TOT_L.htm)
 
 ---
 
@@ -50,7 +50,7 @@ multi-omics resource for this project's roadmap is **iHMP/IBDMDB** (see "Future 
 section below).
 
 Example official resource URL:
-- http://downloads.ihmpdcc.org/data/HMQCP/otu_table_psn_v35.txt.gz
+- [HMQCP OTU table](http://downloads.ihmpdcc.org/data/HMQCP/otu_table_psn_v35.txt.gz)
 
 ---
 
@@ -62,7 +62,7 @@ A small **index of primary accessions and entry points** for the American Gut Pr
 - Qiita study: 10317 (processed BIOM artifacts + metadata, depending on availability)
 
 Primary ENA page:
-- https://www.ebi.ac.uk/ena/browser/view/PRJEB11419
+- [ENA PRJEB11419](https://www.ebi.ac.uk/ena/browser/view/PRJEB11419)
 
 ---
 
@@ -116,7 +116,7 @@ transparency and planning purposes only.
   of microbiome-to-metabolite relationships.
 - **Population:** patients with Crohn's disease and ulcerative colitis (not healthy teens).
   Cross-population transfer to a healthy-teen context would require careful validation.
-- **Access:** via the HMP Data Coordination Center portal (https://hmpdacc.org/).
+- **Access:** via the HMP Data Coordination Center portal ([hmpdacc.org](https://hmpdacc.org/)).
 - **Status in this build:** not bundled. Metadata index available in `hmp_reference.json`.
 
 ### ZOE PREDICT -- large-scale diet and microbiome cohort

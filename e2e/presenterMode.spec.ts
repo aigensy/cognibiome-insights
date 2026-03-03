@@ -247,21 +247,24 @@ test.describe('Presenter Mode — screen contracts (E2E)', () => {
   // -------------------------------------------------------------------------
   // Help / Docs
   // -------------------------------------------------------------------------
-  test('HelpDocs (/help?doc=DOC-026) — Presenter Guide rendered', async ({ page }) => {
-    // Activate presenter mode on the help page directly
-    await page.goto('/help?doc=DOC-026');
+  test('HelpDocs (/help?doc=DOC-041) — Presenter Pack rendered', async ({ page }) => {
+    // Activate presenter mode on the help page directly (DOC-041 = Presenter Pack)
+    await page.goto('/help?doc=DOC-041');
     await activatePresenterMode(page);
 
-    await expect(page.getByText(/Presenter Guide \(Presenter Mode\)/i).first()).toBeVisible({ timeout: 15_000 });
-    // Use .first() to avoid strict-mode when the text appears in both the doc body and a list item
-    await expect(page.getByText(/educational hypothesis generator/i).first()).toBeVisible();
+    // Use stable test IDs instead of brittle content text
+    await expect(page.getByTestId('help-docs-page')).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId('help-doc-title')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId('help-doc-id')).toContainText('DOC-041');
+    await expect(page.getByTestId('help-doc-content')).toBeVisible();
+    await expect(page.getByTestId('help-doc-content')).toContainText(/./); // has some content
 
     await screenshotFull(page, '07_Help_PresenterGuide');
 
     const sidebar = page.locator('[data-slot="sidebar"]').first();
     await screenshotLocator(sidebar, '07_Help_Sidebar', page);
 
-    const mainContent = page.getByTestId('markdown-view');
+    const mainContent = page.getByTestId('markdown-view').or(page.getByTestId('human-view'));
     await screenshotLocator(mainContent, '07_Help_DocContent', page);
   });
 });

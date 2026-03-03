@@ -176,7 +176,7 @@ Teens with higher diet quality scores will show higher cognitive performance, es
 
 - Sonnenburg, J. L. & Bäckhed, F. Diet–microbiota interactions as moderators of human metabolism. *Nature*, 535, 56–64 (2016).
 - Cryan, J. F. et al. The microbiota–gut–brain axis. *Physiological Reviews*, 99(4), 1877–2013 (2019).
-- MiMeDB: Wishart, D. S. et al. MiMeDB: the Human Microbial Metabolome Database. *Nucleic Acids Research*, 51(D1), D611–D620 (2023). https://mimedb.org/
+- MiMeDB: Wishart, D. S. et al. MiMeDB: the Human Microbial Metabolome Database. *Nucleic Acids Research*, 51(D1), D611–D620 (2023). [mimedb.org](https://mimedb.org/)
 
 ---
 
