@@ -5,13 +5,13 @@ on:
     branches: [main, master]
     paths-ignore:
       - 'public/docs/**'
-      - '**/*.md'
+      - 'public/docs/**/*.md'
       - '.cursor/**'
   pull_request:
     branches: [main, master]
     paths-ignore:
       - 'public/docs/**'
-      - '**/*.md'
+      - 'public/docs/**/*.md'
       - '.cursor/**'
 
 concurrency:
