@@ -725,8 +725,24 @@ export default function HelpDocs() {
                 const id = slugify(children);
                 return <h3 id={id} className="text-xs font-semibold mt-2 mb-1 scroll-mt-4">{children}</h3>;
               },
-              p: ({ children }) => <p className="mb-1.5 text-[12px] leading-5">{children}</p>,
-              li: ({ children }) => <li className="text-[12px] leading-5">{children}</li>,
+              p: ({ children }) => <p className="mb-1.5">{children}</p>,
+              blockquote: ({ children }) => {
+                const text = extractText(children);
+                const isWarning = /⚠️|warning|interpretation note|do not edit|cognibiome is not/i.test(text);
+
+                return (
+                  <blockquote
+                    className={[
+                      'my-2 border-l-2 border-border pl-3',
+                      isWarning ? 'text-[11px] leading-4' : 'text-[12px] leading-5',
+                      'text-muted-foreground',
+                    ].join(' ')}
+                  >
+                    {children}
+                  </blockquote>
+                );
+              },
+              li: ({ children }) => <li>{children}</li>,
               code: ({ children }) => (
                 <code className="text-[11px] px-1 py-0.5 rounded bg-muted/50 border border-border">{children}</code>
               ),
