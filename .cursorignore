@@ -1,0 +1,80 @@
+###############################################################################
+# Cursor ignore — reduce indexing/token usage
+# Repo: cognibiome-insights-main
+# Keep: public/docs/** (including screenshots used by userguide)
+###############################################################################
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs / framework artifacts
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+.turbo/
+.vercel/
+.netlify/
+storybook-static/
+
+# Test outputs / reports (large + noisy)
+coverage/
+.nyc_output/
+test-results/
+playwright-report/
+**/playwright-report/
+**/test-results/
+
+# Tool caches
+.cache/
+**/.cache/
+.eslintcache
+.stylelintcache
+.parcel-cache/
+
+# IDE/editor junk
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+###############################################################################
+# Keep docs and their assets (needed for userguide)
+###############################################################################
+!public/docs/**
+!public/docs/screenshots/**
+!public/docs/screenshots/app/**
+!public/docs/images/**
+!public/docs/trifold/**
+
+
+# Ignore large binary assets outside docs (optional)
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.webp
+**/*.gif
+**/*.mp4
+**/*.pdf
+
+# But keep docs images/screenshots (already whitelisted above)
+!public/docs/**/*.png
+!public/docs/**/*.jpg
+!public/docs/**/*.jpeg
+!public/docs/**/*.webp
+!public/docs/**/*.gif
+!public/docs/**/*.pdf
