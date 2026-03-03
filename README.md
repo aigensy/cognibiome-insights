@@ -266,7 +266,16 @@ npm run build
 npx playwright test
 ```
 
-Screenshots are written to `e2e/screenshots/`.
+### Updating Developer Guide screenshots
+
+Screenshots for `public/docs/developer_guide.md` and `public/docs/user_guide.md` live in `public/docs/screenshots/app/`. Update them explicitly:
+
+```bash
+npm install
+npm run update-userguide
+```
+
+This builds the app, runs the Playwright E2E spec, writes screenshots into `public/docs/screenshots/app/`, updates the timestamp in `developer_guide.md`, and commits the changes. CI does not auto-update screenshots; use this command when UI changes require new docs visuals.
 
 ---
 
@@ -289,7 +298,7 @@ cognibiome-insights/
 │   │   ├── trifold/                Trifold board content
 │   │   │   ├── initial/            Original trifold panels (TOP_BANNER, LEFT/CENTER/RIGHT)
 │   │   │   └── final/              Final trifold variant (12 section files)
-│   │   ├── screenshots/app/        App screenshots for the user guide
+│   │   ├── screenshots/app/        App screenshots for user/developer guides (updated via npm run update-userguide)
 │   │   └── images/                 Embedded images for docs
 │   ├── foundation_pack/        Project requirements and design artifacts (shown in Docs viewer)
 │   │   ├── docs_index.json         Master index of all in-app documents
@@ -346,10 +355,11 @@ cognibiome-insights/
 ├── scripts/
 │   ├── build-mimedb.ts             Builds mimedb.json from local CSV exports
 │   ├── extract-bundle.ts           Bundle extraction helper
-│   └── generate-upload-files-manifest.ts  Generates UPLOAD_FILES_MANIFEST.md
+│   ├── generate-upload-files-manifest.ts  Generates UPLOAD_FILES_MANIFEST.md
+│   └── update-userguide.mjs        Regenerates developer guide screenshots (npm run update-userguide)
 ├── e2e/
 │   ├── presenterMode.spec.ts       Playwright E2E tests + screenshot capture
-│   └── screenshots/                Generated screenshots (not committed)
+│   └── screenshots/                Transient output (gitignored); docs screenshots in public/docs/screenshots/app/
 ├── app_context/                Audit mirror of public/foundation_pack/ and reference/
 ├── PROVENANCE_NOTE.md          Data provenance and licensing notes
 ├── package.json

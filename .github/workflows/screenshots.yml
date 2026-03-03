@@ -1,0 +1,43 @@
+# Manual workflow: generate Developer Guide screenshots
+# Run via: Actions → Update Developer Guide Screenshots → Run workflow
+name: Update Developer Guide Screenshots
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screenshots:
+    name: Generate screenshots
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Update Developer Guide screenshots
+        run: npm run update-userguide
+        env:
+          SKIP_GIT_COMMIT: '1'
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: developer-guide-screenshots-${{ github.run_id }}
+          path: public/docs/screenshots/
+          retention-days: 7

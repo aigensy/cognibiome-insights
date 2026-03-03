@@ -1,0 +1,24 @@
+---
+description: Workflow when updating Developer Guide screenshots
+globs: public/docs/developer_guide.md, public/docs/screenshots/**
+alwaysApply: false
+---
+
+# Updating Developer Guide Screenshots
+
+When editing `public/docs/developer_guide.md` or the user asks to update the user/developer guide:
+
+1. **Run the update command first**
+   ```bash
+   npm run update-userguide
+   ```
+   This builds the app, runs Playwright E2E tests, and writes screenshots to `public/docs/screenshots/app/`.
+
+2. **Review screenshot diffs**  
+   Inspect any changed PNGs (e.g. via `git diff` or your IDE). Ensure the visuals still match the surrounding narrative.
+
+3. **Update narrative only where needed**  
+   If the UI changed, update the relevant paragraphs and captions in `developer_guide.md` near the affected screenshots. Do not rewrite unrelated sections.
+
+4. **Verify image paths**  
+   All `![...](screenshots/app/....png)` links must resolve to files under `public/docs/screenshots/app/`.

@@ -16,7 +16,8 @@
     "verify": "npm run lint && npm run test && npm run build",
     "manifest:public": "tsx scripts/generate-upload-files-manifest.ts public public/UPLOAD_FILES_MANIFEST.md",
     "manifest:app": "tsx scripts/generate-upload-files-manifest.ts app_context app_context/UPLOAD_FILES_MANIFEST.md",
-    "manifest:all": "npm run manifest:public && npm run manifest:app"
+    "manifest:all": "npm run manifest:public && npm run manifest:app",
+    "update-userguide": "node scripts/update-userguide.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

@@ -5,7 +5,8 @@
  *   1. Navigate directly to each target route.
  *   2. Enable Presenter Mode by clicking the TopBar toggle button (aria-label="Presenter mode").
  *   3. Assert that key judge-critical strings are present in the DOM.
- *   4. Take targeted per-section screenshots saved to e2e/screenshots/.
+ *   4. Take targeted per-section screenshots saved to SCREENSHOT_DIR
+ *      (default e2e/screenshots/; override via COGNIBIOME_SCREENSHOT_DIR).
  *
  * NOTE: These tests require `npm run build` to have been run first.
  *       The CI workflow handles this before running Playwright.
@@ -26,7 +27,8 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const SCREENSHOT_DIR = path.resolve(__dirname, 'screenshots');
+const SCREENSHOT_DIR =
+  process.env.COGNIBIOME_SCREENSHOT_DIR ?? path.resolve(__dirname, 'screenshots');
 
 function ensureScreenshotDir() {
   if (!fs.existsSync(SCREENSHOT_DIR)) {

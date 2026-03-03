@@ -1,3 +1,8 @@
+# Playwright artifacts (screenshots for docs are in public/docs/screenshots/app/)
+playwright-report/
+e2e/test-results/
+e2e/screenshots/
+
 # Local large data files (not committed)
 local/
 to_add/
