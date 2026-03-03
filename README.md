@@ -492,8 +492,8 @@ bash scripts/phase2_setup_python_env.sh
 
 ### Links to detailed plans
 
-- [implementation_plan.md](implementation_plan.md) — engineering plan
-- [presentation_addendum.md](presentation_addendum.md) — dataset reality checks
+- [Implementation Plan](/help?doc=DOC-023) — engineering plan
+- [Presentation Addendum](/help?doc=DOC-032) — dataset reality checks
 
 ---
 
